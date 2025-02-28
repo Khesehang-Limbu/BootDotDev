@@ -1,23 +1,14 @@
 """
-Evens and Odds
-You've been asked to write a program that will calculate how many odd and even numbers exist in a list.
+Even Teams
+Fantasy Quest is having a problem where Battleground teams are uneven when the match begins. We need a function that will correctly split the two teams evenly.
 
-Challenge
-Write the get_odds_and_evens function to loop through the numbers list and check if each number in the list is either odd or even.
+Assignment
+Complete the split_players_into_teams function. Use a slice with a "step" to create two new lists from the players list:
 
-Increment the num_evens counter if even, and the num_odds counter if it's odd. Lastly, return the two values num_odds and num_evens in that order.
+even_team should have the players with even-numbered indexes.
+odd_team should have the players with odd-numbered indexes.
+Return even_team and odd_team in that order. Be careful not to assign the wrong values to these variables!
 """
 
-def get_odds_and_evens(numbers):
-    num_odds = 0
-    num_evens = 0
-
-    # Don't touch above this line
-    for num in numbers:
-        if num % 2 == 0:
-            num_evens += 1
-        else:
-            num_odds += 1
-    return num_odds, num_evens
-
-
+def split_players_into_teams(players):
+    return players[::2], players[1::2]

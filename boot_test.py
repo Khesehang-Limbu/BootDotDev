@@ -1,17 +1,45 @@
 from main import *
 
 run_cases = [
-    ([1, 7, 2, 5, 3, 4], (4, 2)),
-    ([0, 99, 2, 33, 61, 44, 9, 10, 12, 240, 35, 9082, 1234], (5, 8)),
+    (
+        [
+            "Harry",
+            "Hermione",
+            "Ron",
+            "Ginny",
+            "Fred",
+            "Neville",
+            "Draco",
+            "Luna",
+            "Cho",
+            "Gregory",
+            "Lee",
+            "Michael",
+            "Lavender",
+            "Frank",
+            "Anthony",
+            "Allan",
+        ],
+        (
+            ["Harry", "Ron", "Fred", "Draco", "Cho", "Lee", "Lavender", "Anthony"],
+            [
+                "Hermione",
+                "Ginny",
+                "Neville",
+                "Luna",
+                "Gregory",
+                "Michael",
+                "Frank",
+                "Allan",
+            ],
+        ),
+    ),
+    (["Mike", "Walter", "Skyler", "Tuco"], (["Mike", "Skyler"], ["Walter", "Tuco"])),
 ]
 
 submit_cases = run_cases + [
-    ([], (0, 0)),
-    ([1, 3, 5, 7, 9], (5, 0)),
-    ([2, 4, 6, 8, 10], (0, 5)),
-    ([1], (1, 0)),
-    ([2], (0, 1)),
-    ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (5, 5)),
+    (["Alice", "Bob", "Charlie", "David"], (["Alice", "Charlie"], ["Bob", "David"])),
+    ([], ([], [])),
 ]
 
 
@@ -19,7 +47,7 @@ def test(input1, expected_output):
     print("---------------------------------")
     print(f"Inputs: {input1}")
     print(f"Expecting: {expected_output}")
-    result = get_odds_and_evens(input1)
+    result = split_players_into_teams(input1)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
@@ -53,4 +81,3 @@ if "__RUN__" in globals():
     test_cases = run_cases
 
 main()
-
