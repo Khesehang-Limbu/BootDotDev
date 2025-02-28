@@ -1,14 +1,31 @@
 """
-Even Teams
-Fantasy Quest is having a problem where Battleground teams are uneven when the match begins. We need a function that will correctly split the two teams evenly.
+Alchemy Ingredients
+Fantasy Quest added a new alchemy profession, users would like a way to know how many ingredients they have compared to the required ingredients in their recipes.
 
 Assignment
-Complete the split_players_into_teams function. Use a slice with a "step" to create two new lists from the players list:
+Finish the check_ingredient_match function by looping over the recipe list. The function should calculate and return a percentage of ingredients the character has, as well as a list of missing from the recipe.
 
-even_team should have the players with even-numbered indexes.
-odd_team should have the players with odd-numbered indexes.
-Return even_team and odd_team in that order. Be careful not to assign the wrong values to these variables!
+For example, if these were the lists:
+
+recipe = ["Dragon Scale", "Unicorn Hair", "Phoenix Feather", "Troll Tusk"]
+ingredients = ["Dragon Scale", "Goblin Ear", "Phoenix Feather", "Troll Tusk"]
+
+percentage, missing_ingredients = check_ingredient_match(recipe, ingredients)
+print(percentage, missing_ingredients)
+# Prints: 75.00 ["Unicorn Hair"]
 """
 
-def split_players_into_teams(players):
-    return players[::2], players[1::2]
+def check_ingredient_match(recipe, ingredients):
+    missing_ingredients = []
+    ingredient_count = 0
+
+    for item in recipe:
+        if item not in ingredients:
+            missing_ingredients.append(item)
+        else:
+            ingredient_count += 1
+
+    return (ingredient_count/len(ingredients))*100, missing_ingredients
+
+
+
