@@ -2,150 +2,43 @@ from main import *
 
 run_cases = [
     (
-        [
-            "Dragon Scale",
-            "Unicorn Hair",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-            "Goblin Ear",
-        ],
-        [
-            "Dragon Scale",
-            "Goblin Ear",
-            "Phoenix Feather",
-            "Elf Dust",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-            "Goblin Ear",
-        ],
-        (75.0, ["Unicorn Hair", "Troll Tusk"]),
+        ["A", "B", "C", "D", "E"],
+        ["Dellbi", "A", "B", "C", "D", "E"],
+        ("Dellbi", 100.0),
     ),
     (
-        [
-            "Dragon Scale",
-            "Unicorn Hair",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-        ],
-        [
-            "Dragon Scale",
-            "Phoenix Feather",
-            "Unicorn Hair",
-            "Troll Tusk",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-        ],
-        (100.0, []),
+        ["A", "B", "C", "D", "E"],
+        ["Kaladin", "A", "X", "C", "D", "E"],
+        ("Kaladin", 80.0),
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        [
-            "Dragon Scale",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-            "Goblin Ear",
-            "Unicorn Hair",
-        ],
-        [
-            "Goblin Ear",
-            "Elf Dust",
-            "Griffin Feather",
-            "Mermaid Tear",
-            "Goblin Ear",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Unicorn Hair",
-        ],
-        (
-            75.0,
-            [
-                "Dragon Scale",
-                "Mandrake Root",
-            ],
-        ),
+        ["A", "B", "C", "D", "E"],
+        ["ShadowWalker", "X", "X", "X", "X", "X"],
+        ("ShadowWalker", 0.0),
     ),
     (
-        [
-            "Dragon Scale",
-            "Unicorn Hair",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-            "Goblin Ear",
-        ],
-        [
-            "Unicorn Hair",
-            "Dragon Scale",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Griffin Feather",
-            "Mandrake Root",
-            "Goblin Ear",
-            "Elf Dust",
-        ],
-        (100.0, []),
+        ["A", "B", "C", "D", "E"],
+        ["Jamie", "A", "B", "X", "X", "E"],
+        ("Jamie", 60.0),
     ),
     (
-        [
-            "Orc Tears",
-            "Orge Ear",
-            "Goblin Giggles",
-            "Witch Broom",
-            "Giant Toenail Clipping",
-            "Centipede Foot",
-            "Dog Hair",
-            "Bald Eagle Dandruff",
-        ],
-        [
-            "Unicorn Hair",
-            "Dragon Scale",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Griffin Feather",
-            "Mandrake Root",
-            "Goblin Ear",
-            "Bald Eagle Dandruff",
-        ],
-        (
-            12.5,
-            [
-                "Orc Tears",
-                "Orge Ear",
-                "Goblin Giggles",
-                "Witch Broom",
-                "Giant Toenail Clipping",
-                "Centipede Foot",
-                "Dog Hair",
-            ],
-        ),
+        ["A", "B", "C", "D", "E"],
+        ["Odium", "A", "B", "C", "D", "E"],
+        ("Odium", 100.0),
     ),
 ]
 
 
 def test(input1, input2, expected_output):
     print("---------------------------------")
-    print(f"Inputs:\nrecipe: {input1}\ngathered_ingredients: {input2}")
+    print(f"Inputs:\nexpected_path: {input1}\ncharacter_path: {input2}")
     print(f"Expecting: {expected_output}")
-    result = check_ingredient_match(input1, input2)
+    result = validate_path(input1, input2)
     print(f"Actual: {result}")
-    if result[0] == expected_output[0] and sorted(result[1]) == sorted(
-        expected_output[1]
-    ):
+    if result == expected_output:
         print("Pass")
         return True
     print("Fail")
