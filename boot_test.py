@@ -1,42 +1,29 @@
 from main import *
 
 run_cases = [
-    (
-        ["A", "B", "C", "D", "E"],
-        ["Dellbi", "A", "B", "C", "D", "E"],
-        ("Dellbi", 100.0),
-    ),
-    (
-        ["A", "B", "C", "D", "E"],
-        ["Kaladin", "A", "X", "C", "D", "E"],
-        ("Kaladin", 80.0),
-    ),
+    ("Hello there", "HHeelllloo  tthheerree"),
+    ("General Kenobi", "GGeenneerraall  KKeennoobbii"),
 ]
 
 submit_cases = run_cases + [
+    ("I am a warrior", "II  aamm  aa  wwaarrrriioorr"),
+    ("Where is the nearest inn?", "WWhheerree  iiss  tthhee  nneeaarreesstt  iinnnn??"),
     (
-        ["A", "B", "C", "D", "E"],
-        ["ShadowWalker", "X", "X", "X", "X", "X"],
-        ("ShadowWalker", 0.0),
+        "what is happening to my chat?",
+        "wwhhaatt  iiss  hhaappppeenniinngg  ttoo  mmyy  cchhaatt??",
     ),
     (
-        ["A", "B", "C", "D", "E"],
-        ["Jamie", "A", "B", "X", "X", "E"],
-        ("Jamie", 60.0),
-    ),
-    (
-        ["A", "B", "C", "D", "E"],
-        ["Odium", "A", "B", "C", "D", "E"],
-        ("Odium", 100.0),
+        "what did this potion do to me?",
+        "wwhhaatt  ddiidd  tthhiiss  ppoottiioonn  ddoo  ttoo  mmee??",
     ),
 ]
 
 
-def test(input1, input2, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Inputs:\nexpected_path: {input1}\ncharacter_path: {input2}")
+    print(f"Input: {input1}")
     print(f"Expecting: {expected_output}")
-    result = validate_path(input1, input2)
+    result = double_string(input1)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
