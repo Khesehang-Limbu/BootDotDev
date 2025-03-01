@@ -2,85 +2,32 @@ from main import *
 
 run_cases = [
     (
-        [
-            "Frostmourne",
-            "Abyssal Whip",
-            "Staff of Armadyl",
-            "Frostmourne",
-            "Abyssal Whip",
-        ],
-        {"Frostmourne", "Abyssal Whip", "Staff of Armadyl"},
+        "Did someone say Thunderfury, Blessed Blade of the Windseeker?",
+        (19, {"u", "o", "i", "e", "a"}),
     ),
-    (
-        [
-            "Ashbringer",
-            "Dragonfire Shield",
-            "Serpentine Helm",
-            "Ashbringer",
-            "Dragonfire Shield",
-            "Infinity Boots",
-            "Serpentine Helm",
-        ],
-        {"Ashbringer", "Dragonfire Shield", "Serpentine Helm", "Infinity Boots"},
-    ),
+    ("LF9M UBRS NEED ALL!!!!", (4, {"U", "E", "A"})),
 ]
 
 submit_cases = run_cases + [
+    ("Leatherworker LFW Have all end game recipes!", (14, {"e", "i", "o", "a"})),
+    ("", (0, set())),
     (
-        [
-            "Bandos Chestplate",
-            "Shadowmourne",
-            "Twisted Bow",
-            "Bandos Chestplate",
-            "Shadowmourne",
-            "Twisted Bow",
-        ],
-        {"Bandos Chestplate", "Shadowmourne", "Twisted Bow"},
+        "Can anyone spare 1g so I can train my new spells?",
+        (13, {"o", "I", "i", "e", "a"}),
     ),
-    ([], set()),
-    (["Zulrah's Scales", "Zulrah's Scales", "Zulrah's Scales"], {"Zulrah's Scales"}),
-    (
-        [
-            "Void Knight Armor",
-            "Torva Full Helm",
-            "Void Knight Armor",
-            "Torva Full Helm",
-        ],
-        {"Void Knight Armor", "Torva Full Helm"},
-    ),
-    (
-        [
-            "Abyssal Dagger",
-            "Armadyl Godsword",
-            "Bandos Tassets",
-            "Abyssal Dagger",
-            "Armadyl Godsword",
-            "Bandos Tassets",
-        ],
-        {"Abyssal Dagger", "Armadyl Godsword", "Bandos Tassets"},
-    ),
-    (
-        [
-            "Elysian Spirit Shield",
-            "Twisted Bow",
-            "Scythe of Vitur",
-            "Harmonised Orb",
-            "Elysian Spirit Shield",
-            "Twisted Bow",
-            "Scythe of Vitur",
-            "Harmonised Orb",
-        ],
-        {"Elysian Spirit Shield", "Twisted Bow", "Scythe of Vitur", "Harmonised Orb"},
-    ),
+    ("no", (1, {"o"})),
+    ("mages need a nerf", (6, {"e", "a"})),
+    ("wtb port to Roshar", (4, {"o", "a"})),
 ]
 
 
-def test(input, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Input list: {input}")
-    print(f"Expected set: {expected_output}")
-    result = remove_duplicates(input)
-    print(f"Actual set: {result}")
+    print(f"Inputs:")
+    print(f" * Text: {input1}")
+    print(f"Expecting: {expected_output}")
+    result = count_vowels(input1)
+    print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
         return True
