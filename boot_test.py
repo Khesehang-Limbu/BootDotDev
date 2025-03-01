@@ -1,108 +1,42 @@
 from main import *
 
 run_cases = [
-    (
-        "bloodwarrior123",
-        "server1",
-        5,
-        1,
-        {
-            "name": "bloodwarrior123",
-            "server": "server1",
-            "level": 5,
-            "rank": 1,
-            "id": "bloodwarrior123#server1",
-        },
-    ),
-    (
-        "fronzenboi",
-        "server2",
-        2,
-        1,
-        {
-            "name": "fronzenboi",
-            "server": "server2",
-            "level": 2,
-            "rank": 1,
-            "id": "fronzenboi#server2",
-        },
-    ),
+    (["jackal", "kobold", "soldier"], {"jackal": 1, "kobold": 1, "soldier": 1}),
+    (["jackal", "kobold", "jackal"], {"jackal": 2, "kobold": 1}),
 ]
 
 submit_cases = run_cases + [
+    ([], {}),
+    (["jackal"], {"jackal": 1}),
     (
-        "slasher69",
-        "server3",
-        2,
-        5,
-        {
-            "name": "slasher69",
-            "server": "server3",
-            "level": 2,
-            "rank": 5,
-            "id": "slasher69#server3",
-        },
+        [
+            "jackal",
+            "kobold",
+            "jackal",
+            "kobold",
+            "soldier",
+            "kobold",
+            "soldier",
+            "soldier",
+            "jackal",
+            "jackal",
+            "gremlin",
+            "jackal",
+            "jackal",
+        ],
+        {"jackal": 6, "kobold": 3, "soldier": 3, "gremlin": 1},
     ),
-    (
-        "kingofgames",
-        "server4",
-        3,
-        2,
-        {
-            "name": "kingofgames",
-            "server": "server4",
-            "level": 3,
-            "rank": 2,
-            "id": "kingofgames#server4",
-        },
-    ),
-    (
-        "godofwar",
-        "server5",
-        1,
-        5,
-        {
-            "name": "godofwar",
-            "server": "server5",
-            "level": 1,
-            "rank": 5,
-            "id": "godofwar#server5",
-        },
-    ),
-    (
-        "pythonista",
-        "server6",
-        4,
-        3,
-        {
-            "name": "pythonista",
-            "server": "server6",
-            "level": 4,
-            "rank": 3,
-            "id": "pythonista#server6",
-        },
-    ),
-    (
-        "codemaster",
-        "server7",
-        3,
-        1,
-        {
-            "name": "codemaster",
-            "server": "server7",
-            "level": 3,
-            "rank": 1,
-            "id": "codemaster#server7",
-        },
-    ),
+    (["jackal", "kobold", "gremlin"], {"jackal": 1, "kobold": 1, "gremlin": 1}),
+    (["jackal", "jackal", "jackal"], {"jackal": 3}),
+    (["gremlin", "gremlin", "gremlin"], {"gremlin": 3}),
 ]
 
 
-def test(input1, input2, input3, input4, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {input1}, {input2}, {input3}, {input4}")
+    print(f"Inputs: {input1}")
     print(f"Expecting: {expected_output}")
-    result = get_character_record(input1, input2, input3, input4)
+    result = count_enemies(input1)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")

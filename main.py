@@ -1,26 +1,32 @@
 """
-"Duplicate Keys
-Because dictionaries rely on unique keys, you can't have two of the same key in the same dictionary. If you try to use the same key twice, the first value will simply be overwritten.
+""Counting Practice
+Checking for Existence
+If you're unsure whether or not a key exists in a dictionary, use the in keyword.
+
+cars = {
+    "ford": "f150",
+    "toyota": "camry"
+}
+
+print("ford" in cars)
+# Prints: True
+
+print("gmc" in cars)
+# Prints: False
 
 Assignment
-Another developer on our team has introduced a bug by specifying duplicate keys in the dictionary! Fix the bug.
+We need to be able to report to our players how many enemies are in their immediate vicinity - but they want the count of each enemy by its kind.
 
-The get_character_record function takes a character's name, server, level, and rank. It should return a dictionary with the following fields:
+If you run the code, it will result in a KeyError.
 
-name
-server
-level
-rank
-id
-Where the id is the name and the server concatenated together with a # in the middle for uniqueness. We can't have two bloodwarrior123's on the same server!
+Fix the count_enemies function. It takes a list of enemy_names as input. It should return a dictionary where the keys are all the enemy names from the list, and the values are the counts of how many times each enemy appeared in the list.
 """
 
-def get_character_record(name, server, level, rank):
-    return {
-        "name": name,
-        "server": server,
-        "level": level,
-        "rank": rank,
-        "id": f"{name}#{server}",
-    }
-
+def count_enemies(enemy_names):
+    enemies_dict = {}
+    for enemy_name in enemy_names:
+        if enemy_name in enemies_dict.keys():
+            enemies_dict[enemy_name] = enemies_dict[enemy_name] + 1
+        else:
+            enemies_dict[enemy_name] = 1
+    return enemies_dict
