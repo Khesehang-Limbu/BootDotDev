@@ -3,48 +3,84 @@ from main import *
 run_cases = [
     (
         [
-            "fireball",
-            "eldritch blast",
-            "fireball",
-            "eldritch blast",
-            "chill touch",
-            "eldritch blast",
-            "chill touch",
-            "chill touch",
-            "fireball",
-            "fireball",
-            "shocking grasp",
-            "fireball",
-            "fireball",
+            "Frostmourne",
+            "Abyssal Whip",
+            "Staff of Armadyl",
+            "Frostmourne",
+            "Abyssal Whip",
         ],
-        ["chill touch", "eldritch blast", "fireball", "shocking grasp"],
-    )
+        {"Frostmourne", "Abyssal Whip", "Staff of Armadyl"},
+    ),
+    (
+        [
+            "Ashbringer",
+            "Dragonfire Shield",
+            "Serpentine Helm",
+            "Ashbringer",
+            "Dragonfire Shield",
+            "Infinity Boots",
+            "Serpentine Helm",
+        ],
+        {"Ashbringer", "Dragonfire Shield", "Serpentine Helm", "Infinity Boots"},
+    ),
 ]
 
 submit_cases = run_cases + [
-    (["fireball", "fireball", "fireball"], ["fireball"]),
     (
-        ["fireball", "eldritch blast", "chill touch", "shocking grasp"],
-        ["chill touch", "eldritch blast", "fireball", "shocking grasp"],
+        [
+            "Bandos Chestplate",
+            "Shadowmourne",
+            "Twisted Bow",
+            "Bandos Chestplate",
+            "Shadowmourne",
+            "Twisted Bow",
+        ],
+        {"Bandos Chestplate", "Shadowmourne", "Twisted Bow"},
     ),
-    (["chill touch", "chill touch", "chill touch"], ["chill touch"]),
-    (["shocking grasp", "shocking grasp", "shocking grasp"], ["shocking grasp"]),
-    ([], []),
-    (["eldritch blast", "eldritch blast", "eldritch blast"], ["eldritch blast"]),
+    ([], set()),
+    (["Zulrah's Scales", "Zulrah's Scales", "Zulrah's Scales"], {"Zulrah's Scales"}),
+    (
+        [
+            "Void Knight Armor",
+            "Torva Full Helm",
+            "Void Knight Armor",
+            "Torva Full Helm",
+        ],
+        {"Void Knight Armor", "Torva Full Helm"},
+    ),
+    (
+        [
+            "Abyssal Dagger",
+            "Armadyl Godsword",
+            "Bandos Tassets",
+            "Abyssal Dagger",
+            "Armadyl Godsword",
+            "Bandos Tassets",
+        ],
+        {"Abyssal Dagger", "Armadyl Godsword", "Bandos Tassets"},
+    ),
+    (
+        [
+            "Elysian Spirit Shield",
+            "Twisted Bow",
+            "Scythe of Vitur",
+            "Harmonised Orb",
+            "Elysian Spirit Shield",
+            "Twisted Bow",
+            "Scythe of Vitur",
+            "Harmonised Orb",
+        ],
+        {"Elysian Spirit Shield", "Twisted Bow", "Scythe of Vitur", "Harmonised Orb"},
+    ),
 ]
 
 
 def test(input, expected_output):
     print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * spells: {input}")
-    print(f"Expecting: {expected_output}")
+    print(f"Input list: {input}")
+    print(f"Expected set: {expected_output}")
     result = remove_duplicates(input)
-    print(f"   Actual: {result}")
-    if not isinstance(result, list):
-        print("Fail: result is not a list")
-        return False
-    result.sort()
+    print(f"Actual set: {result}")
     if result == expected_output:
         print("Pass")
         return True
