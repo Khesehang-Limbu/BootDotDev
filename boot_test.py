@@ -2,111 +2,66 @@ from main import *
 
 run_cases = [
     (
-        {
-            "entity": {
-                "character": {
-                    "name": "Sir Galahad",
-                    "quests": {
-                        "bridge_run": {
-                            "status": "In Progress",
-                        },
-                        "talk_to_syl": {
-                            "status": "Completed",
-                        },
-                    },
-                }
-            }
-        },
-        "In Progress",
+        {"first_quarter": 24, "second_quarter": 31},
+        {"third_quarter": 29, "fourth_quarter": 40},
+        124,
     ),
     (
-        {
-            "entity": {
-                "character": {
-                    "name": "Lady Gwen",
-                    "quests": {
-                        "bridge_run": {
-                            "status": "Completed",
-                        },
-                        "talk_to_syl": {
-                            "status": "In Progress",
-                        },
-                    },
-                }
-            }
-        },
-        "Completed",
+        {"first_quarter": 12, "second_quarter": 2},
+        {"third_quarter": 32, "fourth_quarter": 87},
+        133,
     ),
+    ({}, {}, 0),
 ]
 
 submit_cases = run_cases + [
     (
-        {
-            "entity": {
-                "character": {
-                    "name": "Archer Finn",
-                    "quests": {
-                        "bridge_run": {
-                            "status": "Not Started",
-                        },
-                        "talk_to_syl": {
-                            "status": "Completed",
-                        },
-                    },
-                }
-            }
-        },
-        "Not Started",
+        {"first_quarter": 25, "second_quarter": 2},
+        {"third_quarter": 31, "fourth_quarter": 0},
+        58,
     ),
     (
-        {
-            "entity": {
-                "character": {
-                    "name": "Mage Elara",
-                    "quests": {
-                        "bridge_run": {
-                            "status": "Failed",
-                        },
-                        "talk_to_syl": {
-                            "status": "Completed",
-                        },
-                    },
-                }
-            }
-        },
-        "Failed",
+        {"first_quarter": 25, "second_quarter": 2},
+        {"second_quarter": 3, "third_quarter": 31, "fourth_quarter": 0},
+        59,
     ),
     (
-        {
-            "entity": {
-                "character": {
-                    "name": "Rogue Talon",
-                    "quests": {
-                        "bridge_run": {
-                            "status": "Completed",
-                        },
-                        "talk_to_syl": {
-                            "status": "Not Started",
-                        },
-                    },
-                }
-            }
-        },
-        "Completed",
+        {"first_quarter": 10, "second_quarter": 20},
+        {"third_quarter": 30, "fourth_quarter": 40},
+        100,
+    ),
+    (
+        {"first_quarter": 15, "second_quarter": 25},
+        {"third_quarter": 0, "fourth_quarter": 0},
+        40,
+    ),
+    (
+        {"first_quarter": 0, "second_quarter": 0},
+        {"third_quarter": 0, "fourth_quarter": 0},
+        0,
+    ),
+    (
+        {"first_quarter": 100, "second_quarter": 100},
+        {"third_quarter": 100, "fourth_quarter": 100},
+        400,
     ),
 ]
 
 
-def test(input1, expected_output):
+def test(input1, input2, expected_output):
     print("---------------------------------")
     print(f"Inputs:")
-    print(f" * Progress Dictionary: {input1}")
+    print(f" * first_half: {input1}")
+    print(f" * second_half: {input2}")
     print(f"Expecting: {expected_output}")
-    result = get_quest_status(input1)
+    merged = merge(input1, input2)
+    result = total_score(merged)
     print(f"Actual: {result}")
     if result == expected_output:
-        print("Pass")
-        return True
+        if len(merged) == 4 or expected_output == 0:
+            print("Pass")
+            return True
+        print("Dictionaries merged incorrectly")
     print("Fail")
     return False
 
