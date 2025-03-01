@@ -1,42 +1,140 @@
 from main import *
 
 run_cases = [
-    ("Hello there", "HHeelllloo  tthheerree"),
-    ("General Kenobi", "GGeenneerraall  KKeennoobbii"),
+    (
+        "bloodwarrior123",
+        "server1",
+        5,
+        1,
+        {
+            "name": "bloodwarrior123",
+            "server": "server1",
+            "level": 5,
+            "rank": 1,
+            "id": "bloodwarrior123#server1",
+        },
+    ),
+    (
+        "fronzenboi",
+        "server2",
+        2,
+        1,
+        {
+            "name": "fronzenboi",
+            "server": "server2",
+            "level": 2,
+            "rank": 1,
+            "id": "fronzenboi#server2",
+        },
+    ),
 ]
 
 submit_cases = run_cases + [
-    ("I am a warrior", "II  aamm  aa  wwaarrrriioorr"),
-    ("Where is the nearest inn?", "WWhheerree  iiss  tthhee  nneeaarreesstt  iinnnn??"),
     (
-        "what is happening to my chat?",
-        "wwhhaatt  iiss  hhaappppeenniinngg  ttoo  mmyy  cchhaatt??",
+        "slasher69",
+        "server3",
+        2,
+        5,
+        {
+            "name": "slasher69",
+            "server": "server3",
+            "level": 2,
+            "rank": 5,
+            "id": "slasher69#server3",
+        },
     ),
     (
-        "what did this potion do to me?",
-        "wwhhaatt  ddiidd  tthhiiss  ppoottiioonn  ddoo  ttoo  mmee??",
+        "icequeen",
+        "server4",
+        3,
+        2,
+        {
+            "name": "icequeen",
+            "server": "server4",
+            "level": 3,
+            "rank": 2,
+            "id": "icequeen#server4",
+        },
+    ),
+    (
+        "shadowmaster",
+        "server5",
+        4,
+        3,
+        {
+            "name": "shadowmaster",
+            "server": "server5",
+            "level": 4,
+            "rank": 3,
+            "id": "shadowmaster#server5",
+        },
+    ),
+    (
+        "silentslasher",
+        "server6",
+        5,
+        4,
+        {
+            "name": "silentslasher",
+            "server": "server6",
+            "level": 5,
+            "rank": 4,
+            "id": "silentslasher#server6",
+        },
+    ),
+    (
+        "hypershadow",
+        "server7",
+        3,
+        5,
+        {
+            "name": "hypershadow",
+            "server": "server7",
+            "level": 3,
+            "rank": 5,
+            "id": "hypershadow#server7",
+        },
     ),
 ]
 
 
-def test(input1, expected_output):
-    print("---------------------------------")
-    print(f"Input: {input1}")
-    print(f"Expecting: {expected_output}")
-    result = double_string(input1)
-    print(f"Actual: {result}")
-    if result == expected_output:
+def test(name, server, level, rank, expected_output):
+    try:
+        result = get_character_record(name, server, level, rank)
+        for key, value in expected_output.items():
+            print(f"Expected: {key}: {value}")
+            print(f"Actual:   {key}: {result[key]}\n")
+            if result[key] != value:
+                if type(result[key]) != type(value):
+                    print(f"'{key}' values are different types!")
+                    print(
+                        f"Expected '{key}' to be of type {type(value).__name__}, but got {type(result[key]).__name__}"
+                    )
+                print("Fail")
+                return False
+        if result != expected_output:
+            print("Result object is incorrect:")
+            for key, value in result.items():
+                print(f" * {key}: {value}")
+            print("Fail")
+            return False
         print("Pass")
         return True
-    print("Fail")
-    return False
+    except Exception as e:
+        print(f"Exception: {str(e)}")
+        print("Fail")
+        return False
 
 
 def main():
+    index = 0
     passed = 0
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
+        index += 1
+        print("---------------------------------")
+        print(f"Test Case #{index}\n")
         correct = test(*test_case)
         if correct:
             passed += 1
