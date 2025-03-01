@@ -1,32 +1,27 @@
 from main import *
 
 run_cases = [
-    (
-        "Did someone say Thunderfury, Blessed Blade of the Windseeker?",
-        (19, {"u", "o", "i", "e", "a"}),
-    ),
-    ("LF9M UBRS NEED ALL!!!!", (4, {"U", "E", "A"})),
+    ([1, 1, 1, 2, 2, 2, 3], [1, 2], [3]),
+    ([1, 2, 2, 3, 4, 3, 4, 5, 6, 7, 8, 9, 9, 10], [1, 2, 2, 3, 4, 5, 6, 7, 8], [9, 10]),
 ]
 
 submit_cases = run_cases + [
-    ("Leatherworker LFW Have all end game recipes!", (14, {"e", "i", "o", "a"})),
-    ("", (0, set())),
-    (
-        "Can anyone spare 1g so I can train my new spells?",
-        (13, {"o", "I", "i", "e", "a"}),
-    ),
-    ("no", (1, {"o"})),
-    ("mages need a nerf", (6, {"e", "a"})),
-    ("wtb port to Roshar", (4, {"o", "a"})),
+    ([], [], []),
+    ([1, 1, 1], [], [1]),
+    ([1, 2, 3, 4, 5], [1, 2, 3, 4, 5], []),
+    ([1, 1, 2, 2, 3, 3], [1, 2, 3], []),
+    ([1, 2, 3, 4, 5], [1, 2, 3], [4, 5]),
+    ([1, 2, 3, 4, 5], [1, 3, 5], [2, 4]),
 ]
 
 
-def test(input1, expected_output):
+def test(input1, input2, expected_output):
     print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * Text: {input1}")
+    print(f"Inputs: first_ids = {input1}, second_ids = {input2}")
     print(f"Expecting: {expected_output}")
-    result = count_vowels(input1)
+    result = find_missing_ids(input1, input2)
+    if isinstance(result, list):
+        result = sorted(result)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
