@@ -1,41 +1,26 @@
 """
-Dictionaries
-Dictionaries in Python are used to store data values in key -> value pairs. Dictionaries are a great way to store groups of information.
-
-# use curly braces
-# add key-value pairs
-car = {
-  "brand": "Toyota",
-  "model": "Camry",
-  "year": 2019
-}
-
-Here the car variable is assigned to a dictionary {} containing the keys brand, model and year. The keys' corresponding values are Toyota, Camry and 2019.
+"Duplicate Keys
+Because dictionaries rely on unique keys, you can't have two of the same key in the same dictionary. If you try to use the same key twice, the first value will simply be overwritten.
 
 Assignment
-Complete the get_character_record function. It takes a character's name, server, level, and rank as individual inputs, and returns a dictionary with the following string keys:
+Another developer on our team has introduced a bug by specifying duplicate keys in the dictionary! Fix the bug.
 
-"name"
-"server"
-"level"
-"rank"
-"id"
-Create and return a dictionary with the keys above. Assign each of the four inputs to the matching key, ie: "name": name.
+The get_character_record function takes a character's name, server, level, and rank. It should return a dictionary with the following fields:
 
-Next, we can't have two characters named bloodwarrior123's on the same server! For the fifth key, id, create a unique value as follows:
-
-Concatenate the name and the server inputs with a # in the middle. For example, given:
-
-name = "bloodwarrior123"
-server = "server1"
-Then the id field would be set to bloodwarrior123#server1.
+name
+server
+level
+rank
+id
+Where the id is the name and the server concatenated together with a # in the middle for uniqueness. We can't have two bloodwarrior123's on the same server!
 """
+
 def get_character_record(name, server, level, rank):
     return {
         "name": name,
         "server": server,
         "level": level,
         "rank": rank,
-        "id": f"{name}#{server}"
+        "id": f"{name}#{server}",
     }
 

@@ -44,97 +44,78 @@ submit_cases = run_cases + [
         },
     ),
     (
-        "icequeen",
+        "kingofgames",
         "server4",
         3,
         2,
         {
-            "name": "icequeen",
+            "name": "kingofgames",
             "server": "server4",
             "level": 3,
             "rank": 2,
-            "id": "icequeen#server4",
+            "id": "kingofgames#server4",
         },
     ),
     (
-        "shadowmaster",
+        "godofwar",
         "server5",
+        1,
+        5,
+        {
+            "name": "godofwar",
+            "server": "server5",
+            "level": 1,
+            "rank": 5,
+            "id": "godofwar#server5",
+        },
+    ),
+    (
+        "pythonista",
+        "server6",
         4,
         3,
         {
-            "name": "shadowmaster",
-            "server": "server5",
+            "name": "pythonista",
+            "server": "server6",
             "level": 4,
             "rank": 3,
-            "id": "shadowmaster#server5",
+            "id": "pythonista#server6",
         },
     ),
     (
-        "silentslasher",
-        "server6",
-        5,
-        4,
-        {
-            "name": "silentslasher",
-            "server": "server6",
-            "level": 5,
-            "rank": 4,
-            "id": "silentslasher#server6",
-        },
-    ),
-    (
-        "hypershadow",
+        "codemaster",
         "server7",
         3,
-        5,
+        1,
         {
-            "name": "hypershadow",
+            "name": "codemaster",
             "server": "server7",
             "level": 3,
-            "rank": 5,
-            "id": "hypershadow#server7",
+            "rank": 1,
+            "id": "codemaster#server7",
         },
     ),
 ]
 
 
-def test(name, server, level, rank, expected_output):
-    try:
-        result = get_character_record(name, server, level, rank)
-        for key, value in expected_output.items():
-            print(f"Expected: {key}: {value}")
-            print(f"Actual:   {key}: {result[key]}\n")
-            if result[key] != value:
-                if type(result[key]) != type(value):
-                    print(f"'{key}' values are different types!")
-                    print(
-                        f"Expected '{key}' to be of type {type(value).__name__}, but got {type(result[key]).__name__}"
-                    )
-                print("Fail")
-                return False
-        if result != expected_output:
-            print("Result object is incorrect:")
-            for key, value in result.items():
-                print(f" * {key}: {value}")
-            print("Fail")
-            return False
+def test(input1, input2, input3, input4, expected_output):
+    print("---------------------------------")
+    print(f"Inputs: {input1}, {input2}, {input3}, {input4}")
+    print(f"Expecting: {expected_output}")
+    result = get_character_record(input1, input2, input3, input4)
+    print(f"Actual: {result}")
+    if result == expected_output:
         print("Pass")
         return True
-    except Exception as e:
-        print(f"Exception: {str(e)}")
-        print("Fail")
-        return False
+    print("Fail")
+    return False
 
 
 def main():
-    index = 0
     passed = 0
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
-        index += 1
-        print("---------------------------------")
-        print(f"Test Case #{index}\n")
         correct = test(*test_case)
         if correct:
             passed += 1
