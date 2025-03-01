@@ -1,53 +1,29 @@
 """
-Iterating Over a Dictionary in Python
-We can iterate over a dictionary's keys using the same no-index syntax we used to iterate over the values in a list. With access to the dictionary's keys, we also have access to their corresponding values.
+Quest Status
+Fantasy Quest needs a way to check the status of an individual character's quest status. The game stores each character's progress in a nested data structure, and your job is to fetch the status of a particular quest.
 
-fruit_sizes = {
-    "apple": "small",
-    "banana": "large",
-    "grape": "tiny"
-}
-
-for name in fruit_sizes:
-    size = fruit_sizes[name]
-    print(f"name: {name}, size: {size}")
-
-# name: apple, size: small
-# name: banana, size: large
-# name: grape, size: tiny
-
-Note: we could have just as easily set the name variable to key or simply k.
-
-Assignment
-We need to display on our player's screens what the most common enemy in a given area of the game map is.
-
-Complete the get_most_common_enemy function by iterating over all enemies in the dictionary and returning only the name of the enemy with the highest count.
-
-If there are no enemies, return a None value. If there are multiple enemies with the same highest count, return the first one found.
-
-enemies_dict is a dictionary of name -> count. Example:
+Here's the structure of a progress dictionary:
 
 {
-    "jackal": 1,
-    "kobold": 2,
-    "soldier": 3,
-    "gremlin": 5
+    "entity": {
+        "character": {
+            "name": "Kaladin",
+            "quests": {
+                "bridge_run": {
+                    "status": "In Progress",
+                },
+                "talk_to_syl": {
+                    "status": "Completed",
+                },
+            },
+        }
+    }
 }
 
-Tip: Negative Infinity
-When you're trying to find a "max" value, it helps to keep track of the "max so far" in a variable and to start that variable at the lowest possible number, negative infinity.
-
-max_so_far = float("-inf")
-
-You'll also want to keep track of the enemy name associated with the maximum count. I would set the default for that variable to None.
+Assignment
+Complete the get_quest_status function. It accepts a progress dictionary and returns the character's status in the "bridge_run" quest. Chain the keys to access the nested data.
 """
 
-def get_most_common_enemy(enemies_dict):
-    max = float("-inf")
-    name = None
+def get_quest_status(progress):
+    return progress["entity"]["character"]["quests"]["bridge_run"]["status"]
 
-    for k,v in enemies_dict.items():
-        if v > max:
-            max = v
-            name = k
-    return name

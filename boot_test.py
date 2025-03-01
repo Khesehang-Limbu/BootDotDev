@@ -1,29 +1,109 @@
 from main import *
 
 run_cases = [
-    ({"jackal": 4, "kobold": 3, "soldier": 10, "gremlin": 5}, "soldier"),
-    ({"jackal": 1, "kobold": 3, "soldier": 2, "gremlin": 5}, "gremlin"),
+    (
+        {
+            "entity": {
+                "character": {
+                    "name": "Sir Galahad",
+                    "quests": {
+                        "bridge_run": {
+                            "status": "In Progress",
+                        },
+                        "talk_to_syl": {
+                            "status": "Completed",
+                        },
+                    },
+                }
+            }
+        },
+        "In Progress",
+    ),
+    (
+        {
+            "entity": {
+                "character": {
+                    "name": "Lady Gwen",
+                    "quests": {
+                        "bridge_run": {
+                            "status": "Completed",
+                        },
+                        "talk_to_syl": {
+                            "status": "In Progress",
+                        },
+                    },
+                }
+            }
+        },
+        "Completed",
+    ),
 ]
 
 submit_cases = run_cases + [
-    ({"jackal": 2, "gremlin": 7}, "gremlin"),
-    ({"jackal": 3}, "jackal"),
-    ({}, None),
-    ({"kobold": 5, "soldier": 5, "gremlin": 5, "dragon": 5}, "kobold"),
-    ({"jackal": 5, "kobold": 3, "soldier": 10, "gremlin": 5, "dragon": 20}, "dragon"),
-    ({"jackal": 5, "kobold": 3, "soldier": 2, "gremlin": 10, "dragon": 1}, "gremlin"),
+    (
+        {
+            "entity": {
+                "character": {
+                    "name": "Archer Finn",
+                    "quests": {
+                        "bridge_run": {
+                            "status": "Not Started",
+                        },
+                        "talk_to_syl": {
+                            "status": "Completed",
+                        },
+                    },
+                }
+            }
+        },
+        "Not Started",
+    ),
+    (
+        {
+            "entity": {
+                "character": {
+                    "name": "Mage Elara",
+                    "quests": {
+                        "bridge_run": {
+                            "status": "Failed",
+                        },
+                        "talk_to_syl": {
+                            "status": "Completed",
+                        },
+                    },
+                }
+            }
+        },
+        "Failed",
+    ),
+    (
+        {
+            "entity": {
+                "character": {
+                    "name": "Rogue Talon",
+                    "quests": {
+                        "bridge_run": {
+                            "status": "Completed",
+                        },
+                        "talk_to_syl": {
+                            "status": "Not Started",
+                        },
+                    },
+                }
+            }
+        },
+        "Completed",
+    ),
 ]
 
 
 def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {input1}")
+    print(f"Inputs:")
+    print(f" * Progress Dictionary: {input1}")
     print(f"Expecting: {expected_output}")
-    result = get_most_common_enemy(input1)
-    if result == "None":
-        print('Actual: "None"')
-    else:
-        print(f"Actual: {result}")
+    result = get_quest_status(input1)
+    print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
         return True
