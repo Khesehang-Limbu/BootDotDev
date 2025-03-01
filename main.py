@@ -1,32 +1,53 @@
 """
-""Counting Practice
-Checking for Existence
-If you're unsure whether or not a key exists in a dictionary, use the in keyword.
+Iterating Over a Dictionary in Python
+We can iterate over a dictionary's keys using the same no-index syntax we used to iterate over the values in a list. With access to the dictionary's keys, we also have access to their corresponding values.
 
-cars = {
-    "ford": "f150",
-    "toyota": "camry"
+fruit_sizes = {
+    "apple": "small",
+    "banana": "large",
+    "grape": "tiny"
 }
 
-print("ford" in cars)
-# Prints: True
+for name in fruit_sizes:
+    size = fruit_sizes[name]
+    print(f"name: {name}, size: {size}")
 
-print("gmc" in cars)
-# Prints: False
+# name: apple, size: small
+# name: banana, size: large
+# name: grape, size: tiny
+
+Note: we could have just as easily set the name variable to key or simply k.
 
 Assignment
-We need to be able to report to our players how many enemies are in their immediate vicinity - but they want the count of each enemy by its kind.
+We need to display on our player's screens what the most common enemy in a given area of the game map is.
 
-If you run the code, it will result in a KeyError.
+Complete the get_most_common_enemy function by iterating over all enemies in the dictionary and returning only the name of the enemy with the highest count.
 
-Fix the count_enemies function. It takes a list of enemy_names as input. It should return a dictionary where the keys are all the enemy names from the list, and the values are the counts of how many times each enemy appeared in the list.
+If there are no enemies, return a None value. If there are multiple enemies with the same highest count, return the first one found.
+
+enemies_dict is a dictionary of name -> count. Example:
+
+{
+    "jackal": 1,
+    "kobold": 2,
+    "soldier": 3,
+    "gremlin": 5
+}
+
+Tip: Negative Infinity
+When you're trying to find a "max" value, it helps to keep track of the "max so far" in a variable and to start that variable at the lowest possible number, negative infinity.
+
+max_so_far = float("-inf")
+
+You'll also want to keep track of the enemy name associated with the maximum count. I would set the default for that variable to None.
 """
 
-def count_enemies(enemy_names):
-    enemies_dict = {}
-    for enemy_name in enemy_names:
-        if enemy_name in enemies_dict.keys():
-            enemies_dict[enemy_name] = enemies_dict[enemy_name] + 1
-        else:
-            enemies_dict[enemy_name] = 1
-    return enemies_dict
+def get_most_common_enemy(enemies_dict):
+    max = float("-inf")
+    name = None
+
+    for k,v in enemies_dict.items():
+        if v > max:
+            max = v
+            name = k
+    return name

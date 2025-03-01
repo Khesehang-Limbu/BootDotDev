@@ -1,34 +1,17 @@
 from main import *
 
 run_cases = [
-    (["jackal", "kobold", "soldier"], {"jackal": 1, "kobold": 1, "soldier": 1}),
-    (["jackal", "kobold", "jackal"], {"jackal": 2, "kobold": 1}),
+    ({"jackal": 4, "kobold": 3, "soldier": 10, "gremlin": 5}, "soldier"),
+    ({"jackal": 1, "kobold": 3, "soldier": 2, "gremlin": 5}, "gremlin"),
 ]
 
 submit_cases = run_cases + [
-    ([], {}),
-    (["jackal"], {"jackal": 1}),
-    (
-        [
-            "jackal",
-            "kobold",
-            "jackal",
-            "kobold",
-            "soldier",
-            "kobold",
-            "soldier",
-            "soldier",
-            "jackal",
-            "jackal",
-            "gremlin",
-            "jackal",
-            "jackal",
-        ],
-        {"jackal": 6, "kobold": 3, "soldier": 3, "gremlin": 1},
-    ),
-    (["jackal", "kobold", "gremlin"], {"jackal": 1, "kobold": 1, "gremlin": 1}),
-    (["jackal", "jackal", "jackal"], {"jackal": 3}),
-    (["gremlin", "gremlin", "gremlin"], {"gremlin": 3}),
+    ({"jackal": 2, "gremlin": 7}, "gremlin"),
+    ({"jackal": 3}, "jackal"),
+    ({}, None),
+    ({"kobold": 5, "soldier": 5, "gremlin": 5, "dragon": 5}, "kobold"),
+    ({"jackal": 5, "kobold": 3, "soldier": 10, "gremlin": 5, "dragon": 20}, "dragon"),
+    ({"jackal": 5, "kobold": 3, "soldier": 2, "gremlin": 10, "dragon": 1}, "gremlin"),
 ]
 
 
@@ -36,8 +19,11 @@ def test(input1, expected_output):
     print("---------------------------------")
     print(f"Inputs: {input1}")
     print(f"Expecting: {expected_output}")
-    result = count_enemies(input1)
-    print(f"Actual: {result}")
+    result = get_most_common_enemy(input1)
+    if result == "None":
+        print('Actual: "None"')
+    else:
+        print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
         return True
