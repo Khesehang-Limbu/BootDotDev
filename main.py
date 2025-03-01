@@ -1,78 +1,63 @@
 """
-Vendor
-Fantasy Quest players want a way to track what items they purchased from the vendor, how much it cost, and what they still need to purchase from their tracked items list.
+Sets
+Sets are like Lists, but they are unordered and they guarantee uniqueness. Only ONE of each value can be in a set.
+
+fruits = {"apple", "banana", "grape"}
+print(type(fruits))
+# Prints: <class 'set'>
+
+print(fruits)
+# Prints: {'banana', 'grape', 'apple'}
+
+Add Values
+fruits = {"apple", "banana", "grape"}
+fruits.add("pear")
+print(fruits)
+# Prints: {'banana', 'grape', 'pear', 'apple'}
+
+Note: No error will be raised if you add an item already in the set.
+
+Empty Set
+Because the empty bracket {} syntax creates an empty dictionary, to create an empty set, you need to use the set() function.
+
+fruits = set()
+fruits.add("pear")
+print(fruits)
+# Prints: {'pear'}
+
+Iterate Over Values in a Set (Order Is Not Guaranteed)
+fruits = {"apple", "banana", "grape"}
+for fruit in fruits:
+    print(fruit)
+    # Prints:
+    # banana
+    # grape
+    # apple
 
 Assignment
-Complete the calculate_total function.
+Complete the remove_duplicates function. It should take a list of spells that a player has learned and return a new List where there is at most one of each title. You can accomplish this in at least two ways:
 
-Inputs
-items_purchased: A list of the names of items purchased. This is a list of strings.
-pinned_list: A list of the names of items the player has 'pinned' and wanted to purchase. This is also a list of strings.
-Outputs
-The function should return 3 values in this order:
+Iteration:
 
-unpurchased_items: A list of all the item names in pinned_list that weren't found in items_purchased, in the same order that they originally appeared in the pinned_list.
-receipt: A dictionary containing all the items the player purchased, even stuff not on their pinned_list. The keys are the item names and the values are their respective prices from the item_prices dictionary.
-total_cost: The total cost of all the items that were purchased.
-Return each value separately, not in a singular list. For example:
+Create a set to track spells that have been seen
+Create a list to store the unique spells
+Iterate over the list
+If the spell is not in the set, add it to the set and the list
+Return the list
+Set conversion:
 
-return value1, value2, value3
+Convert the list to a set
+Convert the set back to a list and return it.
+It makes no sense to learn a spell twice! Once it's learned, it's learned forever.
 """
 
-def calculate_total(items_purchased, pinned_list):
-    item_prices = {
-        "health_potion": 10.00,
-        "mana_potion": 12.00,
-        "gold_dust": 5.00,
-        "dwarven_ale": 8.00,
-        "enchanted_scroll": 25.00,
-        "ice_cold_milk": 50.00,
-        "herbs": 7.00,
-        "crystal_shard": 20.00,
-        "magic_ring": 100.00,
-        "mystic_amulet": 150.00,
-    }
-
-    # Don't touch above this line
-    receipt = {}
-    total = 0
-    unpurchased_items = []
-
-    for item in items_purchased:
-        receipt[item] = item_prices[item]
-        total += item_prices[item]
-
-    for item in pinned_list:
-        if not item in items_purchased:
-            unpurchased_items.append(item)
-
-    return unpurchased_items, receipt, total
-
-
-#print(
-#    calculate_total(
-#            [
-#                "health_potion",
-#                "mana_potion",
-#                "gold_dust",
-#                "herbs",
-#                "crystal_shard",
-#                "dwarven_ale",
-#            ],
-#            [
-#                "health_potion",
-#                "mana_potion",
-#                "ice_cold_milk",
-#                "gold_dust",
-#                "herbs",
-#                "crystal_shard",
-#                "magic_ring",
-#                "dwarven_ale",
-#                "mystic_amulet",
-#            ],
-#
-#    )
-#)
-
-
+def remove_duplicates(spells):
+    # Method One
+#    unique_spells = []
+#    for spell in spells:
+#        if not spell in unique_spells:
+#            unique_spells.append(spell)
+#    return unique_spells
+    # Method Two
+    return list(set(spells))
 

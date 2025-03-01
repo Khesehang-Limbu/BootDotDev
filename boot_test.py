@@ -2,112 +2,49 @@ from main import *
 
 run_cases = [
     (
-        (
-            [
-                "health_potion",
-                "mana_potion",
-                "gold_dust",
-                "herbs",
-                "crystal_shard",
-                "dwarven_ale",
-            ],
-            [
-                "health_potion",
-                "mana_potion",
-                "ice_cold_milk",
-                "gold_dust",
-                "herbs",
-                "crystal_shard",
-                "magic_ring",
-                "dwarven_ale",
-                "mystic_amulet",
-            ],
-        ),
-        (
-            ["ice_cold_milk", "magic_ring", "mystic_amulet"],
-            {
-                "health_potion": 10.00,
-                "mana_potion": 12.00,
-                "gold_dust": 5.00,
-                "herbs": 7.00,
-                "crystal_shard": 20.00,
-                "dwarven_ale": 8.00,
-            },
-            62.00,
-        ),
-    ),
+        [
+            "fireball",
+            "eldritch blast",
+            "fireball",
+            "eldritch blast",
+            "chill touch",
+            "eldritch blast",
+            "chill touch",
+            "chill touch",
+            "fireball",
+            "fireball",
+            "shocking grasp",
+            "fireball",
+            "fireball",
+        ],
+        ["chill touch", "eldritch blast", "fireball", "shocking grasp"],
+    )
 ]
 
 submit_cases = run_cases + [
+    (["fireball", "fireball", "fireball"], ["fireball"]),
     (
-        (
-            ["health_potion", "gold_dust", "herbs", "crystal_shard"],
-            [
-                "health_potion",
-                "mana_potion",
-                "gold_dust",
-                "ice_cold_milk",
-                "herbs",
-                "magic_ring",
-                "crystal_shard",
-                "mystic_amulet",
-            ],
-        ),
-        (
-            ["mana_potion", "ice_cold_milk", "magic_ring", "mystic_amulet"],
-            {
-                "health_potion": 10.00,
-                "gold_dust": 5.00,
-                "herbs": 7.00,
-                "crystal_shard": 20.00,
-            },
-            42.00,
-        ),
+        ["fireball", "eldritch blast", "chill touch", "shocking grasp"],
+        ["chill touch", "eldritch blast", "fireball", "shocking grasp"],
     ),
-    (
-        (
-            [
-                "health_potion",
-                "mana_potion",
-                "gold_dust",
-                "ice_cold_milk",
-                "herbs",
-                "magic_ring",
-                "crystal_shard",
-                "mystic_amulet",
-            ],
-            ["health_potion", "gold_dust", "herbs", "crystal_shard"],
-        ),
-        (
-            [],
-            {
-                "health_potion": 10.00,
-                "mana_potion": 12.00,
-                "gold_dust": 5.00,
-                "ice_cold_milk": 50.00,
-                "herbs": 7.00,
-                "magic_ring": 100.00,
-                "crystal_shard": 20.00,
-                "mystic_amulet": 150.00,
-            },
-            354.00,
-        ),
-    ),
+    (["chill touch", "chill touch", "chill touch"], ["chill touch"]),
+    (["shocking grasp", "shocking grasp", "shocking grasp"], ["shocking grasp"]),
+    ([], []),
+    (["eldritch blast", "eldritch blast", "eldritch blast"], ["eldritch blast"]),
 ]
 
 
-def test(input1, expected_output):
+def test(input, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {input1}")
+    print(f"Inputs:")
+    print(f" * spells: {input}")
     print(f"Expecting: {expected_output}")
-    try:
-        unpurchased_items, receipt, total_cost = calculate_total(*input1)
-    except Exception as e:
-        print(f"Error: {e}")
-        print("Fail")
+    result = remove_duplicates(input)
+    print(f"   Actual: {result}")
+    if not isinstance(result, list):
+        print("Fail: result is not a list")
         return False
-    result = (unpurchased_items, receipt, total_cost)
-    print(f"Actual: {result}")
+    result.sort()
     if result == expected_output:
         print("Pass")
         return True
