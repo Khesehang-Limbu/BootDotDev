@@ -2,66 +2,115 @@ from main import *
 
 run_cases = [
     (
-        {"first_quarter": 24, "second_quarter": 31},
-        {"third_quarter": 29, "fourth_quarter": 40},
-        124,
+        (
+            [
+                "health_potion",
+                "mana_potion",
+                "gold_dust",
+                "herbs",
+                "crystal_shard",
+                "dwarven_ale",
+            ],
+            [
+                "health_potion",
+                "mana_potion",
+                "ice_cold_milk",
+                "gold_dust",
+                "herbs",
+                "crystal_shard",
+                "magic_ring",
+                "dwarven_ale",
+                "mystic_amulet",
+            ],
+        ),
+        (
+            ["ice_cold_milk", "magic_ring", "mystic_amulet"],
+            {
+                "health_potion": 10.00,
+                "mana_potion": 12.00,
+                "gold_dust": 5.00,
+                "herbs": 7.00,
+                "crystal_shard": 20.00,
+                "dwarven_ale": 8.00,
+            },
+            62.00,
+        ),
     ),
-    (
-        {"first_quarter": 12, "second_quarter": 2},
-        {"third_quarter": 32, "fourth_quarter": 87},
-        133,
-    ),
-    ({}, {}, 0),
 ]
 
 submit_cases = run_cases + [
     (
-        {"first_quarter": 25, "second_quarter": 2},
-        {"third_quarter": 31, "fourth_quarter": 0},
-        58,
+        (
+            ["health_potion", "gold_dust", "herbs", "crystal_shard"],
+            [
+                "health_potion",
+                "mana_potion",
+                "gold_dust",
+                "ice_cold_milk",
+                "herbs",
+                "magic_ring",
+                "crystal_shard",
+                "mystic_amulet",
+            ],
+        ),
+        (
+            ["mana_potion", "ice_cold_milk", "magic_ring", "mystic_amulet"],
+            {
+                "health_potion": 10.00,
+                "gold_dust": 5.00,
+                "herbs": 7.00,
+                "crystal_shard": 20.00,
+            },
+            42.00,
+        ),
     ),
     (
-        {"first_quarter": 25, "second_quarter": 2},
-        {"second_quarter": 3, "third_quarter": 31, "fourth_quarter": 0},
-        59,
-    ),
-    (
-        {"first_quarter": 10, "second_quarter": 20},
-        {"third_quarter": 30, "fourth_quarter": 40},
-        100,
-    ),
-    (
-        {"first_quarter": 15, "second_quarter": 25},
-        {"third_quarter": 0, "fourth_quarter": 0},
-        40,
-    ),
-    (
-        {"first_quarter": 0, "second_quarter": 0},
-        {"third_quarter": 0, "fourth_quarter": 0},
-        0,
-    ),
-    (
-        {"first_quarter": 100, "second_quarter": 100},
-        {"third_quarter": 100, "fourth_quarter": 100},
-        400,
+        (
+            [
+                "health_potion",
+                "mana_potion",
+                "gold_dust",
+                "ice_cold_milk",
+                "herbs",
+                "magic_ring",
+                "crystal_shard",
+                "mystic_amulet",
+            ],
+            ["health_potion", "gold_dust", "herbs", "crystal_shard"],
+        ),
+        (
+            [],
+            {
+                "health_potion": 10.00,
+                "mana_potion": 12.00,
+                "gold_dust": 5.00,
+                "ice_cold_milk": 50.00,
+                "herbs": 7.00,
+                "magic_ring": 100.00,
+                "crystal_shard": 20.00,
+                "mystic_amulet": 150.00,
+            },
+            354.00,
+        ),
     ),
 ]
 
 
-def test(input1, input2, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * first_half: {input1}")
-    print(f" * second_half: {input2}")
+    print(f"Inputs: {input1}")
     print(f"Expecting: {expected_output}")
-    merged = merge(input1, input2)
-    result = total_score(merged)
+    try:
+        unpurchased_items, receipt, total_cost = calculate_total(*input1)
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Fail")
+        return False
+    result = (unpurchased_items, receipt, total_cost)
     print(f"Actual: {result}")
     if result == expected_output:
-        if len(merged) == 4 or expected_output == 0:
-            print("Pass")
-            return True
-        print("Dictionaries merged incorrectly")
+        print("Pass")
+        return True
     print("Fail")
     return False
 
