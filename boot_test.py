@@ -1,28 +1,27 @@
 from main import *
 
 run_cases = [
-    ([1, 1, 1, 2, 2, 2, 3], [1, 2], [3]),
-    ([1, 2, 2, 3, 4, 3, 4, 5, 6, 7, 8, 9, 9, 10], [1, 2, 2, 3, 4, 5, 6, 7, 8], [9, 10]),
+    (0, {"name": "Slayer", "level": 128}),
+    (1, {"name": "Dorgoth", "level": 300}),
+    (3, "index is too high"),
+    (-1, "negative ids not allowed"),
 ]
 
 submit_cases = run_cases + [
-    ([], [], []),
-    ([1, 1, 1], [], [1]),
-    ([1, 2, 3, 4, 5], [1, 2, 3, 4, 5], []),
-    ([1, 1, 2, 2, 3, 3], [1, 2, 3], []),
-    ([1, 2, 3, 4, 5], [1, 2, 3], [4, 5]),
-    ([1, 2, 3, 4, 5], [1, 3, 5], [2, 4]),
+    (2, {"name": "Saruman", "level": 4000}),
+    (10, "index is too high"),
+    (-5, "negative ids not allowed"),
 ]
 
 
-def test(input1, input2, expected_output):
+def test(input, expected_output):
     print("---------------------------------")
-    print(f"Inputs: first_ids = {input1}, second_ids = {input2}")
+    print(f"Inputs: {input}")
     print(f"Expecting: {expected_output}")
-    result = find_missing_ids(input1, input2)
-    if isinstance(result, list):
-        result = sorted(result)
+    result = process_player_record(input)
     print(f"Actual: {result}")
+    if isinstance(result, Exception):
+        result = f"{result}"
     if result == expected_output:
         print("Pass")
         return True
