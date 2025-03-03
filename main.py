@@ -1,18 +1,20 @@
 """
 
-List Division
-Write a function called divide_list() that takes a list and a number as input. The function returns a new list that contains all the elements of the original list except they have been divided by the second input.
+Join Strings
+Write a function called join_strings() that takes a list of strings and returns a single string. Concatenate the strings from the list end-to-end, in order, with a comma between them. Don't use the .join() string method.
 
-divided_list = divide_list([6, 8, 10], 2)
-print(divided_list) # [3.0, 4.0, 5.0]
-
-Make sure you're appending the raw float values. Don't round or cast the numbers to integers.
+Example
+string_list = ["hello", "my", "friend"]
+joined_string = join_strings(string_list)
+print(joined_string) # "hello,my,friend"
 
 """
 
-def divide_list(nums, divisor):
-    divided_list = []
-    for num in nums:
-        divided_list.append(num/divisor)
-    return divided_list
-
+def join_strings(strings):
+    new_string = ""
+    for i in range(len(strings)):
+        if i != len(strings) - 1:
+            new_string += strings[i] + ","
+        else:
+            new_string += strings[i]
+    return new_string

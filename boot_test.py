@@ -1,25 +1,23 @@
 from main import *
 
 run_cases = [
-    ([6, 8, 10], 2, [3.0, 4.0, 5.0]),
-    ([1, 2, 3, 4], 1, [1.0, 2.0, 3.0, 4.0]),
+    (["hello", "world"], "hello,world"),
+    (["this", "list", "is", "so", "important"], "this,list,is,so,important"),
 ]
 
 submit_cases = run_cases + [
-    ([15, 30, 45], 3, [5.0, 10.0, 15.0]),
-    ([0], 1, [0.0]),
-    ([27, 54, 81], 9, [3.0, 6.0, 9.0]),
-    ([100, 200, 300, 400], 10, [10.0, 20.0, 30.0, 40.0]),
+    ([], ""),
+    (["ford", "ferrari", "toyota"], "ford,ferrari,toyota"),
+    (["zuck", "satya", "cook", "bezos"], "zuck,satya,cook,bezos"),
+    (["dota", "sc2", "overwatch", "diablo", "mtg"], "dota,sc2,overwatch,diablo,mtg"),
 ]
 
 
-def test(input1, input2, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * List of numbers: {input1}")
-    print(f" * Divisor: {input2}")
+    print(f"Input: {input1}")
     print(f"Expecting: {expected_output}")
-    result = divide_list(input1, input2)
+    result = join_strings(input1)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
