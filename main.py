@@ -1,22 +1,20 @@
 """
-Assignment
-Write a function called find_min() that finds the smallest number in a list
+Remove Non-Integers
+Complete the remove_nonints() function that takes a list and returns a new list with all the non-integer types removed.
 
-find_min([1, 3, -1, 2]) -> -1
+remove_nonints(["1", 1, "3", "400", 4, 500])
+# Remaining list after removing nonints = [1, 4, 500]
 
-find_min([18, 3, 7, 2]) -> 2
+You can check a variable's type using the type() function.
 
-Positive Infinity
-Since you're trying to keep track of the smallest number, start with a really big number. Python has a built-in constant that represents positive infinity.
+if type(variable) == int:
 
-min = float("inf")
-
+Do not change the input nums list, return a new list with only the integers.
 """
 
-def find_min(nums):
-    min = float("inf")
+def remove_nonints(nums):
+    ints = []
     for num in nums:
-        if num < min:
-            min = num
-    return min
-
+        if type(num) == int:
+            ints.append(num)
+    return ints

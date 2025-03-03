@@ -1,23 +1,25 @@
 from main import *
 
 run_cases = [
-    ([-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7], -4),
-    ([4, 3, 2, 1, 18, 1, 2, 3, 4, 5, 6, 7], 1),
+    (["200", 300, 2, False, "otherstring", 6], [300, 2, 6]),
+    ([True, 300, 2, False, "otherstring", 76, 86, "morestrings"], [300, 2, 76, 86]),
 ]
 
 submit_cases = run_cases + [
-    ([43, 234, 65465, 234, 2343, 443, 2123, 8768], 43),
-    ([0], 0),
-    ([-1, -2, -3], -3),
-    ([100, 200, 300], 100),
+    ([300, 300, 2, False, "otherstring", 6, {}, 16], [300, 300, 2, 6, 16]),
+    (["200", 300, 2, False, "something", 7, "something else"], [300, 2, 7]),
+    (["string", True, {}, []], []),
+    ([], []),
+    ([123, 456, 789], [123, 456, 789]),
+    (["123", "456", "789"], []),
 ]
 
 
-def test(input1, expected_output):
+def test(input, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {input1}")
+    print(f"Inputs:\n * nums: {input}")
     print(f"Expecting: {expected_output}")
-    result = find_min(input1)
+    result = remove_nonints(input)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
