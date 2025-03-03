@@ -1,25 +1,25 @@
 from main import *
 
 run_cases = [
-    (["200", 300, 2, False, "otherstring", 6], [300, 2, 6]),
-    ([True, 300, 2, False, "otherstring", 76, 86, "morestrings"], [300, 2, 76, 86]),
+    (0, 1),
+    (4, 24),
 ]
 
 submit_cases = run_cases + [
-    ([300, 300, 2, False, "otherstring", 6, {}, 16], [300, 300, 2, 6, 16]),
-    (["200", 300, 2, False, "something", 7, "something else"], [300, 2, 7]),
-    (["string", True, {}, []], []),
-    ([], []),
-    ([123, 456, 789], [123, 456, 789]),
-    (["123", "456", "789"], []),
+    (1, 1),
+    (5, 120),
+    (7, 5040),
+    (9, 362880),
+    (13, 6227020800),
+    (15, 1307674368000),
 ]
 
 
 def test(input, expected_output):
     print("---------------------------------")
-    print(f"Inputs:\n * nums: {input}")
+    print(f"Inputs: {input}")
     print(f"Expecting: {expected_output}")
-    result = remove_nonints(input)
+    result = factorial(input)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")

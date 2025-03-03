@@ -1,20 +1,22 @@
 """
-Remove Non-Integers
-Complete the remove_nonints() function that takes a list and returns a new list with all the non-integer types removed.
+Factorial
+Complete the factorial() function. It should calculate the factorial of a number. A factorial of a number is the product of all positive integers less than or equal to that number.
 
-remove_nonints(["1", 1, "3", "400", 4, 500])
-# Remaining list after removing nonints = [1, 4, 500]
+For example:
 
-You can check a variable's type using the type() function.
+4! = 4 * 3 * 2 * 1 = 24
 
-if type(variable) == int:
+Note: In mathematics, the ! symbol denotes a factorial, but is not used in Python.
 
-Do not change the input nums list, return a new list with only the integers.
+Tip: a Special Case for Zero
+The value of 0! is 1. This keeps factorials consistent with the convention for an empty product.
 """
 
-def remove_nonints(nums):
-    ints = []
-    for num in nums:
-        if type(num) == int:
-            ints.append(num)
-    return ints
+def factorial(num):
+    factorial = 1
+    if num == 0:
+        return 1
+
+    for i in range(1, num +1):
+        factorial *= i
+    return factorial
