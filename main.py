@@ -1,32 +1,18 @@
 """
-FizzBuzz
-Fizzbuzz is a commonly overused little toy-program that comes up in entry-level interviews. This is a little test-able spin on it.
 
-Complete the fizzbuzz function that loops over all the numbers from start to end (excluding the end value) and adds them to a list it returns. If the number is a multiple of 3, instead of appending the number, append "fizz". If the number is a multiple of 5, instead append "buzz". If it is a multiple of 3 and 5 then instead append "fizzbuzz".
+List Division
+Write a function called divide_list() that takes a list and a number as input. The function returns a new list that contains all the elements of the original list except they have been divided by the second input.
 
-For example, if start = 1 and end = 8, then the resulting list would contain:
+divided_list = divide_list([6, 8, 10], 2)
+print(divided_list) # [3.0, 4.0, 5.0]
 
-[
-    1,
-    2,
-    "fizz",
-    4,
-    "buzz",
-    "fizz",
-    7,
-]
+Make sure you're appending the raw float values. Don't round or cast the numbers to integers.
 
 """
 
-def fizzbuzz(start, end):
-    fizzbuzz_list = []
-    for i in range(start, end):
-        if i % 3 == 0 and i % 5 == 0:
-            fizzbuzz_list.append("fizzbuzz")
-        elif i % 3 == 0:
-            fizzbuzz_list.append("fizz")
-        elif i % 5 == 0:
-            fizzbuzz_list.append("buzz")
-        else:
-            fizzbuzz_list.append(i)
-    return fizzbuzz_list
+def divide_list(nums, divisor):
+    divided_list = []
+    for num in nums:
+        divided_list.append(num/divisor)
+    return divided_list
+
