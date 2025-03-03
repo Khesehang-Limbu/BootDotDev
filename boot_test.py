@@ -1,25 +1,25 @@
 from main import *
 
 run_cases = [
-    (0, 1),
-    (4, 24),
+    ([{"height": 4, "width": 5}], 20),
+    ([{"height": 4, "width": 5}, {"height": 4, "width": 9}], 56),
+    ([{"height": 4, "width": 5}, {"height": 18, "width": 5}], 110),
 ]
 
 submit_cases = run_cases + [
-    (1, 1),
-    (5, 120),
-    (7, 5040),
-    (9, 362880),
-    (13, 6227020800),
-    (15, 1307674368000),
+    ([{"height": 2, "width": 3}, {"height": 4, "width": 5}], 26),
+    ([{"height": 6, "width": 7}, {"height": 8, "width": 9}], 114),
+    ([{"height": 10, "width": 11}, {"height": 12, "width": 13}], 266),
+    ([{"height": 0, "width": 0}], 0),
+    ([], 0),
 ]
 
 
-def test(input, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {input}")
+    print(f"Inputs: {input1}")
     print(f"Expecting: {expected_output}")
-    result = factorial(input)
+    result = area_sum(input1)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")

@@ -1,22 +1,19 @@
 """
-Factorial
-Complete the factorial() function. It should calculate the factorial of a number. A factorial of a number is the product of all positive integers less than or equal to that number.
+Area Sum
+Complete the area_sum() function. It accepts a list of rectangles, where each rectangle is a dictionary that has the following structure:
 
-For example:
+{
+  "height": 5,
+  "width": 6
+}
 
-4! = 4 * 3 * 2 * 1 = 24
-
-Note: In mathematics, the ! symbol denotes a factorial, but is not used in Python.
-
-Tip: a Special Case for Zero
-The value of 0! is 1. This keeps factorials consistent with the convention for an empty product.
+The function will calculate the area of each rectangle, then sum them all up and return the result.
 """
 
-def factorial(num):
-    factorial = 1
-    if num == 0:
-        return 1
+def area_sum(rectangles):
+    sum = 0
+    for rectangle in rectangles:
+        area = rectangle["height"] * rectangle["width"]
+        sum += area
+    return sum
 
-    for i in range(1, num +1):
-        factorial *= i
-    return factorial
