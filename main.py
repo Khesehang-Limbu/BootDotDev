@@ -1,18 +1,22 @@
 """
-Challenges
-In this chapter we are going to practice applying the skills and concepts we learned while building Fantasy Quest.
+Assignment
+Write a function called find_min() that finds the smallest number in a list
 
-Number Sum
-Write a function called number_sum(n) that adds up all the numbers from 1 to n. For example:
+find_min([1, 3, -1, 2]) -> -1
 
-number_sum(5) -> 1+2+3+4+5 -> 15
+find_min([18, 3, 7, 2]) -> 2
 
-number_sum(3) -> 1+2+3 -> 6
+Positive Infinity
+Since you're trying to keep track of the smallest number, start with a really big number. Python has a built-in constant that represents positive infinity.
+
+min = float("inf")
+
 """
 
-def number_sum(n):
-    sum = 0
-    for i in range(1, n+1):
-        sum += i
+def find_min(nums):
+    min = float("inf")
+    for num in nums:
+        if num < min:
+            min = num
+    return min
 
-    return sum

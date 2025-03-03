@@ -1,17 +1,15 @@
 from main import *
 
 run_cases = [
-    (3, 6),
-    (5, 15),
+    ([-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7], -4),
+    ([4, 3, 2, 1, 18, 1, 2, 3, 4, 5, 6, 7], 1),
 ]
 
 submit_cases = run_cases + [
-    (1, 1),
-    (18, 171),
-    (0, 0),
-    (227, 25878),
-    (100, 5050),
-    (500, 125250),
+    ([43, 234, 65465, 234, 2343, 443, 2123, 8768], 43),
+    ([0], 0),
+    ([-1, -2, -3], -3),
+    ([100, 200, 300], 100),
 ]
 
 
@@ -19,7 +17,7 @@ def test(input1, expected_output):
     print("---------------------------------")
     print(f"Inputs: {input1}")
     print(f"Expecting: {expected_output}")
-    result = number_sum(input1)
+    result = find_min(input1)
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
