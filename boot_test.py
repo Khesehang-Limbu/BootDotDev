@@ -1,30 +1,187 @@
 from main import *
+from itertools import zip_longest
 
 run_cases = [
-    ([{"height": 4, "width": 5}], 20),
-    ([{"height": 4, "width": 5}, {"height": 4, "width": 9}], 56),
-    ([{"height": 4, "width": 5}, {"height": 18, "width": 5}], 110),
+    (
+        1,
+        16,
+        [
+            1,
+            2,
+            "fizz",
+            4,
+            "buzz",
+            "fizz",
+            7,
+            8,
+            "fizz",
+            "buzz",
+            11,
+            "fizz",
+            13,
+            14,
+            "fizzbuzz",
+        ],
+    ),
+    (
+        5,
+        31,
+        [
+            "buzz",
+            "fizz",
+            7,
+            8,
+            "fizz",
+            "buzz",
+            11,
+            "fizz",
+            13,
+            14,
+            "fizzbuzz",
+            16,
+            17,
+            "fizz",
+            19,
+            "buzz",
+            "fizz",
+            22,
+            23,
+            "fizz",
+            "buzz",
+            26,
+            "fizz",
+            28,
+            29,
+            "fizzbuzz",
+        ],
+    ),
 ]
 
 submit_cases = run_cases + [
-    ([{"height": 2, "width": 3}, {"height": 4, "width": 5}], 26),
-    ([{"height": 6, "width": 7}, {"height": 8, "width": 9}], 114),
-    ([{"height": 10, "width": 11}, {"height": 12, "width": 13}], 266),
-    ([{"height": 0, "width": 0}], 0),
-    ([], 0),
+    (0, 0, []),
+    (
+        1,
+        100,
+        [
+            1,
+            2,
+            "fizz",
+            4,
+            "buzz",
+            "fizz",
+            7,
+            8,
+            "fizz",
+            "buzz",
+            11,
+            "fizz",
+            13,
+            14,
+            "fizzbuzz",
+            16,
+            17,
+            "fizz",
+            19,
+            "buzz",
+            "fizz",
+            22,
+            23,
+            "fizz",
+            "buzz",
+            26,
+            "fizz",
+            28,
+            29,
+            "fizzbuzz",
+            31,
+            32,
+            "fizz",
+            34,
+            "buzz",
+            "fizz",
+            37,
+            38,
+            "fizz",
+            "buzz",
+            41,
+            "fizz",
+            43,
+            44,
+            "fizzbuzz",
+            46,
+            47,
+            "fizz",
+            49,
+            "buzz",
+            "fizz",
+            52,
+            53,
+            "fizz",
+            "buzz",
+            56,
+            "fizz",
+            58,
+            59,
+            "fizzbuzz",
+            61,
+            62,
+            "fizz",
+            64,
+            "buzz",
+            "fizz",
+            67,
+            68,
+            "fizz",
+            "buzz",
+            71,
+            "fizz",
+            73,
+            74,
+            "fizzbuzz",
+            76,
+            77,
+            "fizz",
+            79,
+            "buzz",
+            "fizz",
+            82,
+            83,
+            "fizz",
+            "buzz",
+            86,
+            "fizz",
+            88,
+            89,
+            "fizzbuzz",
+            91,
+            92,
+            "fizz",
+            94,
+            "buzz",
+            "fizz",
+            97,
+            98,
+            "fizz",
+        ],
+    ),
 ]
 
 
-def test(input1, expected_output):
+def test(input1, input2, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {input1}")
-    print(f"Expecting: {expected_output}")
-    result = area_sum(input1)
-    print(f"Actual: {result}")
+    print(f"Start: {input1}")
+    print(f"  End: {input2}")
+    result = fizzbuzz(input1, input2)
+    for expected, actual in zip_longest(expected_output, result, fillvalue=""):
+        print(f"Expected: {expected}")
+        print(f"  Actual: {actual}")
     if result == expected_output:
         print("Pass")
         return True
     print("Fail")
+    if len(result) != len(expected_output):
+        print(f"Expected Output Length: {len(expected_output)}")
+        print(f"  Actual Output Length: {len(result)}")
     return False
 
 

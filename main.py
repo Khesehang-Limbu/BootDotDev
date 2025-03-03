@@ -1,19 +1,32 @@
 """
-Area Sum
-Complete the area_sum() function. It accepts a list of rectangles, where each rectangle is a dictionary that has the following structure:
+FizzBuzz
+Fizzbuzz is a commonly overused little toy-program that comes up in entry-level interviews. This is a little test-able spin on it.
 
-{
-  "height": 5,
-  "width": 6
-}
+Complete the fizzbuzz function that loops over all the numbers from start to end (excluding the end value) and adds them to a list it returns. If the number is a multiple of 3, instead of appending the number, append "fizz". If the number is a multiple of 5, instead append "buzz". If it is a multiple of 3 and 5 then instead append "fizzbuzz".
 
-The function will calculate the area of each rectangle, then sum them all up and return the result.
+For example, if start = 1 and end = 8, then the resulting list would contain:
+
+[
+    1,
+    2,
+    "fizz",
+    4,
+    "buzz",
+    "fizz",
+    7,
+]
+
 """
 
-def area_sum(rectangles):
-    sum = 0
-    for rectangle in rectangles:
-        area = rectangle["height"] * rectangle["width"]
-        sum += area
-    return sum
-
+def fizzbuzz(start, end):
+    fizzbuzz_list = []
+    for i in range(start, end):
+        if i % 3 == 0 and i % 5 == 0:
+            fizzbuzz_list.append("fizzbuzz")
+        elif i % 3 == 0:
+            fizzbuzz_list.append("fizz")
+        elif i % 5 == 0:
+            fizzbuzz_list.append("buzz")
+        else:
+            fizzbuzz_list.append(i)
+    return fizzbuzz_list
