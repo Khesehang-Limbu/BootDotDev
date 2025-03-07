@@ -1,40 +1,38 @@
 """
 
-Inheritance
-We've made it to the holy grail of object-oriented programming: inheritance. Non-OOP languages like Go and Rust allow for encapsulation and abstraction features as nearly every language does. Inheritance, on the other hand, tends to be unique to class-based languages like Python, Java, and Ruby.
+Inheritance Hierarchy
+There is no limit to how deeply we can nest an inheritance tree. For example, a Cat can inherit from an Animal that inherits from LivingThing. That said, be careful! New programmers often get carried away.
 
-What Is Inheritance?
-Inheritance allows one class, the "child" class, to inherit the properties and methods of another class, the "parent" class.
+You should never think to yourself:
 
-This powerful language feature helps us avoid writing a lot of the same code twice. It allows us to DRY (don't repeat yourself) up our code.
+"Well most wizards are elves... so I'll just have wizard inherit from elf"
 
-Syntax
-Here Cow is a "child" class that inherits from the "parent" class Animal:
+A good child class is a strict subset of its parent class.
 
-class Animal:
-    # parent "Animal" class
+An example of this with private properties. A child class cannot simply access a private property of its parent class. It has to use a getter. For example:
 
-class Cow(Animal):
-    # child class "Cow" inherits "Animal"
+class Wall:
+    def __init__(self, height):
+        self.__height = height
 
-The Cow class can reuse the Animal class's constructor with the super() method, super() allows the child class to call methods and constructors from its parent class, in this case, __init__():
+    def get_height(self):
+        return self.__height
 
-class Animal:
-    def __init__(self, num_legs):
-        self.num_legs = num_legs
+class Castle(Wall):
+    def __init__(self, height, towers):
+        super().__init__(height)
+        self.towers = towers
 
-class Cow(Animal):
-    def __init__(self, num_udders):
-        # call the parent constructor to give the cow some legs
-        super().__init__(4)
-
-        # set cow specific properties
-        self.num_udders = num_udders
+    def get_tower_height(self):
+        return self.get_height() * 2
 
 Assignment
-In Age of Dragons, all the archers are humans, but not all humans are necessarily archers. All humans have a name, but only archers have a __num_arrows property.
+Let's add a new game unit: Crossbowman. A crossbowman is always an archer, but not all archers are crossbowmen. Crossbowmen have several arrows, but they have an additional method: triple_shot().
 
-Complete the Archer class. It should inherit the Human class. In its constructor it should call its parent's constructor, then also set its unique __num_arrows property.
+Add a use_arrows(self, num) method to the Archer class. It should remove num arrows. If there aren't enough arrows to remove, it should raise a not enough arrows exception.
+The Crossbowman class's constructor should call its parent's constructor.
+The crossbowman's triple_shot method should use 3 arrows.
+The crossbowman's triple_shot method takes a target as a parameter and returns {} was shot by 3 crossbow bolts where {} is the name of the Human that was shot.
 
 """
 
@@ -57,3 +55,16 @@ class Archer(Human):
     def get_num_arrows(self):
         return self.__num_arrows
 
+    def use_arrows(self, num):
+        if self.get_num_arrows() < num:
+            raise Exception("not enough arrows")
+        self.__num_arrows -= num
+
+
+class Crossbowman(Archer):
+    def __init__(self, name, num_arrows):
+        super().__init__(name, num_arrows)
+
+    def triple_shot(self, target):
+        self.use_arrows(3)
+        return f"{target.get_name()} was shot by 3 crossbow bolts"
