@@ -1,44 +1,37 @@
 """
 
-Classes
-A class is a special type of value in an object-oriented programming language like Python. It's similar to a dictionary in that it usually stores other types inside itself.
+Methods
+After the last exercise, you might be wondering why classes are useful, they're like dictionaries... but worse!
 
-# Defines a new class called "Soldier"
+One thing that makes classes cool is that we can define methods on them. A method is a function that's tied directly to a class and has access to all its properties.
+
 class Soldier:
     health = 5
-    armor = 3
-    damage = 2
 
-Just like a string, integer or float, a class is a type, but instead of being a built-in type, your classes are custom types that you define.
+    def take_damage(self, damage):
+        self.health -= damage
 
-An object is just an instance of a class type. For example:
+soldier_one = Soldier()
+soldier_one.take_damage(2)
+print(soldier_one.health)
+# prints "3"
 
-health = 50
-# health is an instance of an integer type
-aragorn = Soldier()
-# aragorn is an instance of the Soldier type (class)
+Self
+Methods are nested within the class declaration. Their first parameter is always the instance of the class that the method is being called on. By convention, it's called "self". Because self is a reference to the object, you can use it to read and update the properties of the object.
 
-"Classes" are custom new types that we define as the programmer. Each new instance of a class is an "object".
+Notice that methods are called directly on an object using the dot operator.
 
-Example
-class Archer:
-    health = 40
-    arrows = 10
-
-# Create several instances of the Archer class
-legolas = Archer()
-bard = Archer()
-
-# Print class properties
-print(legolas.health) # 40
-print(bard.arrows) # 10
+my_object.my_method()
 
 Assignment
-Create a class called Wall on line 1. It should have a property called armor that is initialized to 10 and a height that starts at 5.
+Add a fortify() method to your wall class. It should double the current armor property.
 
 """
 
 class Wall:
     armor = 10
     height = 5
+
+    def fortify(self):
+        self.armor *= 2
 
