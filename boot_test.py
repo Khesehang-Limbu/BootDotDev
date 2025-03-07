@@ -1,88 +1,83 @@
 from main import *
 
 run_cases = [
-    [
-        (
-            "John",
-            "Carmack",
-            1,
-            "Senior Developer",
-            100000,
-        ),
-        (
-            "Shigeru",
-            "Miyamoto",
-            2,
-            "Staff Developer",
-            120000,
-        ),
-        (
-            "Ken",
-            "Levine",
-            1,
-            "Manager",
-            170000,
-        ),
-        (
-            "Will",
-            "Wright",
-            2,
-            "Game Developer",
-            125000,
-        ),
-    ]
+    (
+        "Jane's Library",
+        ["The Trial"],
+        ["Franz Kafka"],
+        Book("The Trial", "Franz Kafka"),
+        "Kafka",
+        [],
+    ),
+    (
+        "John's Library",
+        ["The Catcher in the Rye", "To Kill a Mockingbird", "1984"],
+        ["J.D. Salinger", "Harper Lee", "George Orwell"],
+        Book("1984", "George Orwell"),
+        "kill",
+        ["To Kill a Mockingbird"],
+    ),
 ]
 
 submit_cases = run_cases + [
-    [
-        (
-            "Sid",
-            "Meier",
-            1,
-            "Junior Developer",
-            160000,
-        ),
-        (
-            "Gabe",
-            "Newell",
-            2,
-            "Staff Developer",
-            130000,
-        ),
-        (
-            "Sarah",
-            "Schulte",
-            3,
-            "Principal Bash Developer",
-            10000000,
-        ),
-    ]
+    (
+        "Lane's Library",
+        [
+            "The Great Gatsby",
+            "Pride and Prejudice",
+            "The Lord of the Rings",
+            "Great Expectations",
+            "To Kill a Mockingbird",
+        ],
+        [
+            "F. Scott Fitzgerald",
+            "Jane Austen",
+            "J.R.R. Tolkien",
+            "Charles Dickens",
+            "Harper Lee",
+        ],
+        Book("The Great Gatsby", "F. Scott Fitzgerald"),
+        "great",
+        ["Great Expectations"],
+    ),
 ]
 
-expected_total_employees = 0
 
+def test(
+    library_name,
+    book_titles,
+    book_authors,
+    book_to_remove,
+    search_query,
+    expected_search_results,
+):
+    print("---------------------------------")
+    try:
+        print(f"Testing Library: {library_name}")
 
-def test(employees):
-    print("=================================")
-    for employee in employees:
-        global expected_total_employees
-        expected_total_employees += 1
-        print(
-            f"Employee({employee[0]}, {employee[1]}, {employee[2]}, {employee[3]}, {employee[4]})"
-        )
-        employee = Employee(*employee)
-        expected_name = f"{employee.first_name} {employee.last_name}"
-        print(f"Expected name: {expected_name}")
-        print(f"Actual name: {employee.get_name()}")
-        if expected_name != employee.get_name():
+        library = Library(library_name)
+        for title, author in zip(book_titles, book_authors):
+            library.add_book(Book(title, author))
+            print(f"Adding book {title} by {author}")
+
+        print(f"Removing book {book_to_remove.title} by {book_to_remove.author}")
+        library.remove_book(book_to_remove)
+
+        print(f"Searching for '{search_query}'")
+        search_results = library.search_books(search_query)
+        results_titles = [book.title for book in search_results]
+        print(f"Expected: {expected_search_results}")
+        print(f"Actual: {results_titles}")
+
+        if results_titles != expected_search_results:
+            print("Fail")
             return False
 
-        print(f"Expected employees: {expected_total_employees}")
-        print(f"Actual employees: {Employee.total_employees}")
-        if expected_total_employees != Employee.total_employees:
-            return False
-        print("---------------------------------")
-    return True
+        print("Pass")
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
 
 
 def main():
@@ -90,13 +85,11 @@ def main():
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
-        correct = test(test_case)
+        correct = test(*test_case)
         if correct:
             passed += 1
-            print("Pass")
         else:
             failed += 1
-            print("Fail")
 
     if failed == 0:
         print("============= PASS ==============")
