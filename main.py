@@ -1,31 +1,21 @@
 """
 
-DRY Code
-Another "rule of thumb" for writing maintainable code is "Don't Repeat Yourself" (DRY). It just means that, when possible, you should avoid writing the same code in multiple places. Repeating code can be bad because:
+What Is Object-Oriented Programming?
+Object-Oriented Programming, or "OOP", is a pattern for writing clean and maintainable code. Not everyone agrees that object-oriented principles are the best way to write code, but, to be a good engineer, you should at least understand them.
 
-If you need to change it, you have to change it in multiple places
-If you forget to change it in one place, you'll have a bug
-It's more work to write it over and over again
+In this course, we'll be coding the pieces of a real-time strategy game called "Age of Dragons". Players control armies of people, elves, orcs, and dragons and battle each other. It's similar to Age of Empires or StarCraft.
+
 Assignment
-Your manager noticed that there's a lot of repetitive code in the "Age of Dragons" code base. She asked you to update the fight_soldiers function so that the DPS (damage-per-second) calculation is only written once.
+One of the greatest sins when trying to write "clean code" is using misleading names for your variables and functions. Take a look at the destroy_wall function. Based on its name, you might assume that it destroys a single wall, but if you look closely, you'll see that it handles multiple walls.
 
-Notice how these two lines are practically identical:
+The test suite expects a different function name. Take a look at the main_test.py file to see what it's looking for, and rename the function accordingly.
 
-soldier_one_dps = soldier_one["damage"] * soldier_one["attacks_per_second"]
-soldier_two_dps = soldier_two["damage"] * soldier_two["attacks_per_second"]
+Additionally, try to rename the variables inside the function to be more descriptive. After passing the tests, take a look at the solution to see how we named everything.
 
-Create a new function called get_soldier_dps that takes a soldier and returns its DPS using the same logic as the lines above. Then, replace the two lines above with calls to get_soldier_dps.
 """
 
-def fight_soldiers(soldier_one, soldier_two):
-    soldier_one_dps = get_soldier_dps(soldier_one)
-    soldier_two_dps = get_soldier_dps(soldier_two)
-    if soldier_one_dps > soldier_two_dps:
-        return "soldier 1 wins"
-    if soldier_two_dps > soldier_one_dps:
-        return "soldier 2 wins"
-    return "both soldiers die"
-
-
-def get_soldier_dps(soldier):
-    return soldier["damage"] * soldier["attacks_per_second"]
+def destroy_walls(wall_healths):
+    for w in wall_healths:
+        if w <= 0:
+            wall_healths.remove(w)
+    return wall_healths
