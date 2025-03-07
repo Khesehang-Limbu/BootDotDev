@@ -59,28 +59,11 @@ mana: 10x the value of "intelligence".
 
 """
 
-class Book:
-    def __init__(self, title, author):
-        self.title = title
-        self.author = author
-
-
-class Library:
-    def __init__(self, name):
+class Wizard:
+    def __init__(self, name, stamina, intelligence):
         self.name = name
-        self.books = []
+        self.__stamina = stamina
+        self.__intelligence = intelligence
+        self.health = 100 * stamina
+        self.mana = 10 * intelligence
 
-    def add_book(self, book):
-        self.books.append(book)
-
-    def remove_book(self, book):
-        for b in self.books:
-            if b.title == book.title and b.author == book.author:
-                self.books.remove(b)
-
-    def search_books(self, search_string):
-        searched_books = []
-        for book in self.books:
-            if search_string.lower() in book.title.lower() or search_string.lower() in book.author.lower():
-                searched_books.append(book)
-        return searched_books

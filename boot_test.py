@@ -1,83 +1,47 @@
 from main import *
 
 run_cases = [
-    (
-        "Jane's Library",
-        ["The Trial"],
-        ["Franz Kafka"],
-        Book("The Trial", "Franz Kafka"),
-        "Kafka",
-        [],
-    ),
-    (
-        "John's Library",
-        ["The Catcher in the Rye", "To Kill a Mockingbird", "1984"],
-        ["J.D. Salinger", "Harper Lee", "George Orwell"],
-        Book("1984", "George Orwell"),
-        "kill",
-        ["To Kill a Mockingbird"],
-    ),
+    ("Merlin", 10, 10, 1000, 100),
+    ("Morgana", 20, 5, 2000, 50),
 ]
 
 submit_cases = run_cases + [
-    (
-        "Lane's Library",
-        [
-            "The Great Gatsby",
-            "Pride and Prejudice",
-            "The Lord of the Rings",
-            "Great Expectations",
-            "To Kill a Mockingbird",
-        ],
-        [
-            "F. Scott Fitzgerald",
-            "Jane Austen",
-            "J.R.R. Tolkien",
-            "Charles Dickens",
-            "Harper Lee",
-        ],
-        Book("The Great Gatsby", "F. Scott Fitzgerald"),
-        "great",
-        ["Great Expectations"],
-    ),
+    ("Arthur", 3, 3, 300, 30),
 ]
 
 
 def test(
-    library_name,
-    book_titles,
-    book_authors,
-    book_to_remove,
-    search_query,
-    expected_search_results,
+    wizard_name,
+    wizard_stamina,
+    wizard_intelligence,
+    expected_health,
+    expected_mana,
 ):
     print("---------------------------------")
-    try:
-        print(f"Testing Library: {library_name}")
-
-        library = Library(library_name)
-        for title, author in zip(book_titles, book_authors):
-            library.add_book(Book(title, author))
-            print(f"Adding book {title} by {author}")
-
-        print(f"Removing book {book_to_remove.title} by {book_to_remove.author}")
-        library.remove_book(book_to_remove)
-
-        print(f"Searching for '{search_query}'")
-        search_results = library.search_books(search_query)
-        results_titles = [book.title for book in search_results]
-        print(f"Expected: {expected_search_results}")
-        print(f"Actual: {results_titles}")
-
-        if results_titles != expected_search_results:
-            print("Fail")
-            return False
-
-        print("Pass")
-        return True
-    except Exception as e:
-        print(f"Error: {e}")
+    print(f"Wizard({wizard_name}, {wizard_stamina}, {wizard_intelligence})")
+    wizard = Wizard(wizard_name, wizard_stamina, wizard_intelligence)
+    print(f"Expected mana: {expected_mana}")
+    print(f"Actual mana: {wizard.mana}")
+    print(f"Expected health: {expected_health}")
+    print(f"Actual health: {wizard.health}")
+    if wizard.mana != expected_mana:
         return False
+    if wizard.health != expected_health:
+        return False
+    isPrivate = True
+    try:
+        wizard.stamina
+        isPrivate = False
+        print("Stamina isn't private!")
+    except AttributeError:
+        pass
+    try:
+        wizard.intelligence
+        isPrivate = False
+        print("Intelligence isn't private!")
+    except AttributeError:
+        pass
+    return isPrivate
 
 
 def main():
@@ -90,7 +54,6 @@ def main():
             passed += 1
         else:
             failed += 1
-
     if failed == 0:
         print("============= PASS ==============")
     else:
