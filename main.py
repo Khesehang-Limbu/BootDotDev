@@ -1,47 +1,48 @@
 """
 
-Wizard Duel
-Let's give our wizards the ability to launch fireballs at each other.
+Protecting Bank Information
+Age of Dragons is a game about resource management and strategy. The game has a feature that allows players to manage their resources in a bank. The bank has a feature that allows players to deposit and withdraw funds.
 
 Assignment
-Complete the cast_fireball and is_alive methods.
+Complete the BankAccount class.
 
-cast_fireball
-If there isn't enough mana to cast a fireball (see fireball_cost at the top of the file), raise an Exception with the message ____ cannot cast fireball, where ____ is the wizard's name.
-
-If the wizard has enough mana, reduce their mana by the fireball_cost and make sure to call get_fireballed on the target wizard or they'll be stuck in an endless battle.
-
-is_alive
-This method should return True if the wizard's health is greater than 0, and False otherwise.
+Complete the constructor
+Set __account_number to account_number
+Set __balance to initial_balance
+Complete the public getters
+Complete the get_account_number method to get the value of the private variable __account_number and return it.
+Complete the get_balance method to get the value of the private variable __balance and return it.
+Complete the deposit method
+It should accept an amount as input and add it to the account balance.
+If the deposit amount isn't positive, it should raise a ValueError exception with the message cannot deposit zero or negative funds. Otherwise, it should add the amount to the balance.
+Complete the withdraw method
+It should accept an amount and check if there is enough money in the account for the withdrawal.
+If the withdrawal amount isn't positive, it should raise a ValueError exception with the message cannot withdraw zero or negative funds. Then, if there are not enough funds it should raise a ValueError exception with the message insufficient funds. Otherwise, it should deduct the amount from the balance.
 
 """
 
-fireball_damage = 500
-potion_mana = 100
-fireball_cost = 50
+class BankAccount:
+    def __init__(self, account_number, initial_balance):
+        self.__account_number = account_number
+        self.__balance = initial_balance
 
+    def get_account_number(self):
+        return self.__account_number
 
-class Wizard:
-    def __init__(self, name, stamina, intelligence):
-        self.name = name
-        self.__stamina = stamina
-        self.__intelligence = intelligence
-        self.mana = self.__intelligence * 10
-        self.health = self.__stamina * 100
+    def get_balance(self):
+        return self.__balance
 
-    def cast_fireball(self, target):
-        if self.mana < fireball_cost:
-            raise Exception(f"{self.name} cannot cast fireball")
-        self.mana -= fireball_cost
-        target.get_fireballed()
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError("cannot deposit zero or negative funds")
+        self.__balance += amount
 
-    def is_alive(self):
-        if self.health > 0:
-            return True
-        return False
+    def withdraw(self, amount):
+        if amount <= 0:
+            raise ValueError("cannot withdraw zero or negative funds")
 
-    def get_fireballed(self):
-        self.health -= 500
+        if not self.get_balance() >= amount:
+            raise ValueError("insufficient funds")
 
-    def drink_mana_potion(self):
-        self.mana += 100
+        self.__balance -= amount
+
