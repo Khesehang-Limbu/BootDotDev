@@ -1,87 +1,66 @@
 from main import *
 
 run_cases = [
-    ("1234567890", 100.0, 50.0, 75.0, 75.0),
-    ("0987654321", 500.0, 100.0, 200.0, 400.0),
-    ("0987654321", 200.0, 0.0, 10.0, 190.0, "cannot deposit zero or negative funds"),
+    (
+        "Zatanna",
+        ["Maths", "Lore", "History"],
+        [85, 92, 76],
+        {"Maths": "B", "Lore": "A", "History": "C"},
+    ),
+    (
+        "Prospero",
+        ["Alchemy", "Politics"],
+        [90, 88],
+        {"Alchemy": "A", "Politics": "B"},
+    ),
 ]
 
 submit_cases = run_cases + [
-    ("1234567890", 100.0, 50.0, 200.0, 150.0, None, "insufficient funds"),
-    ("0987654321", 500.0, 500.0, 500.0, 500.0),
-    ("1234567890", 300.0, -10.0, 20.0, 280.0, "cannot deposit zero or negative funds"),
-    ("1234567890", -20.0, 10.0, 10.0, -10.0, None, "insufficient funds"),
     (
-        "0987654321",
-        100.0,
-        10.0,
-        -10.0,
-        110.0,
-        None,
-        "cannot withdraw zero or negative funds",
+        "Glinda",
+        ["Elementalism", "Artificery", "History"],
+        [80, 79, 90],
+        {"Elementalism": "B", "Artificery": "C", "History": "A"},
     ),
     (
-        "1234567890",
-        900.0,
-        100.0,
-        0.0,
-        1000.0,
-        None,
-        "cannot withdraw zero or negative funds",
+        "Willow",
+        ["Treasure Hunting", "Artificery"],
+        [70, 65],
+        {"Treasure Hunting": "C", "Artificery": "D"},
+    ),
+    (
+        "Rincewind",
+        ["Necromancy"],
+        [100],
+        {"Necromancy": "A"},
+    ),
+    (
+        "Arthas",
+        ["The Light"],
+        [0],
+        {"The Light": "F"},
     ),
 ]
 
 
-def test(
-    account_number,
-    initial_balance,
-    deposit_amount,
-    withdraw_amount,
-    expected_balance,
-    deposit_err=None,
-    withdraw_err=None,
-):
+def test(name, courses, scores, expected_grades):
     print("---------------------------------")
-    try:
-        print(
-            f"Inputs: account_number: {account_number}, initial_balance: {initial_balance:.2f}, deposit_amount: {deposit_amount:.2f}, withdraw_amount: {withdraw_amount:.2f}"
-        )
-        account = BankAccount(account_number, initial_balance)
-        try:
-            account.deposit(deposit_amount)
-            if deposit_err:
-                print(f'Expected error "{deposit_err}"')
-                print(f"Actual output: No error was raised")
-                print("Fail")
-                return False
-        except ValueError as e:
-            print(f'Expected error "{deposit_err}"')
-            print(f'Actual error "{e}"')
-            if str(e) != deposit_err:
-                print("Fail")
-                return False
-        try:
-            account.withdraw(withdraw_amount)
-            if withdraw_err:
-                print(f'Expected error "{withdraw_err}"')
-                print(f"Actual output: No error was raised")
-                print("Fail")
-                return False
-        except ValueError as e:
-            print(f'Expected error "{withdraw_err}"')
-            print(f'Actual error "{e}"')
-            if str(e) != withdraw_err:
-                print("Fail")
-                return False
-        print(f"Expected balance ${expected_balance:.2f}")
-        print(f"Actual balance ${account.get_balance():.2f}")
-        if account.get_balance() != expected_balance:
-            print("Fail")
-            return False
+    student = Student(name)
+    for i in range(len(courses)):
+        student.add_course(courses[i], scores[i])
+    actual_grades = student.get_courses()
+
+    print(f"Inputs for {name}:")
+    print(f" * Courses: {courses}")
+    print(f" * Scores: {scores}")
+    print(f" * Expected Grades: {expected_grades}")
+    print(f" * Actual Grades: {actual_grades}")
+
+    if actual_grades == expected_grades:
         print("Pass")
         return True
-    except Exception as e:
-        print(f"Fail: {e}")
+    else:
+        print("Fail")
         return False
 
 
@@ -110,4 +89,3 @@ if "__RUN__" in globals():
     test_cases = run_cases
 
 main()
-
