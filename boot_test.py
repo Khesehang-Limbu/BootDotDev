@@ -1,67 +1,45 @@
 from main import *
 
 run_cases = [
-    (
-        "Zatanna",
-        ["Maths", "Lore", "History"],
-        [85, 92, 76],
-        {"Maths": "B", "Lore": "A", "History": "C"},
-    ),
-    (
-        "Prospero",
-        ["Alchemy", "Politics"],
-        [90, 88],
-        {"Alchemy": "A", "Politics": "B"},
-    ),
+    (0, 0, 5, "left", -5, 0),
+    (0, 0, 5, "right", 5, 0),
+    (0, 0, 5, "up", 0, 5),
 ]
 
 submit_cases = run_cases + [
-    (
-        "Glinda",
-        ["Elementalism", "Artificery", "History"],
-        [80, 79, 90],
-        {"Elementalism": "B", "Artificery": "C", "History": "A"},
-    ),
-    (
-        "Willow",
-        ["Treasure Hunting", "Artificery"],
-        [70, 65],
-        {"Treasure Hunting": "C", "Artificery": "D"},
-    ),
-    (
-        "Rincewind",
-        ["Necromancy"],
-        [100],
-        {"Necromancy": "A"},
-    ),
-    (
-        "Arthas",
-        ["The Light"],
-        [0],
-        {"The Light": "F"},
-    ),
+    (0, 0, 5, "down", 0, -5),
+    (10, 10, 2, "left", 8, 10),
+    (10, 10, 2, "right", 12, 10),
+    (10, 10, 2, "up", 10, 12),
+    (10, 10, 2, "down", 10, 8),
 ]
 
 
-def test(name, courses, scores, expected_grades):
+def test(input1, input2, input3, move_direction, expected_output_x, expected_output_y):
     print("---------------------------------")
-    student = Student(name)
-    for i in range(len(courses)):
-        student.add_course(courses[i], scores[i])
-    actual_grades = student.get_courses()
-
-    print(f"Inputs for {name}:")
-    print(f" * Courses: {courses}")
-    print(f" * Scores: {scores}")
-    print(f" * Expected Grades: {expected_grades}")
-    print(f" * Actual Grades: {actual_grades}")
-
-    if actual_grades == expected_grades:
+    print(f"Inputs:")
+    print(f" * pos_x: {input1}")
+    print(f" * pos_y: {input2}")
+    print(f" * speed: {input3}")
+    print(f" * move_direction: {move_direction}")
+    expected_output = (expected_output_x, expected_output_y)
+    print(f"Expecting: {expected_output}")
+    human = Human(input1, input2, input3)
+    if move_direction == "left":
+        human.move_left()
+    elif move_direction == "right":
+        human.move_right()
+    elif move_direction == "up":
+        human.move_up()
+    elif move_direction == "down":
+        human.move_down()
+    result = human.get_position()
+    print(f"Actual: {result}")
+    if result == expected_output:
         print("Pass")
         return True
-    else:
-        print("Fail")
-        return False
+    print("Fail")
+    return False
 
 
 def main():
