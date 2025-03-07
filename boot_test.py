@@ -1,100 +1,88 @@
 from main import *
 
 run_cases = [
-    (
-        Archer("Robin", 2, 2),
-        Archer("Sheriff", 2, 2),
-        1,
-        [("Robin", 1, 1), ("Sheriff", 1, 1)],
-        None,
-    ),
-    (
-        Archer("Friar Tuck", 1, 0),
-        Archer("Prince John", 1, 0),
-        1,
-        [None, None],
-        "Friar Tuck can't shoot",
-    ),
-    (
-        Archer("King Richard", 1, 1),
-        Archer("Prince John", 2, 1),
-        1,
-        [None, None],
-        "King Richard is dead",
-    ),
+    [
+        (
+            "John",
+            "Carmack",
+            1,
+            "Senior Developer",
+            100000,
+        ),
+        (
+            "Shigeru",
+            "Miyamoto",
+            2,
+            "Staff Developer",
+            120000,
+        ),
+        (
+            "Ken",
+            "Levine",
+            1,
+            "Manager",
+            170000,
+        ),
+        (
+            "Will",
+            "Wright",
+            2,
+            "Game Developer",
+            125000,
+        ),
+    ]
 ]
 
 submit_cases = run_cases + [
-    (
-        Archer("Robin", 2, 2),
-        Archer("Sheriff", 3, 1),
-        2,
-        [None, None],
-        "Sheriff can't shoot",
-    ),
-    (
-        Archer("Marian", 3, 2),
-        Archer("Little John", 3, 3),
-        2,
-        [("Marian", 1, 0), ("Little John", 1, 1)],
-        None,
-    ),
-    (
-        Archer("Robin", 2, 2),
-        Archer("Prince John", 2, 1),
-        2,
-        [None, None],
-        "Prince John is dead",
-    ),
-    (
-        Archer("Little John", 4, 3),
-        Archer("Sheriff", 3, 2),
-        3,
-        [None, None],
-        "Sheriff is dead",
-    ),
+    [
+        (
+            "Sid",
+            "Meier",
+            1,
+            "Junior Developer",
+            160000,
+        ),
+        (
+            "Gabe",
+            "Newell",
+            2,
+            "Staff Developer",
+            130000,
+        ),
+        (
+            "Sarah",
+            "Schulte",
+            3,
+            "Principal Bash Developer",
+            10000000,
+        ),
+    ]
 ]
 
+expected_total_employees = 0
 
-def test(archer_1, archer_2, rounds, expected_result, expected_err):
-    print("---------------------------------")
-    archer_1.print_status()
-    archer_2.print_status()
 
-    try:
-        for _ in range(rounds):
-            archer_1.shoot(archer_2)
-            archer_2.print_status()
-            archer_2.shoot(archer_1)
-            archer_1.print_status()
-        archer_2.print_status()
-
-        if expected_err:
-            print(f"\nExpected Exception: {expected_err}")
-            print("Actual: no exception raised")
-            print("Fail")
+def test(employees):
+    print("=================================")
+    for employee in employees:
+        global expected_total_employees
+        expected_total_employees += 1
+        print(
+            f"Employee({employee[0]}, {employee[1]}, {employee[2]}, {employee[3]}, {employee[4]})"
+        )
+        employee = Employee(*employee)
+        expected_name = f"{employee.first_name} {employee.last_name}"
+        print(f"Expected name: {expected_name}")
+        print(f"Actual name: {employee.get_name()}")
+        if expected_name != employee.get_name():
             return False
 
-        status_1 = archer_1.get_status()
-        status_2 = archer_2.get_status()
-        print(f"\nExpected Result: {expected_result[0]}, {expected_result[1]}")
-        print(f"Actual Result: {status_1}, {status_2}")
-
-        if status_1 == expected_result[0] and status_2 == expected_result[1]:
-            print("Pass")
-            return True
-        else:
-            print("Fail")
+        print(f"Expected employees: {expected_total_employees}")
+        print(f"Actual employees: {Employee.total_employees}")
+        if expected_total_employees != Employee.total_employees:
             return False
-    except Exception as e:
-        print(f"\nExpected Exception: {expected_err}")
-        print(f"Actual Exception: {str(e)}")
-        if str(e) == expected_err:
-            print("Pass")
-            return True
-        else:
-            print("Fail")
-            return False
+        print("---------------------------------")
+    return True
 
 
 def main():
@@ -102,11 +90,14 @@ def main():
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
-        correct = test(*test_case)
+        correct = test(test_case)
         if correct:
             passed += 1
+            print("Pass")
         else:
             failed += 1
+            print("Fail")
+
     if failed == 0:
         print("============= PASS ==============")
     else:
