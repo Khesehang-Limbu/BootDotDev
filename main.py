@@ -1,74 +1,64 @@
 """
 
-Sprint
-In the game we're making, Age of Dragons, humans can "sprint" allowing them to move twice as fast. However, sprinting requires __stamina. Each time a human sprints, it loses stamina. Once it is out of stamina, it can no longer sprint.
-
+The Calculator
 Assignment
-Complete all of the missing methods.
+Complete the Calculator class.
 
-The __raise_if_cannot_sprint() and __use_sprint_stamina() are private methods that are only intended to be used within the class. In your case, you'll use them to build the other four sprinting methods.
+Constructor
+Create a private instance variable called result initialized to 0.
 
-__raise_if_cannot_sprint()
-This method should raise the exception: not enough stamina to sprint if the human is out of stamina.
+Math
+The following methods should perform their respective mathematic computations. The "left-hand side" of each operation should be the current value of the result variable. The "right-hand side" of each operation will be the value passed in.
 
-__use_sprint_stamina()
-Remove one stamina from the human.
-
-For Each of the Remaining Methods:
-Raise an error if there isn't enough stamina to sprint (use __raise_if_cannot_sprint()).
-Use the stamina needed to sprint (use __use_sprint_stamina())
-Move twice in the direction of the sprint.
+add(self, a)
+subtract(self, a)
+multiply(self, a)
+divide(self, a): If the user attempts to divide by 0, raise a ValueError with "cannot divide by zero" as the argument
+modulo(self, a): If the user attempts to divide by 0, raise a ValueError with "cannot divide by zero" as the argument
+power(self, a):
+square_root(self)
+Helper Methods
+clear(self): reset the result variable to 0
+get_result(self): return the current value stored in the calculator's private result variable.
 
 """
 
-class Human:
-    def sprint_right(self):
-        self.__raise_if_cannot_sprint()
-        self.__use_sprint_stamina()
-        self.__pos_x += 2 * self.__speed
+class Calculator:
+    def __init__(self):
+        self.__result = 0
 
-    def sprint_left(self):
-        self.__raise_if_cannot_sprint()
-        self.__use_sprint_stamina()
-        self.__pos_x -= 2 * self.__speed
+    def add(self, a):
+        self.__result += a
 
-    def sprint_up(self):
-        self.__raise_if_cannot_sprint()
-        self.__use_sprint_stamina()
-        self.__pos_y += 2 * self.__speed
+    def subtract(self, a):
+        self.__result -= a
 
-    def sprint_down(self):
-        self.__raise_if_cannot_sprint()
-        self.__use_sprint_stamina()
-        self.__pos_y -= 2 * self.__speed
+    def multiply(self, a):
+        self.__result *= a
 
-    def __raise_if_cannot_sprint(self):
-        if self.__stamina == 0:
-            raise Exception("not enough stamina to sprint")
+    def divide(self, a):
+        if a == 0:
+            raise ValueError("cannot divide by zero")
+        self.__result /= a
 
-    def __use_sprint_stamina(self):
-        self.__stamina -= 1
+    def modulo(self, a):
+        if a == 0:
+            raise ValueError("cannot divide by zero")
+        self.__result %= a
 
-    # don't touch below this line
+    def power(self, a):
+        exponent = self.__result
+        for _ in range(1, a):
+            self.__result *= exponent
 
-    def move_right(self):
-        self.__pos_x += self.__speed
+    def square_root(self):
+        for i in range(2, self.__result):
+            if self.__result % i == 0 and i * i == self.__result:
+                self.__result = i
+                return
 
-    def move_left(self):
-        self.__pos_x -= self.__speed
+    def clear(self):
+        self.__result = 0
 
-    def move_up(self):
-        self.__pos_y += self.__speed
-
-    def move_down(self):
-        self.__pos_y -= self.__speed
-
-    def get_position(self):
-        return self.__pos_x, self.__pos_y
-
-    def __init__(self, pos_x, pos_y, speed, stamina):
-        self.__pos_x = pos_x
-        self.__pos_y = pos_y
-        self.__speed = speed
-        self.__stamina = stamina
-
+    def get_result(self):
+        return self.__result
