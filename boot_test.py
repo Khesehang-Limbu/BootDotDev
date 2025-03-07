@@ -1,12 +1,12 @@
 from main import *
 
 run_cases = [
-    ("Merlin", 10, 10, 1000, 100),
-    ("Morgana", 20, 5, 2000, 50),
+    ("Merlin", 10, 10, 500, 200),
+    ("Morgana", 20, 5, 1500, 150),
 ]
 
 submit_cases = run_cases + [
-    ("Arthur", 3, 3, 300, 30),
+    ("Arthur", 3, 3, -200, 130),
 ]
 
 
@@ -14,34 +14,23 @@ def test(
     wizard_name,
     wizard_stamina,
     wizard_intelligence,
-    expected_health,
-    expected_mana,
+    expected_health_after,
+    expected_mana_after,
 ):
     print("---------------------------------")
     print(f"Wizard({wizard_name}, {wizard_stamina}, {wizard_intelligence})")
     wizard = Wizard(wizard_name, wizard_stamina, wizard_intelligence)
-    print(f"Expected mana: {expected_mana}")
-    print(f"Actual mana: {wizard.mana}")
-    print(f"Expected health: {expected_health}")
-    print(f"Actual health: {wizard.health}")
-    if wizard.mana != expected_mana:
+    wizard.get_fireballed()
+    wizard.drink_mana_potion()
+    print(f"Expected health after: {expected_health_after}")
+    print(f"Actual health after: {wizard.health}")
+    print(f"Expected mana after: {expected_mana_after}")
+    print(f"Actual mana after: {wizard.mana}")
+    if wizard.health != expected_health_after:
         return False
-    if wizard.health != expected_health:
+    if wizard.mana != expected_mana_after:
         return False
-    isPrivate = True
-    try:
-        wizard.stamina
-        isPrivate = False
-        print("Stamina isn't private!")
-    except AttributeError:
-        pass
-    try:
-        wizard.intelligence
-        isPrivate = False
-        print("Intelligence isn't private!")
-    except AttributeError:
-        pass
-    return isPrivate
+    return True
 
 
 def main():
