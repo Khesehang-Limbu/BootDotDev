@@ -1,66 +1,48 @@
 """
 
-Multiple Objects
-An object is an "instance" of a class. Let's look at what that means.
+Constructors (or Initializers)
+It's rare in the real world to see a class that defines properties the way we've been doing it:
 
-In object-oriented programming, an instance is a concrete occurrence of any object... "Instance" is synonymous with "object" as they are each a particular value... "Instance" emphasizes the distinct identity of the object. The creation of an instance is called instantiation.
+class Soldier:
+    name = "Legolas"
+    armor = 2
+    num_weapons = 2
 
--- Wikipedia
+It's more practical to use a constructor. In Python, if you name a method __init__, that's the constructor and it is called when a new object is created.
 
-So for our wall class, I can create three different "instances" of the class. Or, in other words, I can create three separate objects.
+So, with a constructor, the code would look like this:
 
-wall_maria = Wall(1, 2, 3)
-wall_rose = Wall(4, 5, 6)
-wall_sina = Wall(9, 8, 7)
+class Soldier:
+    def __init__(self):
+        self.name = "Legolas"
+        self.armor = 2
+        self.num_weapons = 2
 
-In the example above, the variables are instances of the Wall type.
+Now we can make the starting armor and number of weapons configurable with some parameters!
+
+class Soldier:
+    def __init__(self, name, armor, num_weapons):
+        self.name = name
+        self.armor = armor
+        self.num_weapons = num_weapons
+
+soldier = Soldier("Legolas", 5, 10)
+print(soldier.name)
+# prints "Legolas"
+print(soldier.armor)
+# prints "5"
+print(soldier.num_weapons)
+# prints "10"
 
 Assignment
-Take a look at the Brawler class and the fight function provided.
-
-In the main function:
-
-Create 4 new brawlers with the following stats:
-Name: Aragorn. Speed: 4. Strength: 4.
-Name: Gimli. Speed: 2. Strength: 7.
-Name: Legolas. Speed: 7. Strength: 7.
-Name: Frodo. Speed: 3. Strength: 2.
-Call fight twice.
-The first fight should be Aragorn vs Gimli.
-The second will be Legolas vs Frodo.
+Add a constructor to our Wall class. It should take depth, height and width as parameters, in that order, and set them as properties. It should also compute an additional property called volume. Volume is the depth times height times width.
 
 """
 
-def main():
-    brawler_1 = Brawler("Aragorn", 4, 4)
-    brawler_2 = Brawler("Gimli", 2, 7)
-    brawler_3 = Brawler("Legolas", 7, 7)
-    brawler_4 = Brawler("Frodo", 3, 2)
-
-    fight(brawler_1, brawler_2)
-    fight(brawler_3, brawler_4)
-
-
-
-# don't touch below this line
-
-
-class Brawler:
-    def __init__(self, name, speed, strength):
-        self.name = name
-        self.speed = speed
-        self.strength = strength
-        self.power = speed * strength
-
-
-def fight(f1, f2):
-    if f1.power > f2.power:
-        print(f"{f1.name} wins with {f1.power} power over {f2.name}'s {f2.power}")
-    elif f1.power < f2.power:
-        print(f"{f2.name} wins with {f2.power} power over {f1.name}'s {f1.power}")
-    else:
-        print(f"It's a tie with both contestants at {f1.power} power")
-
-
-main()
+class Wall:
+    def __init__(self, depth, height, width):
+        self.depth = depth
+        self.height = height
+        self.width = width
+        self.volume = self.height * self.width * self.depth
 
