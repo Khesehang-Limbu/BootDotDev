@@ -1,71 +1,50 @@
 from main import *
 
 run_cases = [
-    ("Will the Archer", 1, "Darren the Crossbowman", 4, None, 1),
-    ("Elena the Archer", 5, "Connor the Crossbowman", 3, None, 0),
-    ("Lara the Archer", 3, "Marcus the Crossbowman", 2, "not enough arrows", -1),
-    ("Jake the Archer", 0, "Victor the Crossbowman", 3, None, 0),
+    (Hero("Hercules", 200), Archer("Pericles", 100, 2), 190),
+    (Hero("Aquiles", 150), Archer("Aneas", 80, 1), 140),
 ]
 
 submit_cases = run_cases + [
-    ("Sophia the Archer", 7, "Oscar the Crossbowman", 5, None, 2),
-    ("Ryan the Archer", 2, "Emma the Crossbowman", 1, "not enough arrows", None),
-    ("Zoe the Archer", 10, "Lucas the Crossbowman", 8, None, 5),
-    ("Isaac the Archer", 4, "Hannah the Crossbowman", 0, "not enough arrows", None),
+    (Hero("Paris", 120), Archer("Hector", 100, 0), None, "not enough arrows"),
+    (Hero("Helen", 100), Archer("Menelaus", 50, 2), 90),
+    (Hero("Odysseus", 90), Archer("Circe", 70, 1), 80),
+    (Hero("Icarus", 60), Archer("Daedalus", 40, 2), 40, None, True),
+    (Hero("Zeus", 1000), Archer("Hades", 900, 1), None, "not enough arrows", True),
 ]
 
 
-def test(
-    archer_name,
-    archer_arrows,
-    crossbowman_name,
-    crossbowman_bolts,
-    expected_exception,
-    expected_remaining_bolts,
-):
+def test(hero, archer, expected_result, expected_err=None, twice=False):
     print("---------------------------------")
-    print(f"Creating an archer named {archer_name} with {archer_arrows} arrows")
-    archer = Archer(archer_name, archer_arrows)
-    print(
-        f"Creating a crossbowman named {crossbowman_name} with {crossbowman_bolts} bolts"
-    )
-    crossbowman = Crossbowman(crossbowman_name, crossbowman_bolts)
+    print(f"Hero: {hero.get_name()} with health: {hero.get_health()}")
+    print(f"Archer: {archer.get_name()} with health: {archer.get_health()}")
     try:
-        expected_str = f"{archer_name} was shot by 3 crossbow bolts"
-        actual_str = crossbowman.triple_shot(archer)
-        if expected_exception:
-            print(
-                f"Expected exception '{expected_exception}', but no exception occurred"
-            )
+        archer.shoot(hero)
+        if twice:
+            print("Shooting twice!")
+            archer.shoot(hero)
+        result = hero.get_health()
+
+        if expected_err:
+            print(f"Expected Exception: {expected_err}")
+            print("Actual: no exception raised")
             print("Fail")
             return False
-        if actual_str != expected_str:
-            print("Expected: " + expected_str)
-            print("Actual: " + actual_str)
-            print("Fail")
-            return False
-        else:
-            print(actual_str)
-        if crossbowman.get_num_arrows() != expected_remaining_bolts:
-            print(
-                f"Expected remaining arrows: {expected_remaining_bolts}, Actual: {crossbowman.get_num_arrows()}"
-            )
-            print("Fail")
-            return False
-        else:
-            print(
-                f"Expected {expected_remaining_bolts} remaining bolts, Actual: {crossbowman.get_num_arrows()}"
-            )
+
+        print(f"Expecting Hero's health after shoot: {expected_result}")
+        print(f"Actual: {result}")
+        if result == expected_result:
             print("Pass")
             return True
+        print("Fail")
+        return False
     except Exception as e:
-        if str(e) == expected_exception:
-            print(f"Expected exception: {expected_exception}")
-            print(f"Caught expected exception: {e}")
+        print(f"Expected Exception: {expected_err}")
+        print(f"Actual Exception: {e}")
+        if str(e) == expected_err:
             print("Pass")
             return True
         else:
-            print(f"Unexpected exception: {e}")
             print("Fail")
             return False
 

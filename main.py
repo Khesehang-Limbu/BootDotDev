@@ -1,70 +1,45 @@
 """
 
-Inheritance Hierarchy
-There is no limit to how deeply we can nest an inheritance tree. For example, a Cat can inherit from an Animal that inherits from LivingThing. That said, be careful! New programmers often get carried away.
+Multiple Children
+So far we've worked with linear class inheritance, but usually, inheritance hierarchies form trees, not lines. A parent class can have multiple children.
 
-You should never think to yourself:
-
-"Well most wizards are elves... so I'll just have wizard inherit from elf"
-
-A good child class is a strict subset of its parent class.
-
-An example of this with private properties. A child class cannot simply access a private property of its parent class. It has to use a getter. For example:
-
-class Wall:
-    def __init__(self, height):
-        self.__height = height
-
-    def get_height(self):
-        return self.__height
-
-class Castle(Wall):
-    def __init__(self, height, towers):
-        super().__init__(height)
-        self.towers = towers
-
-    def get_tower_height(self):
-        return self.get_height() * 2
+inheritance tree
 
 Assignment
-Let's add a new game unit: Crossbowman. A crossbowman is always an archer, but not all archers are crossbowmen. Crossbowmen have several arrows, but they have an additional method: triple_shot().
+The Archer class should inherit from Hero. Ensure the following requirements from the game designers are completed:
 
-Add a use_arrows(self, num) method to the Archer class. It should remove num arrows. If there aren't enough arrows to remove, it should raise a not enough arrows exception.
-The Crossbowman class's constructor should call its parent's constructor.
-The crossbowman's triple_shot method should use 3 arrows.
-The crossbowman's triple_shot method takes a target as a parameter and returns {} was shot by 3 crossbow bolts where {} is the name of the Human that was shot.
+Archer should inherit from Hero
+Archer should set up the hero's name and health
+Set a private "number of arrows" variable that can be passed in as a third parameter to the constructor.
+Create a shoot method that takes a target hero as input. If there are no arrows left, raise a not enough arrows exception. Otherwise, remove an arrow and deal 10 damage to the target hero.
 
 """
 
-class Human:
-    def __init__(self, name):
+class Hero:
+    def __init__(self, name, health):
         self.__name = name
+        self.__health = health
 
     def get_name(self):
         return self.__name
 
+    def get_health(self):
+        return self.__health
 
-## don't touch above this line
+    def take_damage(self, damage):
+        self.__health -= damage
 
 
-class Archer(Human):
-    def __init__(self, name, num_arrows):
-        super().__init__(name)
+class Archer(Hero):
+    def __init__(self, name, health, num_arrows):
+        super().__init__(name, health)
+        # ?
         self.__num_arrows = num_arrows
 
-    def get_num_arrows(self):
-        return self.__num_arrows
-
-    def use_arrows(self, num):
-        if self.get_num_arrows() < num:
+    def shoot(self, target):
+        if self.__num_arrows <= 0:
             raise Exception("not enough arrows")
-        self.__num_arrows -= num
 
+        self.__num_arrows -= 1
+        target.take_damage(10)
 
-class Crossbowman(Archer):
-    def __init__(self, name, num_arrows):
-        super().__init__(name, num_arrows)
-
-    def triple_shot(self, target):
-        self.use_arrows(3)
-        return f"{target.get_name()} was shot by 3 crossbow bolts"
