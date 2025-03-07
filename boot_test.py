@@ -1,45 +1,100 @@
 from main import *
 
 run_cases = [
-    (Wall(2, 3, 4), (2, 3, 4, 24)),
-    (Wall(3, 4, 5), (3, 4, 5, 60)),
-    (Wall(4, 5, 6), (4, 5, 6, 120)),
-    (Wall(1, 2, 3), (1, 2, 3, 6)),
+    (
+        Archer("Robin", 2, 2),
+        Archer("Sheriff", 2, 2),
+        1,
+        [("Robin", 1, 1), ("Sheriff", 1, 1)],
+        None,
+    ),
+    (
+        Archer("Friar Tuck", 1, 0),
+        Archer("Prince John", 1, 0),
+        1,
+        [None, None],
+        "Friar Tuck can't shoot",
+    ),
+    (
+        Archer("King Richard", 1, 1),
+        Archer("Prince John", 2, 1),
+        1,
+        [None, None],
+        "King Richard is dead",
+    ),
 ]
 
 submit_cases = run_cases + [
-    (Wall(7, 8, 9), (7, 8, 9, 504)),
-    (Wall(10, 11, 12), (10, 11, 12, 1320)),
-    (Wall(13, 14, 15), (13, 14, 15, 2730)),
-    (Wall(16, 17, 18), (16, 17, 18, 4896)),
-    (Wall(19, 20, 21), (19, 20, 21, 7980)),
-    (Wall(22, 23, 24), (22, 23, 24, 12144)),
+    (
+        Archer("Robin", 2, 2),
+        Archer("Sheriff", 3, 1),
+        2,
+        [None, None],
+        "Sheriff can't shoot",
+    ),
+    (
+        Archer("Marian", 3, 2),
+        Archer("Little John", 3, 3),
+        2,
+        [("Marian", 1, 0), ("Little John", 1, 1)],
+        None,
+    ),
+    (
+        Archer("Robin", 2, 2),
+        Archer("Prince John", 2, 1),
+        2,
+        [None, None],
+        "Prince John is dead",
+    ),
+    (
+        Archer("Little John", 4, 3),
+        Archer("Sheriff", 3, 2),
+        3,
+        [None, None],
+        "Sheriff is dead",
+    ),
 ]
 
 
-def test(wall, expected_output):
+def test(archer_1, archer_2, rounds, expected_result, expected_err):
     print("---------------------------------")
-    expected_depth, expected_height, expected_width, expected_volume = expected_output
+    archer_1.print_status()
+    archer_2.print_status()
+
     try:
-        print(
-            f"Expected Wall - volume: {expected_volume} depth: {expected_depth} height: {expected_height} width: {expected_width}"
-        )
-        print(
-            f"Actual Wall   - volume: {wall.volume} depth: {wall.depth} height: {wall.height} width: {wall.width}"
-        )
-        if (
-            expected_volume == wall.volume
-            and expected_depth == wall.depth
-            and expected_height == wall.height
-            and expected_width == wall.width
-        ):
+        for _ in range(rounds):
+            archer_1.shoot(archer_2)
+            archer_2.print_status()
+            archer_2.shoot(archer_1)
+            archer_1.print_status()
+        archer_2.print_status()
+
+        if expected_err:
+            print(f"\nExpected Exception: {expected_err}")
+            print("Actual: no exception raised")
+            print("Fail")
+            return False
+
+        status_1 = archer_1.get_status()
+        status_2 = archer_2.get_status()
+        print(f"\nExpected Result: {expected_result[0]}, {expected_result[1]}")
+        print(f"Actual Result: {status_1}, {status_2}")
+
+        if status_1 == expected_result[0] and status_2 == expected_result[1]:
             print("Pass")
             return True
-        print("Fail")
-        return False
+        else:
+            print("Fail")
+            return False
     except Exception as e:
-        print(f"Error: {e}")
-        return False
+        print(f"\nExpected Exception: {expected_err}")
+        print(f"Actual Exception: {str(e)}")
+        if str(e) == expected_err:
+            print("Pass")
+            return True
+        else:
+            print("Fail")
+            return False
 
 
 def main():
@@ -52,7 +107,6 @@ def main():
             passed += 1
         else:
             failed += 1
-
     if failed == 0:
         print("============= PASS ==============")
     else:
@@ -68,4 +122,3 @@ if "__RUN__" in globals():
     test_cases = run_cases
 
 main()
-

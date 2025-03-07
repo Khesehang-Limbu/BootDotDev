@@ -1,48 +1,53 @@
 """
 
-Constructors (or Initializers)
-It's rare in the real world to see a class that defines properties the way we've been doing it:
-
-class Soldier:
-    name = "Legolas"
-    armor = 2
-    num_weapons = 2
-
-It's more practical to use a constructor. In Python, if you name a method __init__, that's the constructor and it is called when a new object is created.
-
-So, with a constructor, the code would look like this:
-
-class Soldier:
-    def __init__(self):
-        self.name = "Legolas"
-        self.armor = 2
-        self.num_weapons = 2
-
-Now we can make the starting armor and number of weapons configurable with some parameters!
-
-class Soldier:
-    def __init__(self, name, armor, num_weapons):
-        self.name = name
-        self.armor = armor
-        self.num_weapons = num_weapons
-
-soldier = Soldier("Legolas", 5, 10)
-print(soldier.name)
-# prints "Legolas"
-print(soldier.armor)
-# prints "5"
-print(soldier.num_weapons)
-# prints "10"
-
+Archers
 Assignment
-Add a constructor to our Wall class. It should take depth, height and width as parameters, in that order, and set them as properties. It should also compute an additional property called volume. Volume is the depth times height times width.
+Complete the Archer class.
+
+Constructor
+The constructor should take the following parameters in order and set them as properties:
+
+name
+health
+num_arrows
+get_shot method
+Complete the get_shot method. It operates on the current archer instance.
+
+If the current archer has health left, remove one health from the current archer. Then, if the archer's health is 0, raise the exception: {} is dead where {} is the archer's name.
+
+shoot method
+Finish the shoot method. It takes an Archer instance as the target input.
+
+If the shooter has no arrows left, raise the exception {} can't shoot where {} is the shooter's name. Otherwise, remove an arrow from the shooter and print {1} shoots {2} where {1} is the shooter's name and {2} is the name of the targeted archer. Next, call the target's get_shot() method.
 
 """
 
-class Wall:
-    def __init__(self, depth, height, width):
-        self.depth = depth
-        self.height = height
-        self.width = width
-        self.volume = self.height * self.width * self.depth
+class Archer:
+    def __init__(self, name, health, num_arrows):
+        self.name = name
+        self.health = health
+        self.num_arrows = num_arrows
+
+    def get_shot(self):
+        self.health -= 1
+
+        if self.health == 0:
+            raise Exception(f"{self.name} is dead")
+
+    def shoot(self, target):
+        if self.num_arrows == 0:
+            raise Exception(f"{self.name} can't shoot")
+
+        self.num_arrows -= 1
+        print(f"{self.name} shoots {target.name}")
+        target.get_shot()
+
+
+    # don't touch below this line
+
+    def get_status(self):
+        return self.name, self.health, self.num_arrows
+
+    def print_status(self):
+        print(f"{self.name} has {self.health} health and {self.num_arrows} arrows")
 
