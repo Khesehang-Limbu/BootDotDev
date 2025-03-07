@@ -1,42 +1,55 @@
 """
 
-Abstraction
-Abstraction helps us handle complexity by hiding unnecessary details. Sounds like encapsulation, right? They're so similar that it's almost not worth worrying about the difference...almost.
-
-Abstraction vs. Encapsulation
-Abstraction is about creating a simple interface for complex behavior. It focuses on what's exposed.
-Encapsulation is about hiding internal state. It focuses on tucking implementation details away so no one depends on them.
-Abstraction is more about reducing complexity, encapsulation is more about maintaining the integrity of system internals.
-
-Are We Encapsulating or Abstracting?
-Both. Almost always we are doing both. Here's an example of using the random library to generate a random number:
-
-import random
-
-attack_damage = random.randrange(5)
-
-Generating random numbers is a really hard problem. The operating system uses the physical hardware of the computer to create a seed for the randomness. However, the developers of the random library have abstracted that complexity away and encapsulated it within the simple randrange function. We just say "I want a random number from 0 to 4" and the library does it.
-
-When writing libraries for use by other developers, getting the abstractions right is crucial because changing them later can be disastrous. Imagine if the maintainers of the random module changed the input parameters to the randrange function! It would break code all over the world.
+Sprint
+In the game we're making, Age of Dragons, humans can "sprint" allowing them to move twice as fast. However, sprinting requires __stamina. Each time a human sprints, it loses stamina. Once it is out of stamina, it can no longer sprint.
 
 Assignment
-A Human class and its constructor have already been created for you. We don't want the other game developers using our Human class to have to worry about how humans move. We'll abstract that away from them by encapsulating the private __pos_x, __pos_y, and __speed variables.
+Complete all of the missing methods.
 
-Complete these methods:
+The __raise_if_cannot_sprint() and __use_sprint_stamina() are private methods that are only intended to be used within the class. In your case, you'll use them to build the other four sprinting methods.
 
-move_right(): Adds the human's speed to its x position
-move_left(): Subtracts the human's speed from its x position
-move_up(): Adds the human's speed to its y position
-move_down(): Subtracts the human's speed from its y position
-get_position(): Returns the x position and y position as a tuple
+__raise_if_cannot_sprint()
+This method should raise the exception: not enough stamina to sprint if the human is out of stamina.
+
+__use_sprint_stamina()
+Remove one stamina from the human.
+
+For Each of the Remaining Methods:
+Raise an error if there isn't enough stamina to sprint (use __raise_if_cannot_sprint()).
+Use the stamina needed to sprint (use __use_sprint_stamina())
+Move twice in the direction of the sprint.
 
 """
 
 class Human:
-    def __init__(self, pos_x, pos_y, speed):
-        self.__pos_x = pos_x
-        self.__pos_y = pos_y
-        self.__speed = speed
+    def sprint_right(self):
+        self.__raise_if_cannot_sprint()
+        self.__use_sprint_stamina()
+        self.__pos_x += 2 * self.__speed
+
+    def sprint_left(self):
+        self.__raise_if_cannot_sprint()
+        self.__use_sprint_stamina()
+        self.__pos_x -= 2 * self.__speed
+
+    def sprint_up(self):
+        self.__raise_if_cannot_sprint()
+        self.__use_sprint_stamina()
+        self.__pos_y += 2 * self.__speed
+
+    def sprint_down(self):
+        self.__raise_if_cannot_sprint()
+        self.__use_sprint_stamina()
+        self.__pos_y -= 2 * self.__speed
+
+    def __raise_if_cannot_sprint(self):
+        if self.__stamina == 0:
+            raise Exception("not enough stamina to sprint")
+
+    def __use_sprint_stamina(self):
+        self.__stamina -= 1
+
+    # don't touch below this line
 
     def move_right(self):
         self.__pos_x += self.__speed
@@ -51,5 +64,11 @@ class Human:
         self.__pos_y -= self.__speed
 
     def get_position(self):
-        return (self.__pos_x, self.__pos_y)
+        return self.__pos_x, self.__pos_y
+
+    def __init__(self, pos_x, pos_y, speed, stamina):
+        self.__pos_x = pos_x
+        self.__pos_y = pos_y
+        self.__speed = speed
+        self.__stamina = stamina
 

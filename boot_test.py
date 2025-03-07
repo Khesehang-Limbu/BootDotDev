@@ -1,41 +1,57 @@
 from main import *
 
 run_cases = [
-    (0, 0, 5, "left", -5, 0),
-    (0, 0, 5, "right", 5, 0),
-    (0, 0, 5, "up", 0, 5),
+    ((0, 0, 5, 3), ["sprint_right"], (10, 0, None)),
+    (
+        (0, 0, 20, 3),
+        [
+            "sprint_left",
+            "sprint_left",
+            "sprint_left",
+        ],
+        (-120, 0, None),
+    ),
+    (
+        (1, 1, 3, 1),
+        ["sprint_down", "sprint_right"],
+        (1, -5, "not enough stamina to sprint"),
+    ),
 ]
+
 
 submit_cases = run_cases + [
-    (0, 0, 5, "down", 0, -5),
-    (10, 10, 2, "left", 8, 10),
-    (10, 10, 2, "right", 12, 10),
-    (10, 10, 2, "up", 10, 12),
-    (10, 10, 2, "down", 10, 8),
+    ((3, 5, 5, 1), ["sprint_up"], (3, 15, None)),
+    ((2, 15, 6, 2), ["sprint_down"], (2, 3, None)),
+    (
+        (1, 1, 5, 2),
+        ["sprint_left", "sprint_up", "sprint_down"],
+        (-9, 11, "not enough stamina to sprint"),
+    ),
 ]
 
 
-def test(input1, input2, input3, move_direction, expected_output_x, expected_output_y):
+def test(human_args, methods, expected_output):
     print("---------------------------------")
     print(f"Inputs:")
-    print(f" * pos_x: {input1}")
-    print(f" * pos_y: {input2}")
-    print(f" * speed: {input3}")
-    print(f" * move_direction: {move_direction}")
-    expected_output = (expected_output_x, expected_output_y)
-    print(f"Expecting: {expected_output}")
-    human = Human(input1, input2, input3)
-    if move_direction == "left":
-        human.move_left()
-    elif move_direction == "right":
-        human.move_right()
-    elif move_direction == "up":
-        human.move_up()
-    elif move_direction == "down":
-        human.move_down()
-    result = human.get_position()
-    print(f"Actual: {result}")
-    if result == expected_output:
+    human = Human(*human_args)
+    print(f" * human({human_args})")
+    print(f" * methods: {methods}")
+    expected_x, expected_y, expected_error = expected_output
+    print(f"Expected: x: {expected_x}, y: {expected_y}, error: {expected_error}")
+    try:
+        for method in methods:
+            getattr(human, method)()
+        actual_x, actual_y = human.get_position()
+        actual_err = None
+    except Exception as e:
+        actual_x, actual_y = human.get_position()
+        actual_err = str(e)
+    print(f"Actual: x: {actual_x}, y: {actual_y}, error: {actual_err}")
+    if (
+        actual_x == expected_x
+        and actual_y == expected_y
+        and actual_err == expected_error
+    ):
         print("Pass")
         return True
     print("Fail")
