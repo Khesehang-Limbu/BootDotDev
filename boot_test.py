@@ -1,26 +1,31 @@
 from main import *
 
-run_cases = [
-    ([0, 20, 30], [20, 30]),
-    ([10, 0, 40, 0], [10, 40]),
-]
+run_cases = [(Wall, 10, 5)]
 
 submit_cases = run_cases + [
-    ([], []),
-    ([3, 2, 3], [3, 2, 3]),
+    (Wall, 10, 5),
+    (Wall, 10, 5),
+    (Wall, 10, 5),
+    (Wall, 10, 5),
+    (Wall, 10, 5),
+    (Wall, 10, 5),
 ]
 
 
-def test(input1, expected_output):
+def test(class_instance, expected_armor, expected_height):
     print("---------------------------------")
-    print(f"Input: {input1}")
-    print(f"expecting: {expected_output}")
+    print(f"Inputs: {class_instance}, {expected_armor}, {expected_height}")
     try:
-        result = destroy_walls(input1)
-        print(f"actual: {result}")
-        if str(result) != str(expected_output):
-            return False
-        return True
+        instance = class_instance()
+        actual_armor = instance.armor
+        actual_height = instance.height
+        print(f"Expecting: armor={expected_armor}, height={expected_height}")
+        print(f"Actual: armor={actual_armor}, height={actual_height}")
+        if actual_armor == expected_armor and actual_height == expected_height:
+            print("Pass")
+            return True
+        print("Fail")
+        return False
     except Exception as e:
         print(f"Error: {e}")
         return False
@@ -34,10 +39,8 @@ def main():
         correct = test(*test_case)
         if correct:
             passed += 1
-            print("Pass")
         else:
             failed += 1
-            print("Fail")
     if failed == 0:
         print("============= PASS ==============")
     else:

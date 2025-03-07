@@ -1,21 +1,44 @@
 """
 
-What Is Object-Oriented Programming?
-Object-Oriented Programming, or "OOP", is a pattern for writing clean and maintainable code. Not everyone agrees that object-oriented principles are the best way to write code, but, to be a good engineer, you should at least understand them.
+Classes
+A class is a special type of value in an object-oriented programming language like Python. It's similar to a dictionary in that it usually stores other types inside itself.
 
-In this course, we'll be coding the pieces of a real-time strategy game called "Age of Dragons". Players control armies of people, elves, orcs, and dragons and battle each other. It's similar to Age of Empires or StarCraft.
+# Defines a new class called "Soldier"
+class Soldier:
+    health = 5
+    armor = 3
+    damage = 2
+
+Just like a string, integer or float, a class is a type, but instead of being a built-in type, your classes are custom types that you define.
+
+An object is just an instance of a class type. For example:
+
+health = 50
+# health is an instance of an integer type
+aragorn = Soldier()
+# aragorn is an instance of the Soldier type (class)
+
+"Classes" are custom new types that we define as the programmer. Each new instance of a class is an "object".
+
+Example
+class Archer:
+    health = 40
+    arrows = 10
+
+# Create several instances of the Archer class
+legolas = Archer()
+bard = Archer()
+
+# Print class properties
+print(legolas.health) # 40
+print(bard.arrows) # 10
 
 Assignment
-One of the greatest sins when trying to write "clean code" is using misleading names for your variables and functions. Take a look at the destroy_wall function. Based on its name, you might assume that it destroys a single wall, but if you look closely, you'll see that it handles multiple walls.
-
-The test suite expects a different function name. Take a look at the main_test.py file to see what it's looking for, and rename the function accordingly.
-
-Additionally, try to rename the variables inside the function to be more descriptive. After passing the tests, take a look at the solution to see how we named everything.
+Create a class called Wall on line 1. It should have a property called armor that is initialized to 10 and a height that starts at 5.
 
 """
 
-def destroy_walls(wall_healths):
-    for w in wall_healths:
-        if w <= 0:
-            wall_healths.remove(w)
-    return wall_healths
+class Wall:
+    armor = 10
+    height = 5
+
