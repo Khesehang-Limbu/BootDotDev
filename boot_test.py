@@ -1,123 +1,48 @@
 from main import *
 
 run_cases = [
-    ("shuffle_deck", 3, [("9", "Hearts"), ("Jack", "Clubs"), ("10", "Spades")]),
-    (
-        "deal_card",
-        4,
-        [("King", "Spades"), ("Queen", "Spades"), ("Jack", "Spades"), ("10", "Spades")],
-    ),
-    ("deal_card", 3, [("King", "Spades"), ("Queen", "Spades"), ("Jack", "Spades")]),
+    ("Faramir", "Human", None),
+    ("Bard", "Archer", 1),
 ]
 
 submit_cases = run_cases + [
-    ("shuffle_deck", 3, [("9", "Hearts"), ("Jack", "Clubs"), ("10", "Spades")]),
-    (
-        "deal_card",
-        4,
-        [("King", "Spades"), ("Queen", "Spades"), ("Jack", "Spades"), ("10", "Spades")],
-    ),
-    ("deal_card", 3, [("King", "Spades"), ("Queen", "Spades"), ("Jack", "Spades")]),
-    ("shuffle_deck", 3, [("9", "Hearts"), ("Jack", "Clubs"), ("10", "Spades")]),
-    ("deal_card", 3, [("King", "Spades"), ("Queen", "Spades"), ("Jack", "Spades")]),
-    (
-        "deal_card",
-        53,
-        [
-            ("King", "Spades"),
-            ("Queen", "Spades"),
-            ("Jack", "Spades"),
-            ("10", "Spades"),
-            ("9", "Spades"),
-            ("8", "Spades"),
-            ("7", "Spades"),
-            ("6", "Spades"),
-            ("5", "Spades"),
-            ("4", "Spades"),
-            ("3", "Spades"),
-            ("2", "Spades"),
-            ("Ace", "Spades"),
-            ("King", "Clubs"),
-            ("Queen", "Clubs"),
-            ("Jack", "Clubs"),
-            ("10", "Clubs"),
-            ("9", "Clubs"),
-            ("8", "Clubs"),
-            ("7", "Clubs"),
-            ("6", "Clubs"),
-            ("5", "Clubs"),
-            ("4", "Clubs"),
-            ("3", "Clubs"),
-            ("2", "Clubs"),
-            ("Ace", "Clubs"),
-            ("King", "Diamonds"),
-            ("Queen", "Diamonds"),
-            ("Jack", "Diamonds"),
-            ("10", "Diamonds"),
-            ("9", "Diamonds"),
-            ("8", "Diamonds"),
-            ("7", "Diamonds"),
-            ("6", "Diamonds"),
-            ("5", "Diamonds"),
-            ("4", "Diamonds"),
-            ("3", "Diamonds"),
-            ("2", "Diamonds"),
-            ("Ace", "Diamonds"),
-            ("King", "Hearts"),
-            ("Queen", "Hearts"),
-            ("Jack", "Hearts"),
-            ("10", "Hearts"),
-            ("9", "Hearts"),
-            ("8", "Hearts"),
-            ("7", "Hearts"),
-            ("6", "Hearts"),
-            ("5", "Hearts"),
-            ("4", "Hearts"),
-            ("3", "Hearts"),
-            ("2", "Hearts"),
-            ("Ace", "Hearts"),
-            None,
-        ],
-    ),
+    ("Legolas", "Archer", 5),
+    ("Boromir", "Human", None),
+    ("Aragorn", "Human", None),
+    ("Gimli", "Human", None),
+    ("Frodo", "Human", None),
+    ("Robin", "Archer", 10),
 ]
 
 
-def test(action, num_cards, expected):
+def test(name, type, num_arrows):
     print("---------------------------------")
-    print(f"Testing action: {action}, dealing {num_cards} cards")
-    print(f"Expected Output:")
-    print_cards(expected)
-    deck = DeckOfCards()
-    random.seed(1)
-    result = []
-
-    if action == "shuffle_deck":
-        print("Shuffling deck...")
-        deck.shuffle_deck()
-        print(f"dealing {num_cards} cards")
-        for _ in range(num_cards):
-            result.append(deck.deal_card())
-
-    elif action == "deal_card":
-        for _ in range(num_cards):
-            result.append(deck.deal_card())
-
-    print(f"Actual Output:")
-    print_cards(result)
-    if result == expected:
-        print("Pass")
-        return True
-    else:
+    print(f"Name: {name} | type: {type} | num_arrows: {num_arrows}")
+    try:
+        if type == "Human":
+            human = Human(name)
+            print(f"Expecting Human: {name}")
+            print(f"Actual: {human.get_name()}")
+            if human.get_name() == name:
+                print("Pass")
+                return True
+            else:
+                print("Fail")
+                return False
+        else:
+            archer = Archer(name, num_arrows)
+            print(f"Expecting Archer: {name} with {num_arrows} arrows")
+            print(f"Actual: {archer.get_name()} with {archer.get_num_arrows()} arrows")
+            if archer.get_name() == name and archer.get_num_arrows() == num_arrows:
+                print("Pass")
+                return True
+            else:
+                print("Fail")
+                return False
+    except Exception as e:
+        print(f"Error: {e}")
         print("Fail")
         return False
-
-
-def print_cards(cards):
-    for card in cards:
-        if card is None:
-            print("* <None>")
-        else:
-            print(f"* {card[0]} of {card[1]}")
 
 
 def main():

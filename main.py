@@ -1,65 +1,59 @@
 """
 
-Deck of Cards
+Inheritance
+We've made it to the holy grail of object-oriented programming: inheritance. Non-OOP languages like Go and Rust allow for encapsulation and abstraction features as nearly every language does. Inheritance, on the other hand, tends to be unique to class-based languages like Python, Java, and Ruby.
+
+What Is Inheritance?
+Inheritance allows one class, the "child" class, to inherit the properties and methods of another class, the "parent" class.
+
+This powerful language feature helps us avoid writing a lot of the same code twice. It allows us to DRY (don't repeat yourself) up our code.
+
+Syntax
+Here Cow is a "child" class that inherits from the "parent" class Animal:
+
+class Animal:
+    # parent "Animal" class
+
+class Cow(Animal):
+    # child class "Cow" inherits "Animal"
+
+The Cow class can reuse the Animal class's constructor with the super() method, super() allows the child class to call methods and constructors from its parent class, in this case, __init__():
+
+class Animal:
+    def __init__(self, num_legs):
+        self.num_legs = num_legs
+
+class Cow(Animal):
+    def __init__(self, num_udders):
+        # call the parent constructor to give the cow some legs
+        super().__init__(4)
+
+        # set cow specific properties
+        self.num_udders = num_udders
+
 Assignment
-Finish the DeckOfCards class. The SUITS and RANKS of each card have been provided for you as class variables. You won't need to modify them, but you will need to use them.
+In Age of Dragons, all the archers are humans, but not all humans are necessarily archers. All humans have a name, but only archers have a __num_arrows property.
 
-Constructor
-Initialize a private empty list called cards.
-Fill that empty list by calling the create_deck method within the constructor.
-create_deck(self)
-This method should create a (Rank, Suit) tuple for all 52 cards in the deck and append them to the cards list.
-
-Order matters! The cards should be appended to the list in the following order: all ranks of hearts, then diamonds, then clubs, and finally spades. Within each suit, the cards should be ordered from lowest rank (Ace) to highest rank (King).
-
-shuffle_deck(self)
-This method should use the random.shuffle() method (available from the random package) to shuffle the cards in the deck.
-
-deal_card(self)
-This method should .pop() the first card off the top of the deck (top of the deck is the end of the list) and return it. If there are no cards left in the deck the method should instead return None.
+Complete the Archer class. It should inherit the Human class. In its constructor it should call its parent's constructor, then also set its unique __num_arrows property.
 
 """
 
-import random
+class Human:
+    def __init__(self, name):
+        self.__name = name
+
+    def get_name(self):
+        return self.__name
 
 
-class DeckOfCards:
-    SUITS = ["Hearts", "Diamonds", "Clubs", "Spades"]
-    RANKS = [
-        "Ace",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "Jack",
-        "Queen",
-        "King",
-    ]
+## don't touch above this line
 
-    def __init__(self):
-        self.__cards = []
-        self.create_deck()
 
-    def create_deck(self):
-        for suit in DeckOfCards.SUITS:
-            for rank in DeckOfCards.RANKS:
-                self.__cards.append((rank, suit))
+class Archer(Human):
+    def __init__(self, name, num_arrows):
+        super().__init__(name)
+        self.__num_arrows = num_arrows
 
-    def shuffle_deck(self):
-        random.shuffle(self.__cards)
+    def get_num_arrows(self):
+        return self.__num_arrows
 
-    def deal_card(self):
-        if len(self.__cards) == 0:
-            return None
-        last_card = self.__cards.pop()
-        return last_card
-
-    # don't touch below this line
-
-    def __str__(self):
-        return f"The deck has {len(self.__cards)} cards"
