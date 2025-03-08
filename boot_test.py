@@ -2,98 +2,68 @@ from main import *
 
 run_cases = [
     (
-        Wizard("Harry", 30, 70),
-        Archer("Pericles", 100, 3),
-        ["cast", "shoot", "shoot"],
-        [10, 75],
-    ),
-    (
-        Wizard("Ron", 50, 90),
-        Archer("Odysseus", 80, 2),
-        ["shoot", "shoot", "shoot", "cast"],
-        [None, None],
-        "not enough arrows",
+        [Unit("Cian", 3, 3), Unit("Andrew", -1, 4), Unit("Baran", -6, 5)],
+        Dragon("Draco", 2, 2, 3),
+        2,
+        3,
+        ["Cian", "Andrew"],
     ),
 ]
 
 submit_cases = run_cases + [
-    (Wizard("Hermoine", 45, 25), Archer("Achilles", 60, 1), ["cast"], [45, 35]),
     (
-        Wizard("Dumbledore", 100, 150),
-        Archer("Hercules", 120, 4),
-        ["shoot"],
-        [90, 120],
+        [
+            Unit("Carbry", 2, 1),
+            Unit("Yvor", 1, 0),
+            Unit("Eoin", 2, 0),
+            Unit("Edwin", 10, 10),
+        ],
+        Dragon("Fafnir", 1, 1, 1),
+        1,
+        1,
+        ["Carbry", "Yvor", "Eoin"],
     ),
     (
-        Wizard("Snape", 80, 24),
-        Archer("Theseus", 70, 3),
-        ["cast"],
-        [None, None],
-        "not enough mana",
+        [Unit("Nicholas", 0, 1), Unit("Andrew", -1, 4), Unit("Baran", -6, 5)],
+        Dragon("Hydra", 0, 0, 2),
+        0,
+        1,
+        ["Nicholas"],
     ),
     (
-        Wizard("Luna", 65, 49),
-        Archer("Paris", 85, 2),
-        ["cast", "shoot", "shoot", "cast"],
-        [None, None],
-        "not enough mana",
-    ),
-    (
-        Wizard("Neville", 55, 45),
-        Archer("Hector", 75, 3),
-        ["shoot", "cast"],
-        [45, 50],
+        [
+            Unit("Yvor", 1, 0),
+            Unit("Nicholas", 0, 1),
+            Unit("Eoin", 2, 0),
+            Unit("Cian", 3, 3),
+            Unit("Andrew", -1, 4),
+            Unit("Baran", -6, 5),
+            Unit("Carbry", 2, 1),
+        ],
+        Dragon("Smaug", 6, 6, 2),
+        1,
+        1,
+        ["Yvor", "Nicholas", "Eoin", "Cian", "Carbry"],
     ),
 ]
 
 
-def test(wizard, archer, actions, expected_result, expected_err=None):
+def test(units, dragon, x_target, y_target, expected_hit_units):
     print("---------------------------------")
-    print(f"Inputs:")
-    print(f" * Wizard: {wizard.get_name()}, HP: {wizard.get_health()}")
-    print(f" * Archer: {archer.get_name()}, HP: {archer.get_health()}")
-    print(f"Actions: {actions}")
-
-    try:
-        for action in actions:
-            if action == "cast":
-                print(f"{wizard.get_name()} casts a spell at {archer.get_name()}")
-                wizard.cast(archer)
-            elif action == "shoot":
-                print(f"{archer.get_name()} shoots an arrow at {wizard.get_name()}")
-                archer.shoot(wizard)
-
-        if expected_err:
-            print(f"Expected Exception: {expected_err}")
-            print("Actual: no exception raised")
-            print("Fail")
-            return False
-
-        wizard_hp = wizard.get_health()
-        archer_hp = archer.get_health()
-        print(
-            f"Expected: {wizard.get_name()} HP: {expected_result[0]}, {archer.get_name()} HP: {expected_result[1]}"
-        )
-        print(
-            f"Actual: {wizard.get_name()} HP: {wizard_hp}, {archer.get_name()} HP: {archer_hp}"
-        )
-
-        if wizard_hp == expected_result[0] and archer_hp == expected_result[1]:
-            print("Pass")
-            return True
-        else:
-            print("Fail")
-            return False
-
-    except Exception as e:
-        print(f"Expected Exception: {expected_err}")
-        print(f"Actual Exception: {str(e)}")
-        if str(e) == expected_err:
-            print("Pass")
-            return True
-        else:
-            print("Fail")
-            return False
+    print(f"Testing Dragon {dragon.name} at ({dragon.pos_x}, {dragon.pos_y})")
+    for unit in units:
+        print(f"Unit {unit.name} at ({unit.pos_x}, {unit.pos_y})")
+    print(f"Breathing fire at ({x_target}, {y_target})")
+    print(f"Expecting hit units: {expected_hit_units}")
+    hit_units = dragon.breathe_fire(x_target, y_target, units)
+    hit_unit_names = [unit.name for unit in hit_units]
+    print(f"Actual hit units: {hit_unit_names}")
+    if set(hit_unit_names) == set(expected_hit_units):
+        print("Pass")
+        return True
+    else:
+        print("Fail")
+        return False
 
 
 def main():
@@ -121,4 +91,3 @@ if "__RUN__" in globals():
     test_cases = run_cases
 
 main()
-
