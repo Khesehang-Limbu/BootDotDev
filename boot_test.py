@@ -1,40 +1,49 @@
 from main import *
 
 run_cases = [
-    ((2, 4), 8, 12),
-    ((5,), 25, 20),
+    (Siege(100, 10), 100, 4, 40, None),
+    (BatteringRam(100, 10, 2000, 5), 100, 5, 70, 10),
+    (Catapult(100, 10, 2), 100, 6, 60, 2),
 ]
 
 submit_cases = run_cases + [
-    ((1, 1), 1, 4),
-    ((3, 4), 12, 14),
-    ((6, 7), 42, 26),
-    ((8,), 64, 32),
-    ((9, 10), 90, 38),
+    (Siege(60, 5), 100, 2, 40, None),
+    (BatteringRam(80, 5, 2000, 4), 100, 4, 100, 8),
+    (Catapult(90, 4, 3), 100, 10, 250, 3),
 ]
 
 
-def test(inputs, expected_area, expected_perimeter):
-    print("---------------------------------")
-    if len(inputs) == 2:  # Rectangle
-        shape = Rectangle(*inputs)
-        shape_type = "Rectangle"
-    else:  # Square
-        shape = Square(inputs[0])
-        shape_type = "Square"
-
-    print(f"Testing {shape_type} with inputs {inputs}")
-    area = shape.get_area()
-    perimeter = shape.get_perimeter()
-    print(f"Expected area: {expected_area}, Actual area: {area}")
-    print(f"Expected perimeter: {expected_perimeter}, Actual perimeter: {perimeter}")
-
-    if area != expected_area or perimeter != expected_perimeter:
+def test(vehicle, distance, fuel_price, expected_cost, expected_cargo_volume):
+    try:
+        vehicle_type = vehicle.__class__.__name__
+        print("---------------------------------")
+        print(
+            f"Testing {vehicle_type}: Max Speed {vehicle.max_speed} kph, Efficiency {vehicle.efficiency} km/food"
+        )
+        print(f"Distance: {distance} km, Price: {fuel_price} per food")
+        print(
+            f"Expected: Trip Cost: {expected_cost}, Cargo Volume: {expected_cargo_volume}"
+        )
+        actual_cost = int(vehicle.get_trip_cost(distance, fuel_price))
+        actual_cargo_volume = vehicle.get_cargo_volume()
+        if actual_cargo_volume is not None:
+            actual_cargo_volume = int(actual_cargo_volume)
+        print(
+            f"  Actual: Trip Cost: {actual_cost}, Cargo Volume: {actual_cargo_volume}"
+        )
+        if (
+            actual_cost == expected_cost
+            and expected_cargo_volume == actual_cargo_volume
+        ):
+            print("Pass")
+            return True
+        else:
+            print("Fail")
+            return False
+    except Exception as e:
+        print(f"Error: {e}")
         print("Fail")
         return False
-    else:
-        print("Pass")
-        return True
 
 
 def main():

@@ -1,27 +1,71 @@
 """
 
-Rectangles
-You discovered that to properly calculate army formations in the game, you needed to be able to get the area and perimeter of squares and rectangles of various sizes.
+Caravan
+Siege weapons (battering rams, catapults, etc.) are special units in Age of Dragons. Let's write the logic for how they move around the map.
 
 Challenge
-Finish implementing the empty methods of the Rectangle and Square classes. All squares are rectangles, but not all rectangles are squares.
+Complete the Siege, BatteringRam, and Catapult classes.
 
-Note: Due to inheritance of methods, the Square class should only need to implement the __init__ method.
+Siege Class
+Complete the constructor. It accepts two parameters (in order) and sets them as instance variables with the same name:
+
+Set max_speed
+Set efficiency
+Complete the get_trip_cost() method. It calculates the cost of a trip and returns it. The formula for calculating the cost is:
+
+(distance / efficiency) * food_price
+
+It costs food to move siege weapons, those things are heavy!
+
+Leave the get_cargo_volume() method as empty. Use the pass keyword. Child classes will override this method.
+BatteringRam Class
+Complete the constructor. It calls the parent constructor, then sets the extra battering-ram-only instance variables as member variables.
+The get_trip_cost() method uses the parent method to calculate the cost of food for a trip, plus the extra cost of carrying a load. The formula for calculating the cost:
+base_cost + (load_weight * 0.01)
+
+The get_cargo_volume() method calculates and returns the cargo capacity in cubic meters. To get the volume of the battering-ram's 'bed' (cargo area), multiply its area by its depth, which is always 2 meters.
+Catapult Class
+The constructor calls the parent constructor, then sets the extra catapult-only instance variable as a member variable.
+Do not override the get_trip_cost() method. It's inherited from the parent class.
+The get_cargo_volume() method just returns the cargo capacity of the catapult. This is already set by the constructor.
 
 """
 
-class Rectangle:
-    def __init__(self, length, width):
-        self.length = length
-        self.width = width
+class Siege:
+    def __init__(self, max_speed, efficiency):
+        self.max_speed = max_speed
+        self.efficiency = efficiency
 
-    def get_area(self):
-        return self.length * self.width
+    def get_trip_cost(self, distance, food_price):
+        return (distance/self.efficiency) * food_price
 
-    def get_perimeter(self):
-        return 2*(self.length + self.width)
+    def get_cargo_volume(self):
+        pass
 
 
-class Square(Rectangle):
-    def __init__(self, length):
-        super().__init__(length, length)
+class BatteringRam(Siege):
+    def __init__(
+        self,
+        max_speed,
+        efficiency,
+        load_weight,
+        bed_area,
+    ):
+        super().__init__(max_speed, efficiency)
+        self.load_weight = load_weight
+        self.bed_area = bed_area
+
+    def get_trip_cost(self, distance, food_price):
+        return super().get_trip_cost(distance, food_price) + (self.load_weight * 0.01)
+
+    def get_cargo_volume(self):
+        return self.bed_area * 2
+
+
+class Catapult(Siege):
+    def __init__(self, max_speed, efficiency, cargo_volume):
+        super().__init__(max_speed, efficiency)
+        self.cargo_volume = cargo_volume
+
+    def get_cargo_volume(self):
+        return self.cargo_volume
