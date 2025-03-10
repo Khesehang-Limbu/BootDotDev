@@ -1,27 +1,55 @@
 """
 
-Check If Rectangles Overlap
-overlap
+Bringing It Together in the Dragon Class
+Let's bring all we've done together in the Dragon class. The Dragon class should override the Unit class's in_area method. Instead of checking if the center position of the Dragon is in the given area, we'll check if its big dragon body overlaps with the given area.
+
+Methods in parent classes often use pass to signal they should be overridden in child classes. To override, create a method with the same name in the child class.
 
 Assignment
-Let's write the overlaps() method. It should check if this rectangle overlaps a given rectangle, rect. Return True if this rectangle overlaps any part of rect, including just touching sides, or False otherwise.
+First, complete the Dragon's constructor. The dragon needs one more private data member: __hit_box. The hitbox is a Rectangle object. You've been provided with the height, width, and center position (pos_x, pos_y) of the dragon.
 
-Here are four conditions that must all be True if this rectangle (A) overlaps or touches rect (B):
+Example Hitbox
+hitbox
 
-A's left side is on or to the left of B's right side
-A's right side is on or to the right of B's left side
-A's top side is on or above B's bottom side
-A's bottom side is on or below B's top side
+in_area() method()
+Next, you'll need to override the in_area method that the Dragon class inherited from the Unit class. In the Dragon class' in_area method, create a new rectangle object with the given corner positions, and use the rectangle's overlaps method to check if the Dragon's self.__hit_box is inside it. This method should return a boolean value.
+
 
 """
 
+class Unit:
+    def __init__(self, name, pos_x, pos_y):
+        self.name = name
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+
+    def in_area(self, x1, y1, x2, y2):
+        pass
+
+
+class Dragon(Unit):
+    def __init__(self, name, pos_x, pos_y, height, width, fire_range):
+        super().__init__(name, pos_x, pos_y)
+        self.fire_range = fire_range
+        self.height = height
+        self.width = width
+        self.__hit_box = Rectangle(pos_x-(width/2), pos_y-(height/2), pos_x+(width/2), pos_y+(height/2))
+
+    def in_area(self, x1, y1, x2, y2):
+        return self.__hit_box.overlaps(Rectangle(x1, y1, x2, y2))
+
+
+# Don't touch below this line
+
+
 class Rectangle:
     def overlaps(self, rect):
-        if self.get_left_x() <= rect.get_right_x() and self.get_right_x() >= rect.get_left_x() and self.get_top_y() >= rect.get_bottom_y() and self.get_bottom_y() <= rect.get_top_y():
-            return True
-        return False
-
-    # don't touch below this line
+        return (
+            self.get_left_x() <= rect.get_right_x()
+            and self.get_right_x() >= rect.get_left_x()
+            and self.get_top_y() >= rect.get_bottom_y()
+            and self.get_bottom_y() <= rect.get_top_y()
+        )
 
     def __init__(self, x1, y1, x2, y2):
         self.__x1 = x1
@@ -48,6 +76,3 @@ class Rectangle:
         if self.__y1 < self.__y2:
             return self.__y1
         return self.__y2
-
-    def __repr__(self):
-        return f"Rectangle({self.__x1}, {self.__y1}, {self.__x2}, {self.__y2})"

@@ -1,34 +1,38 @@
 from main import *
 
 run_cases = [
-    (Rectangle(0, 0, 4, 4), Rectangle(3, 3, 6, 6), True),
-    (Rectangle(0, 0, 4, 4), Rectangle(5, 5, 8, 8), False),
-    (Rectangle(1, 1, 2, 2), Rectangle(2, 3, 3, 4), False),
+    (Dragon("Green Dragon", -1, -2, 1, 2, 1), -2, -3, 0, 0, True),
+    (Dragon("Red Dragon", 2, 2, 2, 2, 2), 0, 1, 1, 0, True),
+    (Dragon("Blue Dragon", 4, -3, 2, 1, 1), -5, -5, 5, 5, True),
+    (Dragon("Silver Dragon", 0, 0, 5, 5, 10), 4, 0, 5, 1, False),
+    (Dragon("Gold Dragon", 0, 0, 5, 5, 10), 4, 0, 5, 1, False),
+    (Dragon("Gold Dragon", 0, 0, 20, 20, 20), 10, 10, 20, 20, True),
 ]
 
 submit_cases = run_cases + [
-    (Rectangle(0, 0, 4, 4), Rectangle(4, 4, 8, 8), True),
-    (Rectangle(6, 6, 9, 9), Rectangle(5, 5, 8, 8), True),
-    (Rectangle(0, 0, 1, 1), Rectangle(4, 4, 5, 5), False),
-    (Rectangle(1, 1, 4, 4), Rectangle(2, 2, 3, 3), True),
-    (Rectangle(1, 1, 2, 2), Rectangle(0, 0, 4, 4), True),
+    (Dragon("Green Dragon", -1, -2, 1, 2, 1), -3, -3, -1, -1, True),
+    (Dragon("Red Dragon", 2, 2, 2, 2, 2), 5, 5, 10, 10, False),
+    (Dragon("Blue Dragon", 4, -3, 2, 1, 1), 0, 0, 10, 10, False),
+    (Dragon("Black Dragon", 5, -1, 3, 2, 2), -10, -10, 10, 10, True),
+    (Dragon("White Dragon", 0, 0, 1, 1, 1), -1, -1, 1, 1, True),
 ]
 
 
-def test(rect1, rect2, expected_overlap):
+def test(dragon, input1, input2, input3, input4, expected_output):
     print("---------------------------------")
-    print(f"Overlap: {rect1} and {rect2}")
-    print(f" - Expected overlap: {expected_overlap}")
-
-    result = rect1.overlaps(rect2)
-    print(f" - Actual overlap: {result}")
-
-    if result == expected_overlap:
+    print(f"Inputs:")
+    print(
+        f" * Dragon position and size: {dragon.pos_x}, {dragon.pos_y}, {dragon.height}, {dragon.width}"
+    )
+    print(f" * Area corners: ({input1}, {input2}), ({input3}, {input4})")
+    print(f"Expected in area: {expected_output}")
+    result = dragon.in_area(input1, input2, input3, input4)
+    print(f"  Actual in area: {result}")
+    if result == expected_output:
         print("Pass")
         return True
-    else:
-        print("Fail")
-        return False
+    print("Fail")
+    return False
 
 
 def main():
