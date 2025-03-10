@@ -1,78 +1,74 @@
 """
 
-Bringing It Together in the Dragon Class
-Let's bring all we've done together in the Dragon class. The Dragon class should override the Unit class's in_area method. Instead of checking if the center position of the Dragon is in the given area, we'll check if its big dragon body overlaps with the given area.
+Operator Overloading
+Another kind of built-in polymorphism in Python is the ability to override how an operator works. For example, the + operator works for built-in types like integers and strings.
 
-Methods in parent classes often use pass to signal they should be overridden in child classes. To override, create a method with the same name in the child class.
+print(3 + 4)
+# prints "7"
+
+print("three " + "four")
+# prints "three four"
+
+Custom classes on the other hand don't have any built-in support for those operators:
+
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+p1 = Point(4, 5)
+p2 = Point(2, 3)
+p3 = p1 + p2
+# TypeError: unsupported operand type(s) for +: 'Point' and 'Point'
+
+However, we can add our own support! If we create an __add__(self, other) method on our class, the Python interpreter will use it when instances of the class are being added with the + operator. Here's an example:
+
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, point):
+        x = self.x + point.x
+        y = self.y + point.y
+        return Point(x, y)
+
+p1 = Point(4, 5)
+p2 = Point(2, 3)
+p3 = p1 + p2
+# p3 is (6, 8)
+
+Now, when p1 + p2 is executed, under the hood the Python interpreter just calls p1.__add__(p2).
 
 Assignment
-First, complete the Dragon's constructor. The dragon needs one more private data member: __hit_box. The hitbox is a Rectangle object. You've been provided with the height, width, and center position (pos_x, pos_y) of the dragon.
+In Age of Dragons, players can upgrade their weaponry. To make "crafting" simple for other developers, we'll use operator overloading on the Sword class. Note how the test suite attempts to use the + operator to craft the swords. Overload the + operator to craft the swords.
 
-Example Hitbox
-hitbox
+Create an __add__(self, other) method on the Sword class. It will be used to "craft" two swords together to create a new sword. Return a new Sword instance. sword_type is just a string, one of:
 
-in_area() method()
-Next, you'll need to override the in_area method that the Dragon class inherited from the Unit class. In the Dragon class' in_area method, create a new rectangle object with the given corner positions, and use the rectangle's overlaps method to check if the Dragon's self.__hit_box is inside it. This method should return a boolean value.
+bronze
 
+iron
+
+steel
+
+If two "bronze" swords are crafted together, return a new "iron" sword.
+
+If two "iron" swords are crafted together, return a new "steel" sword.
+
+If a player tries to craft anything other than 2 bronze swords or 2 iron swords, just raise an Exception with the message "cannot craft".
 
 """
 
-class Unit:
-    def __init__(self, name, pos_x, pos_y):
-        self.name = name
-        self.pos_x = pos_x
-        self.pos_y = pos_y
+class Sword:
+    def __init__(self, sword_type):
+        self.sword_type = sword_type
 
-    def in_area(self, x1, y1, x2, y2):
-        pass
+    def __add__(self, other):
+        if self.sword_type == other.sword_type and self.sword_type == "bronze":
+            return Sword("iron")
+        elif self.sword_type == other.sword_type and self.sword_type == "iron":
+            return Sword("steel")
+        else:
+            raise Exception("cannot craft")
 
-
-class Dragon(Unit):
-    def __init__(self, name, pos_x, pos_y, height, width, fire_range):
-        super().__init__(name, pos_x, pos_y)
-        self.fire_range = fire_range
-        self.height = height
-        self.width = width
-        self.__hit_box = Rectangle(pos_x-(width/2), pos_y-(height/2), pos_x+(width/2), pos_y+(height/2))
-
-    def in_area(self, x1, y1, x2, y2):
-        return self.__hit_box.overlaps(Rectangle(x1, y1, x2, y2))
-
-
-# Don't touch below this line
-
-
-class Rectangle:
-    def overlaps(self, rect):
-        return (
-            self.get_left_x() <= rect.get_right_x()
-            and self.get_right_x() >= rect.get_left_x()
-            and self.get_top_y() >= rect.get_bottom_y()
-            and self.get_bottom_y() <= rect.get_top_y()
-        )
-
-    def __init__(self, x1, y1, x2, y2):
-        self.__x1 = x1
-        self.__y1 = y1
-        self.__x2 = x2
-        self.__y2 = y2
-
-    def get_left_x(self):
-        if self.__x1 < self.__x2:
-            return self.__x1
-        return self.__x2
-
-    def get_right_x(self):
-        if self.__x1 > self.__x2:
-            return self.__x1
-        return self.__x2
-
-    def get_top_y(self):
-        if self.__y1 > self.__y2:
-            return self.__y1
-        return self.__y2
-
-    def get_bottom_y(self):
-        if self.__y1 < self.__y2:
-            return self.__y1
-        return self.__y2
