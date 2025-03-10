@@ -1,35 +1,51 @@
 from main import *
 
+SUITS = ["Clubs", "Diamonds", "Hearts", "Spades"]
+
+RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+
 run_cases = [
-    (Dragon("Smaug", "red"), "I am Smaug, the red dragon"),
-    (Dragon("Saphira", "blue"), "I am Saphira, the blue dragon"),
+    ("Ace", "Hearts", "Queen", "Hearts", False, True),
+    ("2", "Spades", "2", "Hearts", False, True),
 ]
 
 submit_cases = run_cases + [
-    (Dragon("Nefarian", "black"), "I am Nefarian, the black dragon"),
-    (Dragon("Toothless", "blackish"), "I am Toothless, the blackish dragon"),
-    (Dragon("", "colorless"), "I am , the colorless dragon"),
-    (Dragon("Glaurung", "gold"), "I am Glaurung, the gold dragon"),
-    (Dragon("Fafnir", "green"), "I am Fafnir, the green dragon"),
+    ("Ace", "Spades", "Ace", "Spades", True, False),
+    ("3", "Diamonds", "7", "Clubs", False, False),
+    ("King", "Clubs", "King", "Hearts", False, False),
+    ("Queen", "Diamonds", "Jack", "Spades", False, True),
+    ("10", "Hearts", "10", "Hearts", True, False),
 ]
 
 
-def test(input1, expected_output):
-    try:
-        print("---------------------------------")
-        print(f"Input: {input1}")
-        print(f"Expecting: {expected_output}")
-        result = str(input1)
-        print(f"Actual: {result}")
-        if result == expected_output:
-            print("Pass")
-            return True
+def test(rank_1, suit_1, rank_2, suit_2, expected_eq, expected_gt):
+    print("---------------------------------")
+    print(f"Inputs: {rank_1} of {suit_1}, {rank_2} of {suit_2}")
+    print("Expected:")
+    print(f" * Equal: {expected_eq}")
+    print(f" * Greater than: {expected_gt}")
+    print(f" * Less than: {not (expected_eq or expected_gt)}")
+
+    card_1 = Card(rank_1, suit_1)
+    card_2 = Card(rank_2, suit_2)
+    result_eq = card_1 == card_2
+    result_gt = card_1 > card_2
+    result_lt = card_1 < card_2
+    print("Actual:")
+    print(f" * Equal: {result_eq}")
+    if result_eq != expected_eq:
         print("Fail")
         return False
-    except Exception as e:
-        print(f"Error: {e}")
+    print(f" * Greater than: {result_gt}")
+    if result_gt != expected_gt:
         print("Fail")
         return False
+    print(f" * Less than: {result_lt}")
+    if result_lt == (expected_eq or expected_gt or None):
+        print("Fail")
+        return False
+    print("Pass")
+    return True
 
 
 def main():

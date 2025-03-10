@@ -1,46 +1,58 @@
 """
 
-Overriding Built-In Methods
-Last but not least, let's take a look at some of the built-in methods we can override in Python. While there isn't a default behavior for the arithmetic operators like we just saw, there is a default behavior for printing a class.
-
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-
-p1 = Point(4, 5)
-print(p1)
-# prints "<Point object at 0xa0acf8>"
-
-That's not super useful! Let's teach instances of our Point object to print themselves. The __str__ method (short for "string") lets us do just that. It takes no inputs but returns a string that will be printed to the console when someone passes an instance of the class to Python's print() function.
-
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __str__(self):
-        return f"({self.x},{self.y})"
-
-p1 = Point(4, 5)
-print(p1)
-# prints "(4,5)"
-
-Note: the __repr__ method works in a similar way, you'll see it from time to time.
+Card Class
+We'll take a break from Age of Dragons to work on a simple deck of cards.
 
 Assignment
-Dragons are egotistical creatures, let's give them a great format for announcing their presence in "Age of Dragons". When print() is called on an instance of a Dragon, the string I am {0}, the {1} dragon should be printed.
+Complete the Card class.
 
-{0} is the name of the dragon.
-{1} is the color of the dragon.
+Define a constructor that takes rank and suit as parameters and sets rank, suit, rank_index, and suit_index instance variables.
+You will need the indexes of the ranks, and suits to help you compare them against each other. Keep in mind that a rank and a suit are just strings within a list.
+
+Overload the following comparison operators:
+==: eq
+>: gt
+<: lt
+Ranking the Cards
+A card is "greater than" another card if it has a higher rank. However, if the ranks are the same, the card with the higher suit is "greater than" the other card. This same logic applies to the "less than" operator. The "equal to" operator should check that the rank AND suit are equal.
+
+The suits and ranks are defined as global variables. The lower the index, the lower the rank or suit.
 
 """
 
-class Dragon:
-    def __init__(self, name, color):
-        self.name = name
-        self.color = color
+import random
+
+SUITS = ["Clubs", "Diamonds", "Hearts", "Spades"]
+
+RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+
+
+class Card:
+    def __init__(self, rank, suit):
+        self.rank = rank
+        self.suit = suit
+        self.rank_index = RANKS.index(rank)
+        self.suit_index = SUITS.index(suit)
+
+    def __eq__(self, other):
+        return self.rank_index == other.rank_index and self.suit_index == other.suit_index
+
+    def __lt__(self, other):
+        if self.rank_index < other.rank_index:
+            return True
+        elif self.rank_index == other.rank_index:
+            return self.suit_index < other.suit_index
+        return False
+
+    def __gt__(self, other):
+        if self.rank_index > other.rank_index:
+            return True
+        elif self.rank_index == other.rank_index:
+            return self.suit_index > other.suit_index
+        return False
+
+
+    # don't touch below this line
 
     def __str__(self):
-        return f"I am {self.name}, the {self.color} dragon"
+        return f"{self.rank} of {self.suit}"
