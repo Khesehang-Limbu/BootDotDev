@@ -1,45 +1,37 @@
 from main import *
 
 run_cases = [
-    (Siege(100, 10), 100, 4, 40, None),
-    (BatteringRam(100, 10, 2000, 5), 100, 5, 70, 10),
-    (Catapult(100, 10, 2), 100, 6, 60, 2),
+    (Rectangle(0, 0, 4, 4), "corner1: (0,0) corner2: (4,4)"),
+    (Rectangle(4, 4, 0, 0), "corner1: (4,4) corner2: (0,0)"),
 ]
 
 submit_cases = run_cases + [
-    (Siege(60, 5), 100, 2, 40, None),
-    (BatteringRam(80, 5, 2000, 4), 100, 4, 100, 8),
-    (Catapult(90, 4, 3), 100, 10, 250, 3),
+    (Rectangle(2, -2, 3, 4), "corner1: (2,-2) corner2: (3,4)"),
+    (Rectangle(-1, -1, 1, 1), "corner1: (-1,-1) corner2: (1,1)"),
+    (Rectangle(5, 5, 10, 10), "corner1: (5,5) corner2: (10,10)"),
+    (Rectangle(-10, -10, -5, -5), "corner1: (-10,-10) corner2: (-5,-5)"),
 ]
 
 
-def test(vehicle, distance, fuel_price, expected_cost, expected_cargo_volume):
+def describe(rectangle):
+    return f"corner1: ({rectangle.x1},{rectangle.y1}) corner2: ({rectangle.x2},{rectangle.y2})"
+
+
+def test(rectangle, expected_output):
     try:
-        vehicle_type = vehicle.__class__.__name__
         print("---------------------------------")
+        print(f"Inputs:")
         print(
-            f"Testing {vehicle_type}: Max Speed {vehicle.max_speed} kph, Efficiency {vehicle.efficiency} km/food"
+            f" * rectangle corners: {rectangle.x1}, {rectangle.y1}, {rectangle.x2}, {rectangle.y2}"
         )
-        print(f"Distance: {distance} km, Price: {fuel_price} per food")
-        print(
-            f"Expected: Trip Cost: {expected_cost}, Cargo Volume: {expected_cargo_volume}"
-        )
-        actual_cost = int(vehicle.get_trip_cost(distance, fuel_price))
-        actual_cargo_volume = vehicle.get_cargo_volume()
-        if actual_cargo_volume is not None:
-            actual_cargo_volume = int(actual_cargo_volume)
-        print(
-            f"  Actual: Trip Cost: {actual_cost}, Cargo Volume: {actual_cargo_volume}"
-        )
-        if (
-            actual_cost == expected_cost
-            and expected_cargo_volume == actual_cargo_volume
-        ):
+        print(f"Expecting: {expected_output}")
+        result = describe(rectangle)
+        print(f"Actual: {result}")
+        if result == expected_output:
             print("Pass")
             return True
-        else:
-            print("Fail")
-            return False
+        print("Fail")
+        return False
     except Exception as e:
         print(f"Error: {e}")
         print("Fail")

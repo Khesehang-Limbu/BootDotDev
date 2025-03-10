@@ -1,71 +1,51 @@
 """
 
-Caravan
-Siege weapons (battering rams, catapults, etc.) are special units in Age of Dragons. Let's write the logic for how they move around the map.
+What Is Polymorphism?
+While inheritance is the most unique trait of object-oriented languages, polymorphism is probably the most powerful. Polymorphism is the ability of a variable, function or object to take on multiple forms.
 
-Challenge
-Complete the Siege, BatteringRam, and Catapult classes.
+"poly"="many"
+"morph"="form".
+For example, classes in the same hierarchical tree may have methods with the same name but different behaviors.
 
-Siege Class
-Complete the constructor. It accepts two parameters (in order) and sets them as instance variables with the same name:
+Different Forms
+Let's look at a simple example.
 
-Set max_speed
-Set efficiency
-Complete the get_trip_cost() method. It calculates the cost of a trip and returns it. The formula for calculating the cost is:
+class Creature():
+    def move(self):
+        print("the creature moves")
 
-(distance / efficiency) * food_price
+class Dragon(Creature):
+    def move(self):
+        print("the dragon flies")
 
-It costs food to move siege weapons, those things are heavy!
+class Kraken(Creature):
+    def move(self):
+        print("the kraken swims")
 
-Leave the get_cargo_volume() method as empty. Use the pass keyword. Child classes will override this method.
-BatteringRam Class
-Complete the constructor. It calls the parent constructor, then sets the extra battering-ram-only instance variables as member variables.
-The get_trip_cost() method uses the parent method to calculate the cost of food for a trip, plus the extra cost of carrying a load. The formula for calculating the cost:
-base_cost + (load_weight * 0.01)
+for creature in [Creature(), Dragon(), Kraken()]:
+    creature.move()
+# prints:
+# the creature moves
+# the dragon flies
+# the kraken swims
 
-The get_cargo_volume() method calculates and returns the cargo capacity in cubic meters. To get the volume of the battering-ram's 'bed' (cargo area), multiply its area by its depth, which is always 2 meters.
-Catapult Class
-The constructor calls the parent constructor, then sets the extra catapult-only instance variable as a member variable.
-Do not override the get_trip_cost() method. It's inherited from the parent class.
-The get_cargo_volume() method just returns the cargo capacity of the catapult. This is already set by the constructor.
+The Dragon and Kraken child classes are overriding the behavior of their parent class's move() method.
+
+Assignment
+We're going to build hit-box logic for our game step by step, starting with a simple Rectangle.
+
+Complete the __init__() method. Configure the class to have properties matching the variables passed into the constructor in this order:
+
+x1
+y1
+x2
+y2
 
 """
 
-class Siege:
-    def __init__(self, max_speed, efficiency):
-        self.max_speed = max_speed
-        self.efficiency = efficiency
-
-    def get_trip_cost(self, distance, food_price):
-        return (distance/self.efficiency) * food_price
-
-    def get_cargo_volume(self):
-        pass
-
-
-class BatteringRam(Siege):
-    def __init__(
-        self,
-        max_speed,
-        efficiency,
-        load_weight,
-        bed_area,
-    ):
-        super().__init__(max_speed, efficiency)
-        self.load_weight = load_weight
-        self.bed_area = bed_area
-
-    def get_trip_cost(self, distance, food_price):
-        return super().get_trip_cost(distance, food_price) + (self.load_weight * 0.01)
-
-    def get_cargo_volume(self):
-        return self.bed_area * 2
-
-
-class Catapult(Siege):
-    def __init__(self, max_speed, efficiency, cargo_volume):
-        super().__init__(max_speed, efficiency)
-        self.cargo_volume = cargo_volume
-
-    def get_cargo_volume(self):
-        return self.cargo_volume
+class Rectangle:
+    def __init__(self, x1, y1, x2, y2):
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
