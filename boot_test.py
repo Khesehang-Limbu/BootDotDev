@@ -1,35 +1,34 @@
 from main import *
 
 run_cases = [
-    (Rectangle(0, 0, 4, 4), (0, 4, 4, 0)),
-    (Rectangle(4, 4, 0, 0), (0, 4, 4, 0)),
+    (Rectangle(0, 0, 4, 4), Rectangle(3, 3, 6, 6), True),
+    (Rectangle(0, 0, 4, 4), Rectangle(5, 5, 8, 8), False),
+    (Rectangle(1, 1, 2, 2), Rectangle(2, 3, 3, 4), False),
 ]
 
 submit_cases = run_cases + [
-    (Rectangle(1, 2, 3, 4), (1, 3, 4, 2)),
-    (Rectangle(3, 4, 1, 2), (1, 3, 4, 2)),
-    (Rectangle(2, 1, 5, 4), (2, 5, 4, 1)),
-    (Rectangle(5, 4, 2, 1), (2, 5, 4, 1)),
-    (Rectangle(3, 3, 3, 3), (3, 3, 3, 3)),
+    (Rectangle(0, 0, 4, 4), Rectangle(4, 4, 8, 8), True),
+    (Rectangle(6, 6, 9, 9), Rectangle(5, 5, 8, 8), True),
+    (Rectangle(0, 0, 1, 1), Rectangle(4, 4, 5, 5), False),
+    (Rectangle(1, 1, 4, 4), Rectangle(2, 2, 3, 3), True),
+    (Rectangle(1, 1, 2, 2), Rectangle(0, 0, 4, 4), True),
 ]
 
 
-def test(rectangle, expected_output):
+def test(rect1, rect2, expected_overlap):
     print("---------------------------------")
-    print(f"Inputs: {rectangle}")
-    print(f"Expecting: {expected_output}")
-    result = (
-        rectangle.get_left_x(),
-        rectangle.get_right_x(),
-        rectangle.get_top_y(),
-        rectangle.get_bottom_y(),
-    )
-    print(f"Actual: {result}")
-    if result == expected_output:
+    print(f"Overlap: {rect1} and {rect2}")
+    print(f" - Expected overlap: {expected_overlap}")
+
+    result = rect1.overlaps(rect2)
+    print(f" - Actual overlap: {result}")
+
+    if result == expected_overlap:
         print("Pass")
         return True
-    print("Fail")
-    return False
+    else:
+        print("Fail")
+        return False
 
 
 def main():
