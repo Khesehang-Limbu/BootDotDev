@@ -1,47 +1,35 @@
 from main import *
 
 run_cases = [
-    (Sword("bronze"), Sword("bronze"), "iron", None),
-    (Sword("bronze"), Sword("iron"), None, "cannot craft"),
+    (Dragon("Smaug", "red"), "I am Smaug, the red dragon"),
+    (Dragon("Saphira", "blue"), "I am Saphira, the blue dragon"),
 ]
 
 submit_cases = run_cases + [
-    (Sword("steel"), Sword("steel"), None, "cannot craft"),
-    (Sword("iron"), Sword("iron"), "steel", None),
-    (Sword("bronze"), Sword("steel"), None, "cannot craft"),
+    (Dragon("Nefarian", "black"), "I am Nefarian, the black dragon"),
+    (Dragon("Toothless", "blackish"), "I am Toothless, the blackish dragon"),
+    (Dragon("", "colorless"), "I am , the colorless dragon"),
+    (Dragon("Glaurung", "gold"), "I am Glaurung, the gold dragon"),
+    (Dragon("Fafnir", "green"), "I am Fafnir, the green dragon"),
 ]
 
 
-def test(sword1, sword2, expected_result, expected_err):
+def test(input1, expected_output):
     try:
         print("---------------------------------")
-        print(
-            f"Crafting a {sword1.sword_type} sword with a {sword2.sword_type} sword..."
-        )
-        result = sword1 + sword2
-
-        if expected_err:
-            print(f"Expected Exception: {expected_err}")
-            print("Actual: no exception raised")
-            print("Fail")
-            return False
-
-        print(f"Expected: {expected_result}")
-        print(f"Actual: {result.sword_type}")
-        print(f"A new {result.sword_type} sword was crafted!")
-        if result.sword_type != expected_result:
-            print("Fail")
-            return False
-
+        print(f"Input: {input1}")
+        print(f"Expecting: {expected_output}")
+        result = str(input1)
+        print(f"Actual: {result}")
+        if result == expected_output:
+            print("Pass")
+            return True
+        print("Fail")
+        return False
     except Exception as e:
-        print(f"Expected Exception: {expected_err}")
-        print(f"Actual Exception: {e}")
-        if expected_err != str(e):
-            print("Fail")
-            return False
-
-    print("Pass")
-    return True
+        print(f"Error: {e}")
+        print("Fail")
+        return False
 
 
 def main():
