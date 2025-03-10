@@ -1,41 +1,35 @@
 from main import *
 
 run_cases = [
-    (Rectangle(0, 0, 4, 4), "corner1: (0,0) corner2: (4,4)"),
-    (Rectangle(4, 4, 0, 0), "corner1: (4,4) corner2: (0,0)"),
+    (Rectangle(0, 0, 4, 4), (0, 4, 4, 0)),
+    (Rectangle(4, 4, 0, 0), (0, 4, 4, 0)),
 ]
 
 submit_cases = run_cases + [
-    (Rectangle(2, -2, 3, 4), "corner1: (2,-2) corner2: (3,4)"),
-    (Rectangle(-1, -1, 1, 1), "corner1: (-1,-1) corner2: (1,1)"),
-    (Rectangle(5, 5, 10, 10), "corner1: (5,5) corner2: (10,10)"),
-    (Rectangle(-10, -10, -5, -5), "corner1: (-10,-10) corner2: (-5,-5)"),
+    (Rectangle(1, 2, 3, 4), (1, 3, 4, 2)),
+    (Rectangle(3, 4, 1, 2), (1, 3, 4, 2)),
+    (Rectangle(2, 1, 5, 4), (2, 5, 4, 1)),
+    (Rectangle(5, 4, 2, 1), (2, 5, 4, 1)),
+    (Rectangle(3, 3, 3, 3), (3, 3, 3, 3)),
 ]
 
 
-def describe(rectangle):
-    return f"corner1: ({rectangle.x1},{rectangle.y1}) corner2: ({rectangle.x2},{rectangle.y2})"
-
-
 def test(rectangle, expected_output):
-    try:
-        print("---------------------------------")
-        print(f"Inputs:")
-        print(
-            f" * rectangle corners: {rectangle.x1}, {rectangle.y1}, {rectangle.x2}, {rectangle.y2}"
-        )
-        print(f"Expecting: {expected_output}")
-        result = describe(rectangle)
-        print(f"Actual: {result}")
-        if result == expected_output:
-            print("Pass")
-            return True
-        print("Fail")
-        return False
-    except Exception as e:
-        print(f"Error: {e}")
-        print("Fail")
-        return False
+    print("---------------------------------")
+    print(f"Inputs: {rectangle}")
+    print(f"Expecting: {expected_output}")
+    result = (
+        rectangle.get_left_x(),
+        rectangle.get_right_x(),
+        rectangle.get_top_y(),
+        rectangle.get_bottom_y(),
+    )
+    print(f"Actual: {result}")
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():
