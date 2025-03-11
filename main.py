@@ -1,17 +1,70 @@
 """
 
-Sort Dates
-Datetimes are infamously a pain in the neck for programming. The least of the list of problems are the order of the year, month and day of a calendar date. Some countries use day-month-year format, others use year-month-day. Some insane countries use month-day-year because they want everyone else to be miserable.
+Organize Keywords
+By organizing keywords, documents are mapped to their relevant terms, enabling users to quickly view the keywords associated with each document. It also reduces the computational overhead of repeatedly searching for the same terms, improving the performance and responsiveness of Doc2Doc. This is useful for notebooking, research and project management.
 
 Assignment
-Fix the sort_dates function. It takes as input a list of dates in "MONTH-DAY-YEAR" format and returns a list of the dates sorted in ascending order.
+Complete the find_keywords function. It takes as input a document string and returns a list of the keyword substrings in the document.
+
+The keywords list is being modified at the start of code execution. Turn find_keywords into a pure function that does not rely on a global variable.
+
+Move the keywords list inside the find_keywords function so changes to the global scope do not change this list.
+Filter the keywords to create a new list containing only the keyword substrings in the document.
+Be sure to return the found keyword substrings as a list.
+Note: The keyword search is case-insensitive. This means that "Lambda" and "lambda" are the same word.
+
+Fix the map_keywords function. It takes a string document input and a dictionary document_map input, and returns a list of keywords substrings found in the document and a dictionary document_map with the document added if needed. The document_map dictionary has document strings as keys, and their values are a list of keywords found in the key string, in the order they appear in the keywords list.
+
+Do not modify or return the actual input document_map.
+If the document is already in the document map, return its keywords and the document_map copy.
+Use find_keywords to get the keyword substrings in the document.
+Add the document and its keyword substrings to the document_map copy.
+Return the document's keyword substrings and the document_map copy.
 
 """
 
-from datetime import datetime
+keywords = [
+    "functional",
+    "immutable",
+    "declarative",
+    "higher-order",
+    "lambda",
+    "deterministic",
+    "side-effects",
+    "memoization",
+    "referential transparency",
+]
 
-def sort_dates(dates):
-    dates_tupel = [(date.split("-")[2], date.split("-")[0], date.split("-")[1]) for date in dates]
-    new_dates = [datetime(int(date[0]), int(date[1]), int(date[2])) for date in dates_tupel]
-    new_dates.sort()
-    return [date.strftime("%m-%d-%Y") for date in new_dates]
+
+def map_keywords(document, document_map):
+    document_map_copy = document_map.copy()
+    if document in document_map_copy:
+        return document_map_copy[document], document_map_copy
+    found_keywords = find_keywords(document)
+    document_map_copy[document] = found_keywords
+    return found_keywords, document_map_copy
+
+
+def find_keywords(document):
+    keywords = [
+        "functional",
+        "immutable",
+        "declarative",
+        "higher-order",
+        "lambda",
+        "deterministic",
+        "side-effects",
+        "memoization",
+        "referential transparency",
+    ]
+
+    new_keywords = []
+
+    for keyword in keywords:
+        if keyword in document:
+            new_keywords.append(keyword)
+        else:
+            for word in document.lower().split(" "):
+                if word == keyword or keyword in word:
+                    new_keywords.append(keyword)
+    return new_keywords

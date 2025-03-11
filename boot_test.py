@@ -1,165 +1,138 @@
-from main import *
-
+import main as main_
 
 run_cases = [
     (
-        [
-            "07-21-2023",
-            "12-25-2022",
-            "01-01-2023",
-            "01-15-2023",
-            "10-31-2023",
-            "04-10-2023",
-        ],
-        [
-            "12-25-2022",
-            "01-01-2023",
-            "01-15-2023",
-            "04-10-2023",
-            "07-21-2023",
-            "10-31-2023",
-        ],
+        "Key parts of functional programming are higher-order functions and lambda expressions.",
+        {},
+        ["functional", "higher-order", "lambda"],
+        {
+            "Key parts of functional programming are higher-order functions and lambda expressions.": [
+                "functional",
+                "higher-order",
+                "lambda",
+            ]
+        },
     ),
     (
-        [
-            "08-17-2023",
-            "11-05-2022",
-            "02-28-2023",
-            "06-30-2023",
-            "09-19-2024",
-            "05-22-2023",
-        ],
-        [
-            "11-05-2022",
-            "02-28-2023",
-            "05-22-2023",
-            "06-30-2023",
-            "08-17-2023",
-            "09-19-2024",
-        ],
+        "Results are deterministic by using referential transparency and the absence of side-effects.",
+        {},
+        ["deterministic", "side-effects", "referential transparency"],
+        {
+            "Results are deterministic by using referential transparency and the absence of side-effects.": [
+                "deterministic",
+                "side-effects",
+                "referential transparency",
+            ]
+        },
     ),
     (
-        [
-            "07-04-2023",
-            "12-01-2024",
-            "01-20-2023",
-            "03-10-2023",
-            "10-05-2023",
-            "04-25-2023",
-        ],
-        [
-            "01-20-2023",
-            "03-10-2023",
-            "04-25-2023",
-            "07-04-2023",
-            "10-05-2023",
-            "12-01-2024",
-        ],
+        "Storing the results of deterministic functions uses memoization to help optimize functional code",
+        {},
+        ["functional", "deterministic", "memoization"],
+        {
+            "Storing the results of deterministic functions uses memoization to help optimize functional code": [
+                "functional",
+                "deterministic",
+                "memoization",
+            ]
+        },
     ),
     (
-        [
-            "08-12-2023",
-            "11-15-2022",
-            "02-10-2023",
-            "06-25-2023",
-            "09-05-2023",
-            "05-05-2023",
-        ],
-        [
-            "11-15-2022",
-            "02-10-2023",
-            "05-05-2023",
-            "06-25-2023",
-            "08-12-2023",
-            "09-05-2023",
-        ],
+        "Notably, functional programming emphasizes immutable data.",
+        {
+            "Notably, functional programming emphasizes immutable data.": [
+                "test_keyword"
+            ]
+        },
+        ["test_keyword"],
+        {
+            "Notably, functional programming emphasizes immutable data.": [
+                "test_keyword"
+            ]
+        },
     ),
 ]
-
 
 submit_cases = run_cases + [
     (
-        [
-            "07-15-2024",
-            "12-18-2022",
-            "03-30-2023",
-            "03-20-2023",
-            "10-20-2023",
-            "04-05-2023",
-        ],
-        [
-            "12-18-2022",
-            "03-20-2023",
-            "03-30-2023",
-            "04-05-2023",
-            "10-20-2023",
-            "07-15-2024",
-        ],
+        "The immutable state in functional programming ensures referential transparency.",
+        {},
+        ["functional", "immutable", "referential transparency"],
+        {
+            "The immutable state in functional programming ensures referential transparency.": [
+                "functional",
+                "immutable",
+                "referential transparency",
+            ]
+        },
     ),
     (
-        [
-            "08-22-2023",
-            "11-30-2022",
-            "02-05-2023",
-            "06-10-2023",
-            "09-25-2023",
-            "05-10-2023",
-        ],
-        [
-            "11-30-2022",
-            "02-05-2023",
-            "05-10-2023",
-            "06-10-2023",
-            "08-22-2023",
-            "09-25-2023",
-        ],
+        "Functional programming often uses higher-order functions to handle side-effects declaratively.",
+        {},
+        ["functional", "declarative", "higher-order", "side-effects"],
+        {
+            "Functional programming often uses higher-order functions to handle side-effects declaratively.": [
+                "functional",
+                "declarative",
+                "higher-order",
+                "side-effects",
+            ]
+        },
     ),
     (
-        [
-            "07-10-2024",
-            "12-10-2022",
-            "01-25-2023",
-            "03-05-2023",
-            "10-15-2023",
-            "04-15-2023",
-        ],
-        [
-            "12-10-2022",
-            "01-25-2023",
-            "03-05-2023",
-            "04-15-2023",
-            "10-15-2023",
-            "07-10-2024",
-        ],
+        "A concise method for implementing higher-order functions is through lambda functions.",
+        {},
+        ["higher-order", "lambda"],
+        {
+            "A concise method for implementing higher-order functions is through lambda functions.": [
+                "higher-order",
+                "lambda",
+            ]
+        },
     ),
     (
-        [
-            "08-02-2023",
-            "11-25-2022",
-            "02-15-2024",
-            "06-05-2023",
-            "09-10-2023",
-            "05-01-2023",
-        ],
-        [
-            "11-25-2022",
-            "05-01-2023",
-            "06-05-2023",
-            "08-02-2023",
-            "09-10-2023",
-            "02-15-2024",
-        ],
+        "Pure functions simplify testing by eliminating dependencies on external state.",
+        {},
+        [],
+        {
+            "Pure functions simplify testing by eliminating dependencies on external state.": [],
+        },
     ),
 ]
 
 
-def test(input1, expected_output):
+def mutate_globals():
+    main_.keywords = []
+
+
+def test(document, index, expected_keywords, expected_index):
     print("---------------------------------")
-    print(f"Input: {input1}")
-    print(f"Expected: {expected_output}")
-    result = sort_dates(input1)
-    print(f"  Actual: {result}")
-    if result != expected_output:
+    print("Inputs:")
+    print(f"* {document}")
+    print(f"Index:")
+    for key, value in index.items():
+        print(f"  {key}: {value}")
+    print(f"Expected Keywords: {expected_keywords}")
+    print(f"Expected Index:")
+    for key, value in expected_index.items():
+        print(f"  {key}: {value}")
+    index_copy = index.copy()
+    result_keywords, result_index = main_.map_keywords(document, index)
+    print(f"  Actual Keywords: {result_keywords}")
+    print(f"  Actual Index:")
+    for key, value in result_index.items():
+        print(f"  {key}: {value}")
+    if index_copy != index:
+        print("Fail: Mutated input index")
+        return False
+    if index == expected_index and result_index != expected_index:
+        print("Fail: Expected keywords from the input index")
+        return False
+    if len(result_keywords) == 0 and len(expected_keywords) != 0:
+        print("Fail: the global scope keywords changed, causing this failure.")
+        print("How can you use the keywords without them changing in the global scope?")
+        return False
+    if (result_keywords, result_index) != (expected_keywords, expected_index):
         print("Fail")
         return False
     print("Pass")
@@ -169,6 +142,7 @@ def test(input1, expected_output):
 def main():
     passed = 0
     failed = 0
+    mutate_globals()
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
         correct = test(*test_case)
