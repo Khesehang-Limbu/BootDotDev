@@ -2,24 +2,42 @@ from main import *
 
 run_cases = [
     (
-        "You can't spell America without Erica",
-        "YOU CAN'T SPELL AMERICA WITHOUT ERICA...",
+        "live long and prosper",
+        "Live Long And Prosper",
     ),
-    ("Friends don't lie.", "FRIENDS DON'T LIE..."),
-    (" She's our friend and she's crazy!", "SHE'S OUR FRIEND AND SHE'S CRAZY!..."),
+    (
+        "...Khan",
+        "...KHAN!!!",
+    ),
+    ("BEAM ME UP, BOOTS!", "Beam me up, boots"),
 ]
 
 submit_cases = run_cases + [
-    (" You're gonna slay 'em dead, Nance. ", "YOU'RE GONNA SLAY 'EM DEAD, NANCE..."),
+    (
+        "",
+        "",
+    ),
+    (
+        "I aM a DoCtOr, nOt A fUnCtIoNaL pRoGrAmMeR!!",
+        "I aM a DoCtOr, nOt A fUnCtIoNaL pRoGrAmMeR!!",
+    ),
+    (
+        "TO BOLDLY GO WHERE NO BEAR HAS GONE BEFORE!!!!",
+        "To boldly go where no bear has gone before",
+    ),
+    (
+        "Illogical",
+        "ILLOGICAL!!!",
+    ),
 ]
 
 
 def test(input, expected_output):
     print("---------------------------------")
-    print(f"Input: {input}")
+    print(f"   Input: {input}")
     print(f"Expected: {expected_output}")
-    result = format_line(input)
-    print(f"Actual: {result}")
+    result = toggle_case(input)
+    print(f"  Actual: {result}")
     if result != expected_output:
         print("Fail")
         return False

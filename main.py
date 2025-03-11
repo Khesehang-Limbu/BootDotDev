@@ -1,37 +1,24 @@
 """
-Debugging FP
-It's nearly impossible, even for tenured senior developers, to write perfect code the first time. That's why debugging is such an important skill. The trouble is, sometimes you have these "elegant" (sarcasm intended) one-liners that are tricky to debug:
 
-def get_player_position(position, velocity, friction, gravity):
-    return calc_gravity(calc_friction(calc_move(position, velocity), friction), gravity)
-
-If the output of get_player_position is incorrect, it's hard to know what's going on inside that black box. Break it up! Then you can inspect the moved, slowed, and final variables more easily:
-
-def get_player_position(position, velocity, friction, gravity):
-    moved = calc_move(position, velocity)
-    slowed = calc_friction(moved, friction)
-    final = calc_gravity(slowed, gravity)
-    print("Given:")
-    print(f"position: {position}, velocity: {velocity}, friction: {friction}, gravity: {gravity}")
-    print("Results:")
-    print(f"moved: {moved}, slowed: {slowed}, final: {final}")
-    return final
-
-Once you've run it, found the issue, and solved it, you can remove the print statements.
+Toggle Case
+We need to add a feature to Doc2Doc that switches the capitalization of all the words in a line.
 
 Assignment
-Fix the format_line function. It should apply the following transformations in order:
+Complete the toggle_case function using string methods. It takes a string as input line, and returns a string.
 
-Strip whitespace from the beginning and end of the line.
-Capitalize every character in the line.
-Remove any periods from the line.
-Suffix the line with an ellipsis: words go here...
-Run the code. You should see that some subtle bugs are present.
-
-Break up the function to make it easier to debug. Use print() statements to see what's going on at each step.
+If line is in titlecase, convert it to all uppercase and add three "!" to the end.
+If line is all uppercase, convert it to all lowercase except for the first letter and remove all trailing "!".
+If line is all lowercase or only the first letter is capitalized, convert it to title case.
+Otherwise, just return line unchanged.
 
 """
 
 
-def format_line(line):
-    return f"{line.strip().upper().replace('.', '')}...".replace("....", "...")
+def toggle_case(line):
+    if line.istitle():
+        return f"{line.upper()}!!!"
+    if line.isupper():
+        return f"{line[0].upper()}{line[1::].lower().replace("!", "")}"
+    if len(line) > 0 and line[1:].islower():
+        return line.title()
+    return line
