@@ -2,35 +2,49 @@ from main import *
 
 run_cases = [
     (
-        "Through the darkness of future past",
-        "uppercase",
-        "THROUGH THE DARKNESS OF FUTURE PAST",
+        "*Don't* panic.\n",
+        "Don't panic.\n",
     ),
-    ("The magician longs to see", "lowercase", "the magician longs to see"),
+    (
+        "The **answer to the ultimate question** of life, the universe and everything is *42*\n",
+        "The answer to the ultimate question of life, the universe and everything is 42\n",
+    ),
+    (
+        "For a moment, *nothing* happened.\nThen, after a second or so, nothing **continued** to happen.\n",
+        "For a moment, nothing happened.\nThen, after a second or so, nothing continued to happen.\n",
+    ),
 ]
 
 submit_cases = run_cases + [
     (
-        "One chants out between two worlds",
-        "titlecase",
-        "One Chants Out Between Two Worlds",
+        "",
+        "",
     ),
-    ("Fire walk with me", "garbagecase", "unsupported format: garbagecase"),
+    (
+        "The Hitchhiker's Guide is a d*mn **useful** book.\n",
+        "The Hitchhiker's Guide is a d*mn useful book.\n",
+    ),
+    (
+        "In the beginning the *universe* was created.\nThis has made a lot of people very *angry* and been widely regarded as a bad move.\n",
+        "In the beginning the universe was created.\nThis has made a lot of people very angry and been widely regarded as a bad move.\n",
+    ),
+    (
+        "Ford, you're turning into a *penguin*\n",
+        "Ford, you're turning into a penguin\n",
+    ),
+    (
+        "*Space* is big.\nYou just won't **believe** how vastly, hugely, mind-bogglingly big it is.\n",
+        "Space is big.\nYou just won't believe how vastly, hugely, mind-bogglingly big it is.\n",
+    ),
 ]
 
 
-def test(input1, input2, expected_output):
+def test(input_doc, expected_output):
     print("---------------------------------")
-    print(f"Input:")
-    print(f'"{input1}", {input2}')
-    print(f"Expecting:")
-    print(f'"{expected_output}"')
-    try:
-        result = convert_case(input1, input2)
-    except Exception as e:
-        result = str(e)
-    print(f"Actual:")
-    print(f'"{result}"')
+    print(f"Input document:\n{input_doc}")
+    print(f"Expected output:\n{expected_output}")
+    result = remove_emphasis(input_doc)
+    print(f"Actual output:\n{result}")
     if result == expected_output:
         print("Pass")
         return True

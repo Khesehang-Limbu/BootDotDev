@@ -1,44 +1,81 @@
 """
 
-Input and Output
-xkcd "side effects"
+No-Op
+A no-op is an operation that does... nothing.
 
-Comic by xkcd.
+If a function doesn't return anything, it's probably impure. If it doesn't return anything, the only reason for it to exist is to perform a side effect.
 
-The term "i/o" stands for input/output. In the context of writing programs, i/o refers to anything in our code that interacts with the "outside world". "Outside world" just means anything that's not stored in our application's memory (like variables).
+Example No-Op
+This function performs a useless computation because it doesn't return anything or perform a side-effect. It's a no-op.
 
-Examples of I/O
-Reading from or writing to a file on the hard drive
-Accessing the internet
-Reading from or writing to a database
-Even simply printing to the console is considered i/o!
-All i/o is a form of "side effect".
+def square(x):
+    x * x
+
+Example Side-Effect
+This function performs a side effect. It changes the value of the y variable that is outside of its scope. It's impure.
+
+y = 5
+def add_to_y(x):
+    global y
+    y += x
+
+add_to_y(3)
+# y = 8
+
+The global keyword just tells Python to allow access to the outer-scoped y variable.
+
+print()
+Even the print() function (technically) has an impure side effect! It doesn't return anything, but it does print text to the console, which is a form of i/o.
 
 Assignment
-In Doc2Doc, we frequently need to change the casing of some text. For example:
+Complete the remove_emphasis, remove_emphasis_from_line, and remove_emphasis_from_word functions. They are currently no-ops.
 
-TitleCase
-Every Day Once A Day Give Yourself A Present
+remove_emphasis is the parent function. It takes a full document with any number of lines and removes any single or double * characters that are at the start or end of a word. (Emphasis in markdown)
 
-LowerCase
-every day once a day give yourself a present
+For example, this:
 
-UpperCase
-EVERY DAY ONCE A DAY GIVE YOURSELF A PRESENT
+I *love* markdown.
+I **really love** markdown.
 
-There is an issue in the convert_case function, our test suite can't test its behavior because it's printing to the console (eww... a side-effect) instead of returning a value. Fix the function so that it returns the correct value instead of printing it.
+Should become:
+
+I love markdown.
+I really love markdown.
+
+Write the helper functions, they will make the remove_emphasis function much easier to write:
+
+The remove_emphasis_from_word function should remove emphasis from a single word.
+The remove_emphasis_from_line function should split a given line into words and use the function we just created to remove emphasis from each word.
+Don't forget to handle newline characters (\n) appropriately at the end of lines.
 
 """
 
 
-def convert_case(text, target_format):
-    if not text or not target_format:
-        raise ValueError(f"no text or target format provided")
+def remove_emphasis_from_word(word):
+    # ?
+    if word == "":
+        return word
 
-    if target_format == "uppercase":
-        return text.upper()
-    if target_format == "lowercase":
-        return text.lower()
-    if target_format == "titlecase":
-        return text.title()
-    raise ValueError(f"unsupported format: {target_format}")
+    if word[0] == "*" and word[1] == "*" and word[-1] == "*" and word[-2] == "*":
+        word = word[2:len(word)-2:]
+    elif word[0] == "*" and word[1] == "*":
+        word = word[2::]
+    elif word[-1] == "*" and word[-2] == "*":
+        word = word[:len(word)-2:]
+
+    if word[0] == "*" and word[-1] == "*":
+        word = word[1:len(word)-1:]
+    elif word[0] == "*":
+        word = word[1::]
+    elif word[-1] == "*":
+        word = word[:len(word)-1:]
+
+    return word
+
+
+def remove_emphasis_from_line(line):
+    return " ".join(list(map(remove_emphasis_from_word, line.split(" "))))
+
+
+def remove_emphasis(doc_content):
+    return "\n".join(map(remove_emphasis_from_line, doc_content.split("\n")))
