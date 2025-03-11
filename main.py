@@ -1,50 +1,78 @@
 """
 
-Map
-Filter
-The built-in filter function takes a function and an iterable (in this case a list) and returns an iterator that only contains elements from the original iterable where the result of the function on that item returned True.
+Reduce
+The built-in functools.reduce() function takes a function and a list of values, and applies the function to each value in the list, accumulating a single result as it goes.
 
-filter function
+reduce function
 
-In Python:
+# import functools from the standard library
+import functools
 
-def is_even(x):
-    return x % 2 == 0
+def add(sum_so_far, x):
+    print(f"sum_so_far: {sum_so_far}, x: {x}")
+    return sum_so_far + x
 
-numbers = [1, 2, 3, 4, 5, 6]
-evens = list(filter(is_even, numbers))
-print(evens)
-# [2, 4, 6]
+numbers = [1, 2, 3, 4]
+sum = functools.reduce(add, numbers)
+# sum_so_far: 1, x: 2
+# sum_so_far: 3, x: 3
+# sum_so_far: 6, x: 4
+# 10 doesn't print, it's just the final result
+print(sum)
+# 10
 
 Assignment
-Complete the remove_invalid_lines function. It accepts a document as input. It should:
+Complete the join and the join_first_sentences functions.
 
-Use the built-in filter function and a lambda to return a copy of the input document
-Remove any lines that start with a - character.
-Keep all other lines and preserve trailing newlines.
-For example, this:
+join()
+This is a helper function we'll use in join_first_sentences. It takes two inputs:
 
-* Star Wars episode 1 is underrated
-- Star Wars episode 9 is fine
-* Star Wars episode 3 is the best
+A "doc_so_far" accumulator string. It's similar to the sum_so_far variable in the example above.
+A "sentence" string. This is the next string we want to add to the accumulator.
+It returns the result of concatenating the "doc" and "sentence" strings together, with a period and a space in between. For example:
 
+doc = "This is the first sentence"
+sentence = "This is the second sentence"
+print(join(doc, sentence))
+# This is the first sentence. This is the second sentence
 
-Should become:
+join_first_sentences()
+It accepts two arguments:
 
-* Star Wars episode 1 is underrated
-* Star Wars episode 3 is the best
+A list of sentence strings
+An integer n
+It should use the built-in functools.reduce() function alongside your join function to return a single string: the result of joining the first n sentences in the list. It should also add a final period (but no trailing space) to the end of the final "reduced" string.
+
+If n is zero, just return an empty string.
+
+Use list slicing to get the first n sentences. For example:
+
+fruits = ["apple", "banana", "cherry", "date"]
+print(fruits[:2])
+# ["apple", "banana"]
+
+Here's an example of the expected behavior:
+
+joined = join_first_sentences(
+    ["This is the first sentence", "This is the second sentence", "This is the third sentence"],
+    2
+)
+print(joined)
+# This is the first sentence. This is the second sentence.
 
 """
 
 
-def remove_invalid_lines(document):
-    print(document.split("\n"))
-    return '\n'.join(filter(is_invalid_line, document.split("\n")))
+import functools
 
 
-def is_invalid_line(line):
-    if line == "":
-        return True
-    if line[0] != "-":
-        return True
-    return False
+def join(doc_so_far, sentence):
+    doc_so_far = doc_so_far + ". " + sentence
+    return doc_so_far
+
+
+def join_first_sentences(sentences, n):
+    if n == 0:
+        return ""
+    return functools.reduce(join, sentences[:n:]) + "."
+
