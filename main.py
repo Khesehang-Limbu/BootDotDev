@@ -1,70 +1,44 @@
 """
 
-Reference vs. Value
-When you pass a value into a function as an argument, one of two things can happen:
+Input and Output
+xkcd "side effects"
 
-It's passed by reference: The function has access to the original value and can change it
-It's passed by value: The function only has access to a copy. Changes to the copy within the function don't affect the original
-There is a bit more nuance, but this explanation mostly works.
+Comic by xkcd.
 
-These types are passed by reference:
+The term "i/o" stands for input/output. In the context of writing programs, i/o refers to anything in our code that interacts with the "outside world". "Outside world" just means anything that's not stored in our application's memory (like variables).
 
-Lists
-Dictionaries
-Sets
-These types are passed by value:
-
-Integers
-Floats
-Strings
-Booleans
-Tuples
-Most collection types are passed by reference (except for tuples) and most primitive types are passed by value.
-
-Example of Pass by Reference (Mutable)
-def modify_list(inner_lst):
-    inner_lst.append(4)
-    # the original "outer_lst" is updated
-    # because inner_lst is a reference to the original
-
-outer_lst = [1, 2, 3]
-modify_list(outer_lst)
-# outer_lst = [1, 2, 3, 4]
-
-Example of Pass by Value (Immutable)
-def attempt_to_modify(inner_num):
-    inner_num += 1
-    # the original "outer_num" is not updated
-    # because inner_num is a copy of the original
-
-outer_num = 1
-attempt_to_modify(outer_num)
-# outer_num = 1
+Examples of I/O
+Reading from or writing to a file on the hard drive
+Accessing the internet
+Reading from or writing to a database
+Even simply printing to the console is considered i/o!
+All i/o is a form of "side effect".
 
 Assignment
-We have a way for Doc2Doc users to set their supported formats in their settings. In memory, we store those settings as a simple dictionary:
+In Doc2Doc, we frequently need to change the casing of some text. For example:
 
-settings = {
-    "docx": True,
-    "pdf": True,
-    "txt": False
-}
+TitleCase
+Every Day Once A Day Give Yourself A Present
 
-Unfortunately, there is a bug in our code! When a new format is added or removed, it not only updates the new dictionary, but it changes the defaults themselves! That's not good. We want to create a new dictionary with the updates, not change the original.
+LowerCase
+every day once a day give yourself a present
 
-Fix the bug by making add_format and remove_format pure functions that don't mutate their inputs.
+UpperCase
+EVERY DAY ONCE A DAY GIVE YOURSELF A PRESENT
 
+There is an issue in the convert_case function, our test suite can't test its behavior because it's printing to the console (eww... a side-effect) instead of returning a value. Fix the function so that it returns the correct value instead of printing it.
 
 """
 
 
-def add_format(default_formats, new_format):
-    mutated_formats = default_formats.copy()
-    mutated_formats[new_format] = True
-    return mutated_formats
+def convert_case(text, target_format):
+    if not text or not target_format:
+        raise ValueError(f"no text or target format provided")
 
-
-def remove_format(default_formats, old_format):
-    mutated_formats = default_formats.copy()
-    mutated_formats[old_format] = False
-    return mutated_formats
+    if target_format == "uppercase":
+        return text.upper()
+    if target_format == "lowercase":
+        return text.lower()
+    if target_format == "titlecase":
+        return text.title()
+    raise ValueError(f"unsupported format: {target_format}")
