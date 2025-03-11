@@ -1,48 +1,60 @@
 """
-Immutability
-In FP, we strive to make data immutable. Once a value is created, it cannot be changed. Mutable data, on the other hand, can be changed after it's created.
+It's Math
+Functional programming tends to be popular amongst developers with a strong mathematical background. After all, a math equation isn't procedural: it's declarative. Take the following math equation:
 
-Who Cares?
-Immutable data is easier to think about and work with. When 10 different functions have access to the same variable, and you're debugging a problem with that variable, you have to consider the possibility that any of those functions could have changed the value.
+avg = Σx/N
 
-When a variable is immutable, you can be sure that it hasn't changed since it was created. It's a helluva lot easier to work with.
+To put this calculation in plain English:
 
-Generally speaking, immutability means fewer bugs and more maintainable code.
+Σ is just the Greek letter Sigma, and it represents "the sum of a collection".
+x is the collection of numbers we're averaging.
+N is the number of elements in the collection.
+avg is equal to the sum of all the numbers in collection "x" divided by the number of elements in collection "x".
+So, the equation really just says that avg is the average of all the numbers in collection "x". This math equation is a declarative way of writing "calculate the average of a list of numbers". Here's some imperative Python code that does the same thing:
 
-Tuples vs. Lists
-Tuples and lists are both ordered collections of values, but tuples are immutable and lists are mutable.
+def get_average(nums):
+    total = 0
+    for num in nums:
+        total += num
+    return total / len(nums)
 
-You can append to a list, but you can not append to a tuple. You can create a new copy of a tuple using values from an existing tuple, but you can't change the existing tuple.
+However, with functional programming, we would write code that's a bit more declarative:
 
-Lists Are Mutable
-ages = [16, 21, 30]
-# 'ages' is being changed in place
-ages.append(80)
-# [16, 21, 30, 80]
+def get_average(nums):
+    return sum(nums) / len(nums)
 
-Tuples Are Immutable
-ages = (16, 21, 30)
-more_ages = (80,) # note the comma! It's required for a single-element tuple
-# 'all_ages' is a brand new tuple
-all_ages = ages + more_ages
-# (16, 21, 30, 80)
+Here we're not keeping track of state (the total variable in the first example is "stateful"). We're simply composing functions together to get the result we want.
 
 Assignment
-The add_prefix function accepts 2 arguments:
+In the world of document conversion, we sometimes need to handle fonts and font sizes.
 
-"document": a string
-"documents": the current tuple of strings
-It should do 2 things:
+Complete the get_median_font_size function. Given a list of numbers representing font sizes, return the median of the list.
 
-Add a prefix of X. to the beginning of the new document, where X is the next index in the tuple. (The first document should be 0. , next should be 1. , etc.)
-Return the documents tuple with the new document added to the end.
-Run the code to see the error. Whoever wrote this code assumed that documents is a list, but it's a tuple!
+For example:
 
-Fix the bug. Instead of attempting to mutate the input tuple, create a brand new tuple with the new document added to the end and return that.
+[1, 2, 3] => 2
+[10, 8, 7, 5] => 7
+
+Notice the second list is out of order. Order the list, then find the middle index, and return the middle number. If there is an even amount of numbers, return the smaller of the two middle numbers (I know it's not a true median, but good for our purposes). If the list is empty, just return None.
+
+Here are some helpful docs:
+
+sorted
+len
+// (floor division)
+To be a good little functional programmer, your code for this lesson should not:
+
+Use loops
+Mutate any variables (it's okay to create new ones)
 
 """
 
 
-def add_prefix(document, documents):
-    new_doc = (f"{len(documents)}. {document}", )
-    return documents + new_doc
+def get_median_font_size(font_sizes):
+    if len(font_sizes) == 0:
+        return None
+    sorted_sizes = sorted(font_sizes)
+    median_index = len(sorted_sizes) // 2 if len(sorted_sizes) % \
+        2 != 0 else int(len(sorted_sizes)/2 - 1)
+    print(median_index)
+    return sorted_sizes[median_index]
