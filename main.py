@@ -1,48 +1,61 @@
 """
 
-Anonymous Functions
-Anonymous functions have no name, and in Python, they're called lambda functions after lambda calculus. Here's a lambda function that takes a single argument x and returns the result of x + 1:
+Map
+"Map", "filter", and "reduce" are three commonly used higher-order functions in functional programming.
 
-lambda x: x + 1
+In Python, the built-in map function takes a function and an iterable (in this case a list) as inputs. It returns an iterator that applies the function to every item, yielding the results.
 
-Notice that the expression x + 1 is returned automatically, no need for a return statement. And because functions are just values, we can assign the function to a variable named add_one:
+map function
 
-add_one = lambda x: x + 1
-print(add_one(2))
-# 3
+With map, we can operate on lists without using loops and nasty stateful variables. For example:
 
-Lambda functions might look scary, but they're still just functions. Because they simply return the result of an expression, they're often used for small, simple evaluations. Here's an example that uses a lambda to get a value from a dictionary:
+def square(x):
+    return x * x
 
-get_age = lambda name: {
-    "lane": 29,
-    "hunter": 69,
-    "allan": 17
-}.get(name, "not found")
-print(get_age("lane"))
-# 29
+nums = [1, 2, 3, 4, 5]
+squared_nums = map(square, nums)
+print(list(squared_nums))
+# [1, 4, 9, 16, 25]
+
+The list type constructor, list() converts the map object back into a standard list.
 
 Assignment
-Complete the file_type_getter function. This function accepts a list of tuples, where each tuple contains:
+Markdown supports two different styles of bullet points, - and *. We prefer *, so, we need a function to convert any - bullet points to * bullet points.
 
-A "file type" (e.g. "code", "document", "image", etc)
-A list of associated file extensions (e.g. [".py", ".js"] or [".docx", ".doc"])
-First, use loops to create a dictionary that maps each file extension to its corresponding file type, based on the input tuples. For example, the resulting dictionary might be:
+Complete the change_bullet_style function. It takes a document (a string) as input, and returns a single string as output. The returned string should have any lines that start with a - character replaced with a * character.
 
-{
-    ".doc": "text",
-    ".docx": "document",
-    ".py": "code",
-    ".jpg": "image"
-}
+For example, this:
 
-Next, return a lambda function that accepts a string (a file extension) and returns the corresponding file type. If the extension is not found in the dictionary, the lambda function should return "Unknown". I used the .get dictionary method to handle this.
+- This is a bullet
+- This is a bullet
+
+Becomes:
+
+* This is a bullet
+* This is a bullet
+
+Use the built-in map function to apply the provided convert_line function to each line of the input string. Use .split() and .join() to split the document into a list of lines, and then join the lines back together. This should preserve the original line breaks. Don't use the .replace() string method.
+
+Examples of split and join:
+
+# my_document is a string with newlines
+lines_list = my_document.split("\n")
+
+rejoined_doc = "\n".join(lines_list)
 
 """
 
 
-def file_type_getter(file_extension_tuples):
-    file_extension_dict = {}
-    for value in file_extension_tuples:
-        for extension in value[1]:
-            file_extension_dict[extension] = value[0]
-    return lambda name: file_extension_dict.get(name, "Unknown")
+def change_bullet_style(document):
+    return '\n'.join(map(convert_line, document.split("\n")))
+
+
+# Don't edit below this line
+
+
+def convert_line(line):
+    old_bullet = "-"
+    new_bullet = "*"
+    if len(line) > 0 and line[0] == old_bullet:
+        return new_bullet + line[1:]
+    return line

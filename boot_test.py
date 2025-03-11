@@ -2,51 +2,41 @@ from main import *
 
 run_cases = [
     (
-        [("document", [".doc", ".docx"]), ("image", [".jpg", ".png"])],
-        ".doc",
-        "document",
+        "* Alai\n- Dink Meeker\n",
+        "* Alai\n* Dink Meeker\n",
     ),
     (
-        [("document", [".doc", ".docx"]), ("image", [".jpg", ".png"])],
-        ".png",
-        "image",
+        "* Ender Wiggin\n- Petra Arkanian\n* Bean\n",
+        "* Ender Wiggin\n* Petra Arkanian\n* Bean\n",
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        [("document", [".doc", ".docx"]), ("image", [".jpg", ".png"])],
-        ".txt",
-        "Unknown",
-    ),
-    (
-        [("code", [".py", ".js"]), ("markup", [".html", ".xml"])],
-        ".js",
-        "code",
+        "- Bonzo Madrid\n- Stilson\n- The Formics\n- Peter Wiggin\n- Valentine Wiggin\n- Colonel Graff\n",
+        "* Bonzo Madrid\n* Stilson\n* The Formics\n* Peter Wiggin\n* Valentine Wiggin\n* Colonel Graff\n",
     ),
 ]
 
 
-def test(file_extension_tuples, ext, expected_output):
-    try:
-        print("---------------------------------")
-        print("Input tuples:")
-        for file_type, exts in file_extension_tuples:
-            print(f"  {file_type}: {exts}")
-        print(f"Extension: {ext}")
-        print(f"Expecting: {expected_output}")
-        getter_function = file_type_getter(file_extension_tuples)
-        result = getter_function(ext)
-        print(f"Actual: {result}")
-        if result == expected_output:
-            print("Pass")
-            return True
+def test(input_document, expected_output):
+    print("---------------------------------")
+    print("Input document:")
+    print(input_document)
+    print("Expected output:")
+    print(expected_output)
+    result = change_bullet_style(input_document)
+    print("Actual output:")
+    print(result)
+    if result == expected_output:
+        print("Pass")
+        return True
+    if expected_output.endswith("\n") and not result.endswith("\n"):
         print("Fail")
+        print("Reason: expected newline at the end of the output")
         return False
-    except Exception as e:
-        print("Fail")
-        print(e)
-        return False
+    print("Fail")
+    return False
 
 
 def main():
