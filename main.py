@@ -1,66 +1,70 @@
 """
 
-Pure Functions
-If you take nothing else away from this course, please take this: Pure functions are fantastic. They have two properties:
+Reference vs. Value
+When you pass a value into a function as an argument, one of two things can happen:
 
-They always return the same value given the same arguments.
-Running them causes no side effects
-In short: pure functions don't do anything with anything that exists outside of their scope.
+It's passed by reference: The function has access to the original value and can change it
+It's passed by value: The function only has access to a copy. Changes to the copy within the function don't affect the original
+There is a bit more nuance, but this explanation mostly works.
 
+These types are passed by reference:
 
-Example of a Pure Function
-def find_max(nums):
-    max_val = float("-inf")
-    for num in nums:
-        if max_val < num:
-            max_val = num
-    return max_val
+Lists
+Dictionaries
+Sets
+These types are passed by value:
 
-Example of an Impure Function
-# instead of returning a value
-# this function modifies a global variable
-global_max = float("-inf")
+Integers
+Floats
+Strings
+Booleans
+Tuples
+Most collection types are passed by reference (except for tuples) and most primitive types are passed by value.
 
-def find_max(nums):
-    global global_max
-    for num in nums:
-        if global_max < num:
-            global_max = num
+Example of Pass by Reference (Mutable)
+def modify_list(inner_lst):
+    inner_lst.append(4)
+    # the original "outer_lst" is updated
+    # because inner_lst is a reference to the original
+
+outer_lst = [1, 2, 3]
+modify_list(outer_lst)
+# outer_lst = [1, 2, 3, 4]
+
+Example of Pass by Value (Immutable)
+def attempt_to_modify(inner_num):
+    inner_num += 1
+    # the original "outer_num" is not updated
+    # because inner_num is a copy of the original
+
+outer_num = 1
+attempt_to_modify(outer_num)
+# outer_num = 1
 
 Assignment
-There's a bug in the convert_file_format function! Right now, it relies on data outside its own scope. These global values can be changed by other parts of the code, so they are not guaranteed to be the same every time convert_file_format is called.
+We have a way for Doc2Doc users to set their supported formats in their settings. In memory, we store those settings as a simple dictionary:
 
-Fix the bug by making convert_file_format a pure function. It should only depend on data that is scoped inside of the function.
+settings = {
+    "docx": True,
+    "pdf": True,
+    "txt": False
+}
+
+Unfortunately, there is a bug in our code! When a new format is added or removed, it not only updates the new dictionary, but it changes the defaults themselves! That's not good. We want to create a new dictionary with the updates, not change the original.
+
+Fix the bug by making add_format and remove_format pure functions that don't mutate their inputs.
+
 
 """
 
 
-valid_extensions = ["docx", "pdf", "txt", "pptx", "ppt", "md"]
-valid_conversions = {
-    "docx": ["pdf", "txt", "md"],
-    "pdf": ["docx", "txt", "md"],
-    "txt": ["docx", "pdf", "md"],
-    "pptx": ["ppt", "pdf"],
-    "ppt": ["pptx", "pdf"],
-    "md": ["docx", "pdf", "txt"],
-}
+def add_format(default_formats, new_format):
+    mutated_formats = default_formats.copy()
+    mutated_formats[new_format] = True
+    return mutated_formats
 
 
-def convert_file_format(filename, target_format):
-    valid_extensions = ["docx", "pdf", "txt", "pptx", "ppt", "md"]
-    valid_conversions = {
-        "docx": ["pdf", "txt", "md"],
-        "pdf": ["docx", "txt", "md"],
-        "txt": ["docx", "pdf", "md"],
-        "pptx": ["ppt", "pdf"],
-        "ppt": ["pptx", "pdf"],
-        "md": ["docx", "pdf", "txt"],
-    }
-
-    current_format = filename.split(".")[-1]
-    if (
-        current_format in valid_extensions
-        and target_format in valid_conversions[current_format]
-    ):
-        return filename.replace(current_format, target_format)
-    return None
+def remove_format(default_formats, old_format):
+    mutated_formats = default_formats.copy()
+    mutated_formats[old_format] = False
+    return mutated_formats
