@@ -1,43 +1,17 @@
 """
 
-Custom Commands
-Doc2Doc is customizable. New commands can be configured to use whichever function suits the user. However, the new commands are causing bugs in other parts of the application by mutating global values and other unintended side effects.
+Sort Dates
+Datetimes are infamously a pain in the neck for programming. The least of the list of problems are the order of the year, month and day of a calendar date. Some countries use day-month-year format, others use year-month-day. Some insane countries use month-day-year because they want everyone else to be miserable.
 
 Assignment
-Fix the functions add_custom_command, add_format, save_document and add_line_break to make them pure functions without side effects. Here are the reported issues:
-
-add_custom_command: is an impure function that is mutating an input
-add_format: is an impure function that is mutating an input
-save_document: is an impure function that is mutating an input
-add_line_break: is a no-op function with a side-effect
+Fix the sort_dates function. It takes as input a list of dates in "MONTH-DAY-YEAR" format and returns a list of the dates sorted in ascending order.
 
 """
 
+from datetime import datetime
 
-default_commands = {}
-default_formats = ["txt", "md", "html"]
-saved_documents = {}
-
-# Don't edit above this line
-
-
-def add_custom_command(commands, new_command, function):
-    commands_copy = commands.copy()
-    commands_copy[new_command] = function
-    return commands_copy
-
-
-def add_format(formats, format):
-    formats_copy = formats.copy()
-    formats_copy.append(format)
-    return formats_copy
-
-
-def save_document(docs, file_name, doc):
-    docs_copy = docs.copy()
-    docs_copy[file_name] = doc
-    return docs_copy
-
-
-def add_line_break(line):
-    return line + "\n\n"
+def sort_dates(dates):
+    dates_tupel = [(date.split("-")[2], date.split("-")[0], date.split("-")[1]) for date in dates]
+    new_dates = [datetime(int(date[0]), int(date[1]), int(date[2])) for date in dates_tupel]
+    new_dates.sort()
+    return [date.strftime("%m-%d-%Y") for date in new_dates]
