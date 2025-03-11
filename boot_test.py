@@ -3,65 +3,90 @@ from main import *
 
 run_cases = [
     (
-        "00FFFF",
-        (0, 255, 255),
+        [1, 2, 3, 4, 5],
+        [4, 5, 6, 7, 8],
+        True,
+        [8, 7, 6, 5, 4, 3, 2, 1],
     ),
     (
-        "FFFF00",
-        (255, 255, 0),
+        ["tent", "sleeping bag", "camp stove", "lantern", "backpack"],
+        ["flashlight", "tent", "camp chair", "sleeping bag", "water bottle"],
+        False,
+        [
+            "backpack",
+            "camp chair",
+            "camp stove",
+            "flashlight",
+            "lantern",
+            "sleeping bag",
+            "tent",
+            "water bottle",
+        ],
     ),
     (
-        "Hello!",
-        None,
-        "not a hex color string",
+        ["milk", "bread", "eggs", "cheese", "apples"],
+        ["milk", "bananas", "bread", "oranges", "cheese"],
+        True,
+        ["oranges", "milk", "eggs", "cheese", "bread", "bananas", "apples"],
     ),
     (
-        "42",
-        None,
-        "not a hex color string",
-    ),
-    (
-        1_000_000,
-        None,
-        "not a hex color string",
+        ["soccer ball", "tennis racket", "basketball", "baseball glove"],
+        ["baseball bat", "soccer ball", "tennis balls", "basketball", "helmet"],
+        False,
+        [
+            "baseball bat",
+            "baseball glove",
+            "basketball",
+            "helmet",
+            "soccer ball",
+            "tennis balls",
+            "tennis racket",
+        ],
     ),
 ]
+
 
 submit_cases = run_cases + [
     (
-        "",
-        None,
-        "not a hex color string",
+        ["notebooks", "pencils", "backpack", "textbooks", "laptop"],
+        ["highlighters", "notebooks", "erasers", "backpack", "calculator"],
+        False,
+        [
+            "backpack",
+            "calculator",
+            "erasers",
+            "highlighters",
+            "laptop",
+            "notebooks",
+            "pencils",
+            "textbooks",
+        ],
     ),
     (
-        "FF00FF",
-        (255, 0, 255),
-    ),
-    (
-        "000000",
-        (0, 0, 0),
-    ),
-    (
-        "FFFFFF",
-        (255, 255, 255),
+        ["tent", "milk", "soccer ball", "notebooks"],
+        ["bread", "tent", "swim goggles", "pencils", "milk"],
+        True,
+        [
+            "tent",
+            "swim goggles",
+            "soccer ball",
+            "pencils",
+            "notebooks",
+            "milk",
+            "bread",
+        ],
     ),
 ]
 
 
-def test(input, expected_output, expected_err=None):
+def test(input1, input2, input3, expected_output):
     print("---------------------------------")
-    print(f"  Inputs: '{input}'")
-    try:
-        result = hex_to_rgb(input)
-    except Exception as e:
-        print(f"Expected Error: {expected_err}")
-        print(f"  Actual Error: {str(e)}")
-        if str(e) != expected_err:
-            print("Fail")
-            return False
-        print("Pass")
-        return True
+    print(f"List 1: {input1}")
+    print(f"List 2: {input2}")
+    if input3:
+        print(f"Reversed")
     print(f"Expected: {expected_output}")
+    result = deduplicate_lists(input1, input2, input3)
     print(f"  Actual: {result}")
     if result != expected_output:
         print("Fail")

@@ -1,47 +1,13 @@
 """
 
-Debug Hex to RGB
-Doc2Doc should seamlessly convert hex triplet color codes to RGB values. Hex colors are an efficient means of representing color with only 6 characters. RGB values combine red, green and blue light to electronically display the entire color spectrum.
+Dedupe Lists
+We need to add a feature to Doc2Doc that merges two lists of items, removes any duplicates, and returns a sorted list of unique items. This is important for consolidating certain documents and metadata.
 
 Assignment
-Debug the hex_to_rgb function. hex_to_rgb should take a hex triplet color code and return three integers for the RGB values using int(). One of the arguments used in int() is incorrect, examine the documentation to see how to convert hexadecimal values.
-
-Use the provided is_hexadecimal function inside of hex_to_rgb to check if its input is valid. If the input is not a six character long hexadecimal string, raise an exception "not a hex color string".
-
-Example:
-
-red_val, green_val, blue_val = hex_to_rgb("A020F0")
-
-print(red_val)
-# prints 160
-
-print(green_val)
-# prints 32
-
-print(blue_val)
-# prints 240
+Complete the deduplicate_lists function. It takes two lists as input lst1 and lst2 and an optional reverse boolean, and returns a sorted list of unique elements. If reverse is True, then the returned list should be sorted in descending order. Use sorted() and pass it the reverse parameter.
 
 """
 
 
-def hex_to_rgb(hex_color):
-    # ?
-    try:
-        if is_hexadecimal(hex_color):
-            r = int(hex_color[:2], 16)
-            g = int(hex_color[2:4], 16)
-            b = int(hex_color[4:], 16)
-            return r, g, b
-    except Exception:
-        raise (Exception("not a hex color string"))
-
-
-# Don't edit below this line
-
-
-def is_hexadecimal(hex_string):
-    try:
-        int(hex_string, 16)
-        return True
-    except Exception:
-        return False
+def deduplicate_lists(lst1, lst2, reverse=False):
+    return sorted(list(set(lst1 + lst2)), reverse=reverse)
