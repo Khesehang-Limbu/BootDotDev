@@ -2,19 +2,19 @@ from main import *
 
 run_cases = [
     (
-        "* Alai\n- Dink Meeker\n",
-        "* Alai\n* Dink Meeker\n",
+        "\n* We are the music makers\n- And we are the dreamers of dreams\n* Come with me and you'll be\n",
+        "\n* We are the music makers\n* Come with me and you'll be\n",
     ),
     (
-        "* Ender Wiggin\n- Petra Arkanian\n* Bean\n",
-        "* Ender Wiggin\n* Petra Arkanian\n* Bean\n",
+        "\n* In a world of pure imagination\n- There is no life I know\n* Living there - you'll be free\n",
+        "\n* In a world of pure imagination\n* Living there - you'll be free\n",
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        "- Bonzo Madrid\n- Stilson\n- The Formics\n- Peter Wiggin\n- Valentine Wiggin\n- Colonel Graff\n",
-        "* Bonzo Madrid\n* Stilson\n* The Formics\n* Peter Wiggin\n* Valentine Wiggin\n* Colonel Graff\n",
+        "\n* If you want to view paradise\n- Simply look around and view it\n* Anything you want to, do it\n* There is no life I know\n- To compare with pure imagination\n* Living there, you'll be free\n",
+        "\n* If you want to view paradise\n* Anything you want to, do it\n* There is no life I know\n* Living there, you'll be free\n",
     ),
 ]
 
@@ -22,19 +22,21 @@ submit_cases = run_cases + [
 def test(input_document, expected_output):
     print("---------------------------------")
     print("Input document:")
-    print(input_document)
+    print('"' + input_document + '"')
     print("Expected output:")
-    print(expected_output)
-    result = change_bullet_style(input_document)
+    print('"' + expected_output + '"')
+    result = remove_invalid_lines(input_document)
     print("Actual output:")
-    print(result)
+    print('"' + result + '"')
     if result == expected_output:
         print("Pass")
         return True
+
     if expected_output.endswith("\n") and not result.endswith("\n"):
         print("Fail")
         print("Reason: expected newline at the end of the output")
         return False
+
     print("Fail")
     return False
 
