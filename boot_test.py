@@ -1,27 +1,43 @@
 from main import *
 
 run_cases = [
-    (["PDF", "DOCX", "TXT"], ["PDF", "MD", "HTML"], set(["PDF"])),
     (
-        ["PDF", "DOCX", "TXT", "HTML"],
-        ["PDF", "MD", "HTML", "TXT"],
-        set(["PDF", "TXT", "HTML"]),
+        (["Proposal", "Invoice", "Contract"], ["docx", "pdoof", "txt"]),
+        [("Proposal", "docx"), ("Contract", "txt")],
+    ),
+    (
+        (["Presentation", "Summary"], ["pptx", "docx"]),
+        [("Presentation", "pptx"), ("Summary", "docx")],
     ),
 ]
 
 submit_cases = run_cases + [
-    (["TXT"], ["TXT"], set(["TXT"])),
-    (["PDF", "DOCX", "TXT"], ["JPEG", "GIF", "PNG"], set()),
-    (["PDF", "DOCX"], ["DOCX", "PDF", "TXT"], set(["PDF", "DOCX"])),
+    (([], []), []),
+    ((["Test", "Example"], ["ppt", "docx"]), [("Test", "ppt"), ("Example", "docx")]),
+    (
+        (
+            ["Python Cheatsheet", "Java Cheatsheet", "Malware", "Golang Cheatsheet"],
+            ["pdf", "docx", "trash", "docx"],
+        ),
+        [
+            ("Python Cheatsheet", "pdf"),
+            ("Java Cheatsheet", "docx"),
+            ("Golang Cheatsheet", "docx"),
+        ],
+    ),
 ]
 
 
-def test(formats1, formats2, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Formats for Software 1: {formats1}")
-    print(f"Formats for Software 2: {formats2}")
+    print(f"Inputs:")
+    print(f" * doc_names: {input1[0]}")
+    print(f" * doc_formats: {input1[1]}")
     print(f"Expecting: {expected_output}")
-    result = get_common_formats(formats1, formats2)
+    try:
+        result = list(pair_document_with_format(*input1))
+    except Exception as e:
+        result = f"Error: {e}"
     print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
