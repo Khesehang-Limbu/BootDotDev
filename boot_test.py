@@ -1,48 +1,28 @@
 from main import *
 
 run_cases = [
+    (["PDF", "DOCX", "TXT"], ["PDF", "MD", "HTML"], set(["PDF"])),
     (
-        ["I don't feel safe", "Are you cussing with me?"],
-        2,
-        "I don't feel safe. Are you cussing with me?.",
-    ),
-    (
-        ["You're fantastic", "He's just another rat", "Where'd the food come from?"],
-        2,
-        "You're fantastic. He's just another rat.",
+        ["PDF", "DOCX", "TXT", "HTML"],
+        ["PDF", "MD", "HTML", "TXT"],
+        set(["PDF", "TXT", "HTML"]),
     ),
 ]
 
 submit_cases = run_cases + [
-    (["I'm not different"], 0, ""),
-    (
-        [
-            "You wrote a bad song",
-            "This is a good idea",
-            "Just buy the tree",
-            "It's going to flood",
-            "Tell us what to do",
-            "Here comes the train",
-            "Are you cussing with me?",
-            "This is just cider",
-            "Get me a bandit hat",
-        ],
-        3,
-        "You wrote a bad song. This is a good idea. Just buy the tree.",
-    ),
+    (["TXT"], ["TXT"], set(["TXT"])),
+    (["PDF", "DOCX", "TXT"], ["JPEG", "GIF", "PNG"], set()),
+    (["PDF", "DOCX"], ["DOCX", "PDF", "TXT"], set(["PDF", "DOCX"])),
 ]
 
 
-def test(input_sentences, input_n, expected_output):
+def test(formats1, formats2, expected_output):
     print("---------------------------------")
-    print("Inputs:")
-    print(f" * sentences: {input_sentences}")
-    print(f" * n: {input_n}")
-    print("Expecting:")
-    print(f" * {expected_output}")
-    result = join_first_sentences(input_sentences, input_n)
-    print("Actual:")
-    print(f" * {result}")
+    print(f"Formats for Software 1: {formats1}")
+    print(f"Formats for Software 2: {formats2}")
+    print(f"Expecting: {expected_output}")
+    result = get_common_formats(formats1, formats2)
+    print(f"Actual: {result}")
     if result == expected_output:
         print("Pass")
         return True
