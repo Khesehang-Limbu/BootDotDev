@@ -1,24 +1,47 @@
 """
 
-Toggle Case
-We need to add a feature to Doc2Doc that switches the capitalization of all the words in a line.
+Debug Hex to RGB
+Doc2Doc should seamlessly convert hex triplet color codes to RGB values. Hex colors are an efficient means of representing color with only 6 characters. RGB values combine red, green and blue light to electronically display the entire color spectrum.
 
 Assignment
-Complete the toggle_case function using string methods. It takes a string as input line, and returns a string.
+Debug the hex_to_rgb function. hex_to_rgb should take a hex triplet color code and return three integers for the RGB values using int(). One of the arguments used in int() is incorrect, examine the documentation to see how to convert hexadecimal values.
 
-If line is in titlecase, convert it to all uppercase and add three "!" to the end.
-If line is all uppercase, convert it to all lowercase except for the first letter and remove all trailing "!".
-If line is all lowercase or only the first letter is capitalized, convert it to title case.
-Otherwise, just return line unchanged.
+Use the provided is_hexadecimal function inside of hex_to_rgb to check if its input is valid. If the input is not a six character long hexadecimal string, raise an exception "not a hex color string".
+
+Example:
+
+red_val, green_val, blue_val = hex_to_rgb("A020F0")
+
+print(red_val)
+# prints 160
+
+print(green_val)
+# prints 32
+
+print(blue_val)
+# prints 240
 
 """
 
 
-def toggle_case(line):
-    if line.istitle():
-        return f"{line.upper()}!!!"
-    if line.isupper():
-        return f"{line[0].upper()}{line[1::].lower().replace("!", "")}"
-    if len(line) > 0 and line[1:].islower():
-        return line.title()
-    return line
+def hex_to_rgb(hex_color):
+    # ?
+    try:
+        if is_hexadecimal(hex_color):
+            r = int(hex_color[:2], 16)
+            g = int(hex_color[2:4], 16)
+            b = int(hex_color[4:], 16)
+            return r, g, b
+    except Exception:
+        raise (Exception("not a hex color string"))
+
+
+# Don't edit below this line
+
+
+def is_hexadecimal(hex_string):
+    try:
+        int(hex_string, 16)
+        return True
+    except Exception:
+        return False

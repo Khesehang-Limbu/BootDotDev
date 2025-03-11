@@ -1,42 +1,67 @@
 from main import *
 
+
 run_cases = [
     (
-        "live long and prosper",
-        "Live Long And Prosper",
+        "00FFFF",
+        (0, 255, 255),
     ),
     (
-        "...Khan",
-        "...KHAN!!!",
+        "FFFF00",
+        (255, 255, 0),
     ),
-    ("BEAM ME UP, BOOTS!", "Beam me up, boots"),
+    (
+        "Hello!",
+        None,
+        "not a hex color string",
+    ),
+    (
+        "42",
+        None,
+        "not a hex color string",
+    ),
+    (
+        1_000_000,
+        None,
+        "not a hex color string",
+    ),
 ]
 
 submit_cases = run_cases + [
     (
         "",
-        "",
+        None,
+        "not a hex color string",
     ),
     (
-        "I aM a DoCtOr, nOt A fUnCtIoNaL pRoGrAmMeR!!",
-        "I aM a DoCtOr, nOt A fUnCtIoNaL pRoGrAmMeR!!",
+        "FF00FF",
+        (255, 0, 255),
     ),
     (
-        "TO BOLDLY GO WHERE NO BEAR HAS GONE BEFORE!!!!",
-        "To boldly go where no bear has gone before",
+        "000000",
+        (0, 0, 0),
     ),
     (
-        "Illogical",
-        "ILLOGICAL!!!",
+        "FFFFFF",
+        (255, 255, 255),
     ),
 ]
 
 
-def test(input, expected_output):
+def test(input, expected_output, expected_err=None):
     print("---------------------------------")
-    print(f"   Input: {input}")
+    print(f"  Inputs: '{input}'")
+    try:
+        result = hex_to_rgb(input)
+    except Exception as e:
+        print(f"Expected Error: {expected_err}")
+        print(f"  Actual Error: {str(e)}")
+        if str(e) != expected_err:
+            print("Fail")
+            return False
+        print("Pass")
+        return True
     print(f"Expected: {expected_output}")
-    result = toggle_case(input)
     print(f"  Actual: {result}")
     if result != expected_output:
         print("Fail")
