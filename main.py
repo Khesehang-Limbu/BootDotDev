@@ -1,81 +1,54 @@
 """
 
-No-Op
-A no-op is an operation that does... nothing.
+Memoization
+At its core, memoization is just caching (storing a copy of) the result of a computation so that we don't have to compute it again in the future.
 
-If a function doesn't return anything, it's probably impure. If it doesn't return anything, the only reason for it to exist is to perform a side effect.
+For example, take this simple function:
 
-Example No-Op
-This function performs a useless computation because it doesn't return anything or perform a side-effect. It's a no-op.
+def add(x, y):
+    return x + y
 
-def square(x):
-    x * x
+A call to add(5, 7) will always evaluate to 12. So, if you think about it, once we know that add(5, 7) can be replaced with 12, we can just store the value 12 somewhere in memory so that we don't have to do the addition operation again in the future. Then, if we need to add(5, 7) again, we can just look up the value 12 instead of doing a (potentially expensive) CPU operation.
 
-Example Side-Effect
-This function performs a side effect. It changes the value of the y variable that is outside of its scope. It's impure.
+The slower and more complex the function, the more memoization can help speed things up.
 
-y = 5
-def add_to_y(x):
-    global y
-    y += x
-
-add_to_y(3)
-# y = 8
-
-The global keyword just tells Python to allow access to the outer-scoped y variable.
-
-print()
-Even the print() function (technically) has an impure side effect! It doesn't return anything, but it does print text to the console, which is a form of i/o.
+Note: It's pronounced "memOization", not "memORization". This confused me for quite a while in college, I thought my professor just didn't speak goodly...
 
 Assignment
-Complete the remove_emphasis, remove_emphasis_from_line, and remove_emphasis_from_word functions. They are currently no-ops.
+Counting the words in a document can be slow, so we want to memoize it.
 
-remove_emphasis is the parent function. It takes a full document with any number of lines and removes any single or double * characters that are at the start or end of a word. (Emphasis in markdown)
+Complete the word_count_memo function. It takes two inputs:
 
-For example, this:
+A document string.
+A memos dictionary. The keys are full document strings, and the values are the word count of the document.
+It should return two values:
 
-I *love* markdown.
-I **really love** markdown.
+The word count of the given document
+An updated memos dictionary.
+Here are the steps to follow:
 
-Should become:
-
-I love markdown.
-I really love markdown.
-
-Write the helper functions, they will make the remove_emphasis function much easier to write:
-
-The remove_emphasis_from_word function should remove emphasis from a single word.
-The remove_emphasis_from_line function should split a given line into words and use the function we just created to remove emphasis from each word.
-Don't forget to handle newline characters (\n) appropriately at the end of lines.
+Create a .copy() of the memos dictionary.
+If the document is in the memos dictionary, just return the associated word count and the memos copy. No need to recompute the word count.
+Otherwise, use the provided word_count function to count the words in the given document.
+Store the word count in the memos copy.
+return the word count and the updated memos copy.
 
 """
 
 
-def remove_emphasis_from_word(word):
-    # ?
-    if word == "":
-        return word
+def word_count_memo(document, memos):
+    memos_copy = memos.copy()
+    if document in memos_copy.keys():
+        return memos_copy[document], memos_copy
 
-    if word[0] == "*" and word[1] == "*" and word[-1] == "*" and word[-2] == "*":
-        word = word[2:len(word)-2:]
-    elif word[0] == "*" and word[1] == "*":
-        word = word[2::]
-    elif word[-1] == "*" and word[-2] == "*":
-        word = word[:len(word)-2:]
-
-    if word[0] == "*" and word[-1] == "*":
-        word = word[1:len(word)-1:]
-    elif word[0] == "*":
-        word = word[1::]
-    elif word[-1] == "*":
-        word = word[:len(word)-1:]
-
-    return word
+    new_count = word_count(document)
+    memos_copy[document] = new_count
+    return new_count, memos_copy
 
 
-def remove_emphasis_from_line(line):
-    return " ".join(list(map(remove_emphasis_from_word, line.split(" "))))
+# Don't edit below this line
 
 
-def remove_emphasis(doc_content):
-    return "\n".join(map(remove_emphasis_from_line, doc_content.split("\n")))
+def word_count(document):
+    count = len(document.split())
+    return count
