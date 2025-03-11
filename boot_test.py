@@ -1,63 +1,52 @@
 from main import *
 
-
-def to_string(file):
-    return (
-        f"File: {file['filename']}\n"
-        f"Author: {file['author_first_name']} {file['author_last_name']}\n"
-        f"Content: {file['content']}"
-    )
-
-
 run_cases = [
     (
-        {
-            "filename": "essay.txt",
-            "content": "Dear Mr. Vernon, we accept the fact that we had to sacrifice a whole Saturday in detention for whatever it was we did wrong...",
-            "author_first_name": "Brian",
-            "author_last_name": "Johnson",
-        },
-        "```\nFile: essay.txt\nAuthor: Brian Johnson\nContent: Dear Mr. Vernon, we accept the fact that we had to sacrifice a whole Saturday in detention for whatever it was we did wrong...\n```",
+        [("document", [".doc", ".docx"]), ("image", [".jpg", ".png"])],
+        ".doc",
+        "document",
     ),
     (
-        {
-            "filename": "letter.txt",
-            "content": "But we think you're crazy to make us write an essay telling you who we think we are.",
-            "author_first_name": "Brian",
-            "author_last_name": "Johnson",
-        },
-        "```\nFile: letter.txt\nAuthor: Brian Johnson\nContent: But we think you're crazy to make us write an essay telling you who we think we are.\n```",
+        [("document", [".doc", ".docx"]), ("image", [".jpg", ".png"])],
+        ".png",
+        "image",
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        {
-            "filename": "note.txt",
-            "content": "Does Barry Manilow know that you raid his wardrobe?",
-            "author_first_name": "John",
-            "author_last_name": "Bender",
-        },
-        "```\nFile: note.txt\nAuthor: John Bender\nContent: Does Barry Manilow know that you raid his wardrobe?\n```",
+        [("document", [".doc", ".docx"]), ("image", [".jpg", ".png"])],
+        ".txt",
+        "Unknown",
+    ),
+    (
+        [("code", [".py", ".js"]), ("markup", [".html", ".xml"])],
+        ".js",
+        "code",
     ),
 ]
 
 
-def test(input1, expected_output):
-    print("---------------------------------")
-    print("Inputs:")
-    print(f"  filename: {input1['filename']}")
-    print(f"  content: {input1['content'][:30]}...")  # Truncate for display
-    print(f"  author_first_name: {input1['author_first_name']}")
-    print(f"  author_last_name: {input1['author_last_name']}")
-    print(f"Expecting:\n{expected_output}")
-    result = file_to_prompt(input1, to_string)
-    print(f"Actual:\n{result}")
-    if result == expected_output:
-        print("Pass")
-        return True
-    print("Fail")
-    return False
+def test(file_extension_tuples, ext, expected_output):
+    try:
+        print("---------------------------------")
+        print("Input tuples:")
+        for file_type, exts in file_extension_tuples:
+            print(f"  {file_type}: {exts}")
+        print(f"Extension: {ext}")
+        print(f"Expecting: {expected_output}")
+        getter_function = file_type_getter(file_extension_tuples)
+        result = getter_function(ext)
+        print(f"Actual: {result}")
+        if result == expected_output:
+            print("Pass")
+            return True
+        print("Fail")
+        return False
+    except Exception as e:
+        print("Fail")
+        print(e)
+        return False
 
 
 def main():

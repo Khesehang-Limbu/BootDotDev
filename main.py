@@ -1,35 +1,48 @@
 """
 
-Functions As Values
-In Python, functions are just values, like strings, integers, or objects. For example, we can assign an existing function to a variable:
+Anonymous Functions
+Anonymous functions have no name, and in Python, they're called lambda functions after lambda calculus. Here's a lambda function that takes a single argument x and returns the result of x + 1:
 
-def add(x, y):
-    return x + y
+lambda x: x + 1
 
-# assign the function to a new variable
-# called "addition". It behaves the same
-# as the original "add" function
-addition = add
-print(addition(2, 5))
-# 7
+Notice that the expression x + 1 is returned automatically, no need for a return statement. And because functions are just values, we can assign the function to a variable named add_one:
+
+add_one = lambda x: x + 1
+print(add_one(2))
+# 3
+
+Lambda functions might look scary, but they're still just functions. Because they simply return the result of an expression, they're often used for small, simple evaluations. Here's an example that uses a lambda to get a value from a dictionary:
+
+get_age = lambda name: {
+    "lane": 29,
+    "hunter": 69,
+    "allan": 17
+}.get(name, "not found")
+print(get_age("lane"))
+# 29
 
 Assignment
-With the popularity of generative AI (like ChatGPT), we need to be able to convert files into pure text to be injected into prompts.
+Complete the file_type_getter function. This function accepts a list of tuples, where each tuple contains:
 
-Complete the file_to_prompt function. It should take a file dictionary and a to_string function as inputs and return a formatted string. The provided to_string function is responsible for converting the file dictionary into a string: you don't need to implement it, it's a value passed to your function.
+A "file type" (e.g. "code", "document", "image", etc)
+A list of associated file extensions (e.g. [".py", ".js"] or [".docx", ".doc"])
+First, use loops to create a dictionary that maps each file extension to its corresponding file type, based on the input tuples. For example, the resulting dictionary might be:
 
-However, your function should wrap the result of the to_string function in triple backticks (```) to format it as a code block in Markdown. For example:
+{
+    ".doc": "text",
+    ".docx": "document",
+    ".py": "code",
+    ".jpg": "image"
+}
 
-an example string
-
-should become:
-
-```
-an example string
-```
+Next, return a lambda function that accepts a string (a file extension) and returns the corresponding file type. If the extension is not found in the dictionary, the lambda function should return "Unknown". I used the .get dictionary method to handle this.
 
 """
 
 
-def file_to_prompt(file, to_string):
-    return f"```\n{to_string(file)}\n```"
+def file_type_getter(file_extension_tuples):
+    file_extension_dict = {}
+    for value in file_extension_tuples:
+        for extension in value[1]:
+            file_extension_dict[extension] = value[0]
+    return lambda name: file_extension_dict.get(name, "Unknown")
