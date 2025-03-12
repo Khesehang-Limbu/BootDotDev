@@ -1,40 +1,99 @@
 """
 
-Enums
-Doing the admittedly weird class and isinstance() thing works, but it turns out, there's a better way in some cases. If you're trying to represent a fixed set of values (but not store additional data within them) enums are the way to go.
+Match
+Let's take another look at our example Enum from the previous lesson:
 
+Color = Enum("Color", ["RED", "GREEN", "BLUE"])
 
-Let's say we have a Color variable that we want to restrict to only three possible values:
+Working With Enums
+Python has a match statement that tends to be a lot cleaner than a series of if/else/elif statements when we're working with a fixed set of possible values (like a sum type, or more specifically an enum):
 
-RED
-GREEN
-BLUE
-We could use a plain-old string to represent these values, but that's annoying because we have to remember all the "valid" values and defensively check for invalid ones all over our codebase. Instead, we can use an Enum:
+def get_hex(color):
+    match color:
+        case Color.RED:
+            return "#FF0000"
+        case Color.GREEN:
+            return "#00FF00"
+        case Color.BLUE:
+            return "#0000FF"
 
-from enum import Enum
+        # default case
+        # (invalid Color)
+        case _:
+            return "#FFFFFF"
 
-Color = Enum('Color', ['RED', 'GREEN', 'BLUE'])
-print(Color.RED)  # this works, prints 'Color.RED'
-print(Color.TEAL) # this raises an exception
+If you have two values to match, you can use a tuple:
 
-Now Color is a sum type! At least, as close as we can get in Python.
+def get_hex(color, shade):
+    match (color, shade):
+        case (Color.RED, Shade.LIGHT):
+            return "#FFAAAA"
+        case (Color.RED, Shade.DARK):
+            return "#AA0000"
+        case (Color.GREEN, Shade.LIGHT):
+            return "#AAFFAA"
+        case (Color.GREEN, Shade.DARK):
+            return "#00AA00"
+        case (Color.BLUE, Shade.LIGHT):
+            return "#AAAAFF"
+        case (Color.BLUE, Shade.DARK):
+            return "#0000AA"
 
-There are a few benefits:
+        # default case
+        # (invalid combination)
+        case _:
+            return "#FFFFFF"
 
-A "Color" can only be RED, GREEN, or BLUE. If you try to use Color.TEAL, Python raises an exception.
-There is a central place to see the "valid" values for a Color.
-Each "Color" has a "name" (e.g. Color.RED) and a "value" (e.g. 1). The value is an integer and is used under the hood instead of the name. Integers take up less memory than strings, which helps with performance.
+The value we want to compare is set after the match keyword, which is then compared against different cases/patterns. If a match is found, the code in the block is executed.
+
 Assignment
-Create an Enum called Doctype with values:
+Complete the convert_format function. Using the enum DocFormat, it should support 3 types of conversions:
 
-PDF
-TXT
-DOCX
-MD
-HTML
+From MD to HTML:
+
+Assume the content is a single h1 tag in markdown syntax - it's a single string representing a line. Replace the leading # with an <h1> and add a </h1> to the end.
+
+# This is a heading -> <h1>This is a heading</h1>
+
+From TXT to PDF:
+
+Simply add a [PDF] tag to the beginning and end of the content. Notice the spaces between [PDF] tags and the content:
+
+This is some text -> [PDF] This is some text [PDF]
+
+From HTML to MD:
+
+Replace any <h1> tags with # and remove any </h1> tags.
+
+<h1>This is a heading</h1> -> # This is a heading
+
+Any other conversion:
+
+If the input format is invalid, raise an Exception with the string invalid type.
 
 """
 
 from enum import Enum
 
-Doctype = Enum("Doctype", ["PDF", "TXT", "DOCX", "MD", "HTML"])
+
+class DocFormat(Enum):
+    PDF = 1
+    TXT = 2
+    MD = 3
+    HTML = 4
+
+
+# don't touch above this line
+
+
+def convert_format(content, from_format, to_format):
+    match (from_format, to_format):
+        case (DocFormat.MD, DocFormat.HTML):
+            return content.replace("# ", "<h1>") + "</h1>"
+        case (DocFormat.TXT, DocFormat.PDF):
+            return f"[PDF] {content} [PDF]"
+        case (DocFormat.HTML, DocFormat.MD):
+            return content.replace("<h1>", "# ").replace("</h1>", "")
+        case _:
+            raise Exception("invalid type")
+
