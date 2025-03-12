@@ -1,38 +1,25 @@
 """
 
-Count Nested Levels
-In Doc2Doc, we might have documents nested inside other documents, forming a kind of tree. You know how crazy .docx files can get...
+Recursive String Reversal
+At Doc2Doc we need to be able to reverse strings. Our bad-word detection algorithms need to work on those crazy teenagers who write unpleasantries backward to try to get around our filters!
 
-Anyways, we want to find out how deeply nested a given document is.
+However, being an ex-Haskell-loving university professor, our team lead has asked us to implement it using recursion instead of a loop.
 
 Assignment
-Complete the count_nested_levels function.
+Complete the reverse_string function.
 
-Loop over document_ids in the nested_documents dictionary
-If the current document_id matches the target_document_id, return its level of nesting
-If the target_document_id is not found, recursively call count_nested_levels on the current document_id and increment the level
-If it found the target_document_id's level, return it
-If the target_document_id doesn't exist, the function should return -1
-Example
-In this dictionary, the document with id 3 is nested 2 levels deep. Document 2 is nested 1 level deep.
-
-{
-    1: {
-        3: {}
-    },
-    2: {}
-}
+It should take a string as a parameter and return the reversed string by recursively reversing the substrings inside. Your function should recurse once for each character in the string.
 
 """
 
 
-def count_nested_levels(nested_documents, target_document_id, level=1):
-    for id in nested_documents.keys():
-        if id == target_document_id:
-            return level
-        else:
-            current_level = count_nested_levels(
-                nested_documents[id], target_document_id, level+1)
-            if current_level != -1:
-                return current_level
-    return -1
+def reverse_string(s):
+    reversed_string = ""
+
+    if len(s) == 1 or s == "":
+        return s
+
+    reversed_string += s[len(s)-1]
+    reversed_string += reverse_string(s[:len(s)-1:])
+
+    return reversed_string

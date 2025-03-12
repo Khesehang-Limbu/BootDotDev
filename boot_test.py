@@ -1,28 +1,34 @@
 from main import *
 
 run_cases = [
-    ({1: {2: {3: {}, 4: {5: {}}}, 6: {}, 7: {8: {9: {10: {}}}}}}, 2, 2),
-    ({1: {2: {3: {}, 4: {5: {}}}, 6: {}, 7: {8: {9: {10: {}}}}}}, 9, 4),
+    ("Functional programming", "gnimmargorp lanoitcnuF"),
+    ("Python", "nohtyP"),
 ]
 
 submit_cases = run_cases + [
-    ({}, 1, -1),
-    ({1: {2: {3: {}, 4: {5: {}}}, 6: {}, 7: {8: {9: {10: {}}}}}}, 5, 4),
-    ({1: {2: {3: {}, 4: {5: {}}}, 6: {}, 7: {8: {9: {10: {}}}}}}, 20, -1),
+    ("", ""),
+    (
+        "Haskell code has no side effects because no one writes it",
+        "ti setirw eno on esuaceb stceffe edis on sah edoc lleksaH",
+    ),
+    (
+        "Lisp is the #1 programming language if you measure by parentheses",
+        "sesehtnerap yb erusaem uoy fi egaugnal gnimmargorp 1# eht si psiL",
+    ),
+    ("OCaml is for Haskell dropouts", "stuopord lleksaH rof si lmaCO"),
 ]
 
 
-def test(input1, input2, expected_output):
+def test(input, expected_output):
     print("---------------------------------")
-    print(f"Input tree: {input1}")
-    print(f"Input document id: {input2}")
-    print(f"Expecting: {expected_output}")
-    result = count_nested_levels(input1, input2)
-    print(f"Actual: {result}")
+    print(f"Input: {input}")
+    print(f"Expected Output: {expected_output}")
+    result = reverse_string(input)
+    print(f"Actual Output: {result}")
     if result == expected_output:
         print("Pass")
         return True
-    print("Fail")
+    print("Failure")
     return False
 
 
