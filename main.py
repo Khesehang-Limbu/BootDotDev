@@ -1,90 +1,97 @@
 """
 
-Decorators
-Python decorators are just syntactic sugar for higher-order functions.
+Args and Kwargs
+In Python, *args and **kwargs allow a function to accept and deal with a variable number of arguments.
 
-Example:
+*args collects positional arguments into a tuple
+**kwargs collects keyword (named) arguments into a dictionary
+def print_arguments(*args, **kwargs):
+    print(f"Positional arguments: {args}")
+    print(f"Keyword arguments: {kwargs}")
 
-def vowel_counter(func_to_decorate):
-    vowel_count = 0
-    def wrapper(doc):
-        nonlocal vowel_count
-        vowels = "aeiou"
-        for char in doc:
-            if char in vowels:
-                vowel_count += 1
-        print(f"Vowel count: {vowel_count}")
-        return func_to_decorate(doc)
-    return wrapper
+print_arguments("hello", "world", a=1, b=2)
+# Positional arguments: ('hello', 'world')
+# Keyword arguments: {'a': 1, 'b': 2}
 
-@vowel_counter
-def process_doc(doc):
-    print(f"Document: {doc}")
+Positional Arguments
+Positional arguments are the ones you're already familiar with, where the order of the arguments matters. Like this:
 
-process_doc("What")
-# Vowel count: 1
-# Document: What
+def sub(a, b):
+    return a - b
 
-process_doc("a wonderful")
-# Vowel count: 5
-# Document: a wonderful
+# a=3, b=2
+res = sub(3, 2)
+# res = 1
 
-process_doc("world")
-# Vowel count: 6
-# Document: world
+Keyword Arguments
+Keyword arguments are passed in by name. Order does not matter. Like this:
 
-The @vowel_counter line is "decorating" the process_doc function with the vowel_counter function. vowel_counter is called once when process_doc is defined with the @ syntax, but the wrapper function that it returns is called every time process_doc is called. That's why vowel_count is preserved and printed after each time.
+def sub(a, b):
+    return a - b
 
-It's Just Syntactic Sugar
-Python decorators are just another (sometimes simpler) way of writing a higher-order function. These two pieces of code are identical:
+res = sub(b=3, a=2)
+# res = -1
+res = sub(a=3, b=2)
+# res = 1
 
-With Decorator
-@vowel_counter
-def process_doc(doc):
-    print(f"Document: {doc}")
+A Note on Ordering
+Any positional arguments must come before keyword arguments. This will not work:
 
-process_doc("Something wicked this way comes")
-
-Without Decorator
-def process(doc):
-    print(f"Document: {doc}")
-
-process_doc = vowel_counter(process)
-process_doc("Something wicked this way comes")
+sub(b=3, 2)
 
 Assignment
-The provided file_type_aggregator function is intended to decorate other functions. It assumes that the function it decorates has exactly 2 positional arguments.
+At Doc2Doc, we need better internal debugging tools. Complete the args_logger function. It takes a variable number of positional and keyword arguments and prints them to the console.
 
-Create a process_doc function that's decorated by file_type_aggregator. It should return the following string:
+Print each positional argument sequentially using numbers and periods as the prefixes, starting with 1.. For example:
+args_logger("what's", "up", "doc")
 
-f"Processing doc: '{doc}'. File Type: {file_type}"
+prints to the console:
 
-Where doc and file_type are its positional arguments. (See line 11 for where it's being called)
+1. what's
+2. up
+3. doc
+
+Print each keyword argument alphabetically by key using asterisks (*) as the prefix with a colon (:) in between. For example:
+args_logger("hi", "there", age=17, date="July 4 1776")
+
+prints to the console:
+
+1. hi
+2. there
+* age: 17
+* date: July 4 1776
+
+Use the sorted() function to get the order right.
 
 """
 
 
-def file_type_aggregator(func_to_decorate):
-    # dict of file_type -> count
-    counts = {}
+def log_to(*args, **kwargs):
+    def wrapper(*args, **kwargs):
+        for i in range(len(args)):
+            print(f"{i+1}. {args[i]}")
 
-    def wrapper(doc, file_type):
-        nonlocal counts
-
-        if file_type not in counts:
-            counts[file_type] = 0
-        counts[file_type] += 1
-        result = func_to_decorate(doc, file_type)
-
-        return result, counts
-
+        for key in sorted(kwargs):
+            print(f"* {key}: {kwargs[key]}")
     return wrapper
 
 
-# don't touch above this line
+@log_to
+def args_logger(*args, **kwargs):
+    # ?
+    pass
 
-# ?
-@file_type_aggregator
-def process_doc(doc, file_type):
-    return f"Processing doc: '{doc}'. File Type: {file_type}"
 
+def test(*args, **kwargs):
+    args_logger(*args, **kwargs)
+    print("========================================")
+
+
+def main():
+    test("Good", "riddance", date_str="01/01/2023")
+    test(message="Hello World", to_delete="l")
+    test("two", "star-crossed", "lovers")
+    test("hi", True, f_name="Lane", l_name="Wagner", age=28)
+
+
+main()
