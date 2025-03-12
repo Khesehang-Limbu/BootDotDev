@@ -1,96 +1,47 @@
 """
 
-HTML Table
-Doc2Doc should have tools to create HTML boilerplate. One of the features should create a table. An HTML table has a header row and data rows. A header row has headers for the columns. Each normal row has data cells which contain the information in the table. It is essentially a 2-dimensional list.
+Markdown Image
+Markdown makes displaying images as simple as possible. To add an image to a markdown document, just use this syntax:
 
-Example HTML Table:
+![alt text](url "title")
 
-<table>
-  <tr>
-    <th>Row 1, Header 1</th>
-    <th>Row 1, Header 2</th>
-  </tr>
-  <tr>
-    <td>Row 2, Cell 1</td>
-    <td>Row 2, Cell 2</td>
-  </tr>
-  <tr>
-    <td>Row 3, Cell 1</td>
-    <td>Row 3, Cell 2</td>
-  </tr>
-</table>
-
-"td": Each item in a table goes in its own data cell, which are arranged in rows.
-"tr": The table row tag goes around each row of cells.
-"th": The header cells hold the headers for each column and belong in the first row.
-"table": This is the parent tag of the entire table.
-Result:
-
-Row 1, Header 1	Row 1, Header 2
-Row 2, Cell 1	Row 2, Cell 2
-Row 3, Cell 1	Row 3, Cell 2
+alt text a brief description for screen readers and web scrapers. Required for accessibility.
+url url or relative path to image.
+title shown on mouse hover. Optional.
 Assignment
-Complete the create_html_table function. It takes a list of lists of strings, data_rows, and returns a function, create_table_headers. create_table_headers should take a list of strings, headers, and convert them into the header row of the table, then return the complete HTML table as a string without any added whitespace or indentation.
+Doc2Doc makes using markdown a breeze. This includes adding images to markdown documents.
 
-Use the provided functions to complete the create_html_table function. Within the create_table_headers function:
-
-Access the nonlocal rows string.
-Accumulate the strings in the headers list as header cells in a single table row.
-Add the row of headers to the beginning of the rows string.
-Add the final tag, "table", around all of the rows.
-Return one single string containing the HTML table.
+Complete the create_markdown_image function using currying. It takes a string input, alt_text, and returns an inner function.
+It should enclose the alt_text in square brackets prefixed with an exclamation point ![alt_text].
+Create the inner function returned by create_markdown_image. It also takes a string input, url, and returns an innermost function.
+The inner function should first escape any parentheses in the URL by replacing them with encoded sequences.
+Use the .replace() string method to change any opening parenthesis ( into %28.
+Do the same to change any closing parenthesis ) into %29.
+Enclose the url with parentheses (url).
+Add the enclosed url to the end of the enclosed alt_text: ![alt_text](url)
+Create the innermost function returned by the inner function. It should take an optional string input for the title.
+If a title is passed:
+Enclose it in double quotes.
+Then add the quoted title to the image syntax by first removing the closing parenthesis ) from the end of the image syntax.
+Add a space and the quoted title with a closing parenthesis ) to the end of the image syntax: ![alt_text](url "title")
+Return the finished image syntax.
 
 """
 
-from functools import reduce
 
+def create_markdown_image(alt_text):
+    alt_text = f"![{alt_text}]"
 
-def create_tagger(tag):
-    def tagger(content):
-        return f"<{tag}>{content}</{tag}>"
+    def create_image_url(url):
+        url = url.replace("(", "%28")
+        url = url.replace(")", "%29")
+        url = f"({url})"
 
-    return tagger
-
-
-def create_accumulator(tagger):
-    def accumulate(items):
-        return reduce(lambda acc, item: acc + tagger(item), items, "")
-
-    return accumulate
-
-
-tag_data = create_tagger("td")
-tag_header = create_tagger("th")
-tag_row = create_tagger("tr")
-tag_table = create_tagger("table")
-
-accumulate_data_cells = create_accumulator(tag_data)
-accumulate_rows = create_accumulator(tag_row)
-accumulate_headers = create_accumulator(tag_header)
-
-
-# don't touch above this line
-
-
-def create_html_table(data_rows):
-    rows = accumulate_rows(map(accumulate_data_cells, data_rows))
-
-    def create_table_headers(headers):
-        # ?
-        nonlocal rows
-        html = "<table><tr>"
-
-#        for header in headers:
-#            html += f"<th>{header}</th>"
-
-        def concat_headers(acc, header):
-            nonlocal html
-            html += f"<th>{acc}</th><th>{header}</th>"
-            return html
-
-        html = reduce(concat_headers, headers)
-
-        html += f"</tr>{rows}</table>"
-        return html
-
-    return create_table_headers
+        def create_image_title(title=""):
+            if title != "":
+                title = f' "{title}")'
+                nonlocal url
+                url = url.replace(")", title)
+            return alt_text + url
+        return create_image_title
+    return create_image_url

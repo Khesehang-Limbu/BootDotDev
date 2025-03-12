@@ -1,35 +1,48 @@
 from main import *
 
+
 run_cases = [
     (
-        [
-            ["Scooby Doo", "Lassie"],
-            ["Blue", "Wishbone"],
-        ],
-        ["Cartoon TV Dogs", "Real TV Dogs"],
-        "<table><tr><th>Cartoon TV Dogs</th><th>Real TV Dogs</th></tr><tr><td>Scooby Doo</td><td>Lassie</td></tr><tr><td>Blue</td><td>Wishbone</td></tr></table>",
+        "seal",
+        "https://imgur.com/oglPAXK",
+        "this is a seal",
+        '![seal](https://imgur.com/oglPAXK "this is a seal")',
+    ),
+    (
+        "cinnamon roll",
+        "https://imgur.com/a/0MyOP",
+        "this is a cinnamon roll",
+        '![cinnamon roll](https://imgur.com/a/0MyOP "this is a cinnamon roll")',
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        [
-            ["Garfield", "Salem"],
-            ["Tom", "Mr. Bigglesworth"],
-        ],
-        ["Cartoon TV Cats", "Real TV Cats"],
-        "<table><tr><th>Cartoon TV Cats</th><th>Real TV Cats</th></tr><tr><td>Garfield</td><td>Salem</td></tr><tr><td>Tom</td><td>Mr. Bigglesworth</td></tr></table>",
+        "banana",
+        "https://imgur.com/nlArAKx",
+        None,
+        "![banana](https://imgur.com/nlArAKx)",
+    ),
+    (
+        "not an image",
+        "https://en.wikipedia.org/wiki/Variable_(computer_science)",
+        "showing escape characters",
+        '![not an image](https://en.wikipedia.org/wiki/Variable_%28computer_science%29 "showing escape characters")',
     ),
 ]
 
 
-def test(data_rows, headers, expected_output):
+def test(alt_text, url, title, expected_output):
     print("---------------------------------")
-    print(f"Data Rows: {data_rows}")
-    print(f"Headers: {headers}")
-    print(f"Expecting:\n{expected_output}")
-    result = create_html_table(data_rows)(headers)
-    print(f"Actual:\n{result}")
+    print(f"Inputs:")
+    print(f"* Alt Text: {alt_text}")
+    print(f"* URL: {url}")
+    print(f"* Title: {title}")
+    print(f"Expecting: {expected_output}")
+    result = create_markdown_image(alt_text)(url)()
+    if title:
+        result = create_markdown_image(alt_text)(url)(title)
+    print(f"   Actual: {result}")
     if result == expected_output:
         print("Pass")
         return True
