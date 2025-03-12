@@ -1,67 +1,53 @@
 """
 
-Escape HTML
-You can stack decorators, and you can use currying with decorators.
+lru_cache
+lru_cache from the functools module is an example of a decorator and an example of memoization.
 
-def to_uppercase(func):
-    def wrapper(document):
-        return func(document.upper())
+lru_cache memoizes the inputs and outputs of the decorated function in a size-restricted dictionary. It speeds up repeated calls to a slow function with the same inputs. For instance, if the function reads from disc, makes network requests, or requires a lot of computation AND it is used repeatedly with the same inputs.
 
-    return wrapper
+Here's an example from the Python documentation that perfectly illustrates how and why to use the lru_cache decorator:
 
-def get_truncate(length):
-    def truncate(func):
-        def wrapper(document):
-            return func(document[:length])
+from functools import lru_cache
 
-        return wrapper
+@lru_cache()
+def factorial_r(x):
+    if x == 0:
+        return 1
+    else:
+        return x * factorial_r(x - 1)
 
-    return truncate
+factorial_r(10) # no previously cached result, makes 11 recursive calls
+# 3628800
+factorial_r(5)  # just looks up cached value result
+# 120
+factorial_r(12) # makes two new recursive calls, the other 11 are cached
+# 479001600
 
-@to_uppercase
-@get_truncate(9) # currying
-def print_input(input):
-    print(input)
-
-print_input("Keep Calm and Carry On")
-# prints: "KEEP CALM"
-
-Observe that to_uppercase wrapped get_truncate(9), and get_truncate(9) returned truncate which wrapped print_input, then print_input printed "KEEP CALM" from "Keep Calm and Carry On".
-
-You might not know anything about HTML. That's fine. This challenge isn't about HTML directly. Just understand that it's a markup language like markdown. Certain characters are interpreted as part of HTML tags. In order to show these characters without interpreting them, they must be encoded as escape sequences. tldr: replace "<" with "&lt;".
-
-Doc2Doc needs a feature that can take care of encoding such characters for you. This is particularly helpful if you want to show raw HTML on a vanilla HTML webpage. HTML even has a semantic <pre> tag for designating pre-formatted text.
+Since the factorial function is recursive and the inputs are sequential numbers, it's called repeatedly with the same inputs. Without the cache, the function would be called 30 times. With lru_cache, the function is only called 13 times. While you don't often need to compute factorials, this example ties together how to use a decorator and memoization and recursion.
 
 Assignment
-Complete the replacer function.
+The creator of Doc2Doc is a huge fan of palindromes for some nerdy reason. Add a feature to check if a word is a palindrome.
 
-It takes as input two strings, old and new, and returns a function, replace.
-replace takes an input function, decorated_func, and returns a wrapper function.
-wrapper takes as input a string text. It uses .replace() string method to replace instances of old with new in the text. Then it returns the result of passing the modified text to the decorated_func.
-Use a series of the replacer function to decorate tag_pre. Pass the following pairs of strings to these decorators to encode the escape sequences:
-Replace "&" with "&amp;"
-Replace "<" with "&lt;"
-Replace ">" with "&gt;"
-Replace '"' with "&quot;"
-Replace "'" with "&#x27;"
+Import the lru_cache function from the functools module. Use it to decorate the incomplete is_palindrome function.
+
+Complete the is_palindrome function. It takes as input a word string and returns True if the word is a palindrome (such as "racecar"), or False otherwise. Try to use recursion. Check the outer characters first, then move inwards until you reach the base case or find the word is not a palindrome.
 
 """
 
-
-def replacer(old, new):
-    def replace(decorated_func):
-        def wrapper(text):
-            modified_text = text.replace(old, new)
-            return decorated_func(modified_text)
-        return wrapper
-    return replace
+from functools import lru_cache
 
 
-@replacer("&", "&amp;")
-@replacer("'", "&#x27;")
-@replacer('"', "&quot;")
-@replacer(">", "&gt;")
-@replacer("<", "&lt;")
-def tag_pre(text):
-    return f"<pre>{text}</pre>"
+@lru_cache
+def is_palindrome(word):
+    if len(word) == 1:
+        return True
 
+    if word == "":
+        return True
+
+    if word[0] == word[-1]:
+        return True
+    else:
+        return False
+
+    return is_palindrome(word[1:len(word)-2:])
