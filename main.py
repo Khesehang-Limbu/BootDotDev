@@ -1,43 +1,65 @@
 """
 
-Zipmap
-Let's practice another simple recursive function.
-
-You may not understand recursion just yet, but by following the instructions, you will begin to grasp the fundamentals.
+Nested Sum
+Recursion is hard for all new developers. If you're struggling, that's okay! Take your time. That's why we're doing a few extra practice problems.
 
 Assignment
-Within Doc2Doc we need to map certain properties from one document to properties of another document. Complete the recursive zipmap function.
+In Doc2Doc, users can process files or entire directories. We need to know the total size of those files and directories (measured in bytes).
 
-It takes two lists as input and returns a dictionary where the first list provides the keys and the second list provides the values.
+Due to the nested nature of directories, we represent a root directory as a list of lists. Each list represents a directory, and each number represents the size of a file in that directory. For example, here's a directory that contains 2 files at the root level, then a nested directory with its own two files:
 
-Example usage:
+root = [
+    1,
+    2,
+    [3, 4]
+]
+print(sum_nested_list(root))
+# 10
 
-zipped = zipmap(
-    ["Avatar: The Last Airbender", "Avatar (in Papyrus font)", "The Last Airbender (Live Action)"],
-    [9.9, 6.1, 2.1]
-)
+Here's a more complex example:
 
-print(zipped)
-# {
-#   'Avatar: The Last Airbender': 9.9,
-#   'Avatar (in Papyrus font)': 6.1,
-#   'The Last Airbender (Live Action)': 2.1,
-# }
+root
+├── scripts.txt (5 bytes)
+├── characters (dir)
+│   ├── zuko.txt (6 bytes)
+│   └── aang.txt (7 bytes)
+└── seasons (dir)
+    ├── season1 (dir)
+    │   ├── the_avatar_returns.docx (8 bytes)
+    │   └── the_southern_air_temple.docx (9 bytes)
+    └── season2_notes.txt (10 bytes)
 
-Here's the pseudocode:
 
-If either the keys or values list is empty, return an empty dictionary (base case)
-Recursively call zipmap on all but the first elements from keys and values
-Add the first element of keys to the resulting dictionary, and set its value to the first element in values
-Return the updated dictionary
+Which would be represented as:
+
+root = [
+    5,
+    [6, 7],
+    [[8, 9], 10]
+]
+print(sum_nested_list(root))
+# 45
+
+Complete the sum_nested_list function. It takes a nested list of integers as input and should return the total size of all files in the list. It's a recursive function.
+
+Here's some pseudocode to help you get started:
+
+Create an integer variable to keep track of the total size.
+For each item in the list (use a loop here):
+If the item is an integer, add it to the total size.
+If the item is a list, use a recursive call to sum_nested_list to get the size of that list. Add that size to the total size.
+Return the total size when you're done iterating.
 
 """
 
 
-def zipmap(keys, values):
-    if len(keys) == 0 or len(values) == 0:
-        return {}
+def sum_nested_list(lst):
+    total_size = 0
 
-    resulting_dict = zipmap(keys[1::], values[1::])
-    resulting_dict[keys[0]] = values[0]
-    return resulting_dict
+    for item in lst:
+        if isinstance(item, int):
+            total_size += item
+        elif isinstance(item, list):
+            total_size += sum_nested_list(item)
+    return total_size
+
