@@ -1,49 +1,61 @@
 """
 
-Filter Command
-In Doc2Doc, users are asking for a filtering feature. They want a command that has dynamic options so they can work as quickly as possible.
+Upgrade Filter Command
+Users like the filter command, but think it could be better. They want access to more than two filter options and to customize the words that get filtered. It's time to upgrade the filter command feature.
 
 Assignment
-Complete the get_filter_cmd function. It takes two functions as input, filter_one and filter_two, and returns a function, filter_cmd.
-
-filter_cmd should take as input:
-
-a string content to be filtered
-an option with a default value of --one.
-The filter_cmd should filter and return the content according to the input option. Do not use the builtin filter function.
-
-If --one, use filter_one
-If --two, use filter_two
-If --three, use filter_one first, then use filter_two
-If another option is passed, raise an exception, "invalid option"
+Complete the get_filter_cmd function. It should take a dictionary as input, filters, and return a function, filter_cmd.
+filters contains option string and filter function key/value pairs.
+filter_cmd should take as input a string content to be filtered, a list of strings options, and a list of tuples word_pairs.
+The filter_cmd should filter and return the content, filtered according to the input options
+If there are no options in the options list, raise an exception "missing options".
+For each option, if its option string is in the filters dictionary, then filter the content by passing the content and word_pairs to the option's filter.
+Raise an exception "invalid option" for any option that is passed but not found in the filters dictionary.
 
 """
 
 
-def get_filter_cmd(filter_one, filter_two):
-    def filter_cmd(content, option="--one"):
-        if option == "--one":
-            return filter_one(content)
-        elif option == "--two":
-            return filter_two(content)
-        elif option == "--three":
-            return filter_two(filter_one(content))
-        else:
-            raise Exception("invalid option")
-
+def get_filter_cmd(filters):
+    def filter_cmd(content, options, word_pairs):
+        if len(options) == 0:
+            raise Exception("missing options")
+        for option in options:
+            try:
+                content = filters[option](content, word_pairs)
+            except Exception:
+                raise Exception("invalid option")
+        return content
     return filter_cmd
 
 
 # don't touch below this line
 
 
-def replace_bad(text):
-    return text.replace("bad", "good")
+def replace_words(content, word_pairs):
+    for pair in word_pairs:
+        content = content.replace(pair[0], pair[1])
+    return content
 
 
-def replace_ellipsis(text):
-    return text.replace("..", "...")
+def remove_words(content, word_pairs):
+    for pair in word_pairs:
+        content = content.replace(pair[0], "")
+    return content
 
 
-def fix_ellipsis(text):
-    return text.replace("....", "...")
+def capitalize_sentences(content, word_pairs):
+    return ". ".join(map(str.capitalize, content.split(". ")))
+
+
+def uppercase_words(content, word_pairs):
+    for pair in word_pairs:
+        content = content.replace(pair[0], pair[0].upper())
+    return content
+
+
+filters = {
+    "--replace": replace_words,
+    "--remove": remove_words,
+    "--capitalize": capitalize_sentences,
+    "--uppercase": uppercase_words,
+}

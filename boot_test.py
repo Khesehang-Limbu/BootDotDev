@@ -1,113 +1,82 @@
 from main import *
 
+
 run_cases = [
     (
-        replace_bad,
-        replace_ellipsis,
-        [
-            (
-                (
-                    "I'm bad, and that's good. I will never be good, and that's not bad..",
-                ),
-                "I'm good, and that's good. I will never be good, and that's not good..",
-            ),
-            (
-                (
-                    "I'm bad, and that's good. I will never be good, and that's not bad..",
-                    "--one",
-                ),
-                "I'm good, and that's good. I will never be good, and that's not good..",
-            ),
-            (
-                (
-                    "I'm bad, and that's good. I will never be good, and that's not bad..",
-                    "--two",
-                ),
-                "I'm bad, and that's good. I will never be good, and that's not bad...",
-            ),
-            (
-                (
-                    "I'm bad, and that's good. I will never be good, and that's not bad..",
-                    "--three",
-                ),
-                "I'm good, and that's good. I will never be good, and that's not good...",
-            ),
-        ],
+        "hello world. this is a test.",
+        ["--replace", "--capitalize"],
+        [("hello", "hi"), ("world", "earth"), ("test", "test case")],
+        "Hi earth. This is a test case.",
+    ),
+    (
+        "hello world. this is a test.",
+        ["--capitalize", "--uppercase"],
+        [("world", "earth"), ("test", "test case")],
+        "Hello WORLD. This is a TEST.",
+    ),
+    (
+        "the quick brown fox jumps over the lazy dog.",
+        [],
+        [],
+        "missing options",
     ),
 ]
+
 
 submit_cases = run_cases + [
     (
-        replace_ellipsis,
-        fix_ellipsis,
-        [
-            (
-                (
-                    "There's no place like home.. but sometimes, it's nice to get away... and explore....",
-                ),
-                "There's no place like home... but sometimes, it's nice to get away.... and explore......",
-            ),
-            (
-                (
-                    "There's no place like home.. but sometimes, it's nice to get away... and explore....",
-                    "--one",
-                ),
-                "There's no place like home... but sometimes, it's nice to get away.... and explore......",
-            ),
-            (
-                (
-                    "There's no place like home.. but sometimes, it's nice to get away... and explore....",
-                    "--two",
-                ),
-                "There's no place like home.. but sometimes, it's nice to get away... and explore...",
-            ),
-            (
-                (
-                    "There's no place like home.. but sometimes, it's nice to get away... and explore....",
-                    "--three",
-                ),
-                "There's no place like home... but sometimes, it's nice to get away... and explore.....",
-            ),
-            (
-                (
-                    "There's no place like home.. but sometimes, it's nice to get away... and explore....",
-                    "",
-                ),
-                "invalid option",
-            ),
-        ],
+        "the quick brown fox jumps over the lazy dog.",
+        ["--replace", "--lowercase"],
+        [],
+        "invalid option",
+    ),
+    (
+        "the quick brown fox jumps over the lazy dog.",
+        ["--remove", "--capitalize"],
+        [("quick", "slow"), ("fox", "wolf"), ("lazy", "active")],
+        "The  brown  jumps over the  dog.",
+    ),
+    (
+        "the quick brown fox jumps over the lazy dog",
+        ["--replace", "--remove", "--uppercase"],
+        [],
+        "the quick brown fox jumps over the lazy dog",
     ),
 ]
 
 
-def test(filter_one, filter_two, test_cases):
+def test(filter_cmd, content, options, word_pairs, expected_output):
     print("---------------------------------")
-    print(f"Input functions: {filter_one.__name__} and {filter_two.__name__}")
-    filter_cmd = get_filter_cmd(filter_one, filter_two)
-    failed = False
-    for case in test_cases:
-        try:
-            result = filter_cmd(*case[0])
-        except Exception as e:
-            result = str(e)
-        expected_output = case[1]
-        print(f"Expecting: {expected_output}")
-        print(f"   Actual: {result}")
-        if result != expected_output:
-            failed = True
-            print("Fail")
-        else:
-            print("Pass")
-    passed = not failed
-    return passed
+    print(f"Content: {content}")
+    print("Options:")
+    for option in options:
+        print(option)
+    print("Word Pairs:")
+    for word in word_pairs:
+        print(word)
+    try:
+        result = filter_cmd(content, options, word_pairs)
+    except Exception as e:
+        result = str(e)
+    print(f"Expecting: {expected_output}")
+    print(f"   Actual: {result}")
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():
     passed = 0
     failed = 0
+    print("Filters:")
+    for k, v in filters.items():
+        print(f"* ({k}, {v.__name__})")
+    filter_cmd = get_filter_cmd(filters)
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
-        correct = test(*test_case)
+        correct = test(filter_cmd, *test_case)
         if correct:
             passed += 1
         else:
