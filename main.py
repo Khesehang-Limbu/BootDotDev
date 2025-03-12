@@ -1,65 +1,68 @@
 """
 
-Export CSV
-Doc2Doc should be able to prepare and export a CSV file of whatever data you input. Comma-Separated Values are a ubiquitous text format that allows for information to be structured in a table. There is usually a header row, followed by data rows. Within rows, items are separated by commas.
+Edit Document
+Doc2Doc should be able to track changes in documents. Tracking changes is important for undoing and redoing edits. Some editors save changes and some file formats do as well.
 
 Assignment
-Complete the get_csv_status function. It should use a match case statement to select the correct response depending on the status of the export operation. Create functions to handle each operation as follows:
+Complete the handle_edit function. It takes as input a document string, an edit_type EditType enum, and an edit dictionary. It should use a match case statement to select the correct operation depending on the EditType. Create a function to handle each operation as follows:
 
-PENDING:
-Return a tuple with the string "Pending..." and the data converted from a list of lists of anything, to a list of lists of strings. Try to use nested map functions to convert the data items into strings. Remember to convert from a map object back into a list.
+NEWLINE:
+Use the edit dictionary to modify and return a copy of the document. The edit dictionary will only contain a line_number key and integer value (zero-indexed!). Add a newline \n at the end of the line of the document corresponding to the line_number.
 
-PROCESSING:
-Return a tuple with the string "Processing..." and the data converted from a list of lists of strings into one string in CSV format.
+SUBSTITUTE:
+Use the edit dictionary to modify and return a copy of the document. The edit dictionary will contain a insert_text key and string value, a line_number key and integer value, a start key and integer value and an end key and integer value. Substitute the insert_text into the line of the document corresponding to the line_number between the start and end indexes.
 
-For each list of strings, combine the strings with join with commas inbetween to form a row.
-For each row string, combine the strings with join with newlines "\n" inbetween to form a table.
-SUCCESS:
-Return a tuple with the string "Success!" and simply return the data as is.
+INSERT:
+Use the edit dictionary to modify and return a copy of the document. The edit dictionary will contain a insert_text key and string value, a line_number key and integer value, and a start key and integer value. Insert the insert_text into the line of the document corresponding to the line_number at the start index.
 
-FAILURE:
-Return a tuple with the string "Unknown error, retrying..." and the data after it has been prepared and processed into a CSV string, by combining the steps for Pending and Processing.
+DELETE:
+Use the edit dictionary to modify and return a copy of the document. The edit dictionary will contain a line_number key and integer value, a start key and integer value, and an end key and integer value. Remove the substring of the line of the document corresponding to the line_number between the start and end indexes.
 
-Any Other Status:
-If the input status is none of the above, raise an Exception with the string "unknown export status".
+Exceptions:
+If the edit_type is none of the above, raise an Exception with the string "unknown edit type".
+
 
 """
+
 
 from enum import Enum
 
 
-class CSVExportStatus(Enum):
-    PENDING = 1
-    PROCESSING = 2
-    SUCCESS = 3
-    FAILURE = 4
+class EditType(Enum):
+    NEWLINE = 1
+    SUBSTITUTE = 2
+    INSERT = 3
+    DELETE = 4
 
 
-def get_csv_status(status, data):
-    match status:
-        case CSVExportStatus.PENDING:
-            def convert_to_string(item):
-                if isinstance(item, list):
-                    new_list = []
-                    for value in item:
-                        new_list.append(str(value))
-                    return new_list
-                else:
-                    return str(value)
-            return ("Pending...", list(map(convert_to_string, data)))
-        case CSVExportStatus.PROCESSING:
-            new_string = ""
-
-            for item in data:
-                if isinstance(item, list):
-                    new_string += ",".join(item)
-                new_string += "\n"
-            return ("Processing...", new_string[:len(new_string)-1:])
-        case CSVExportStatus.SUCCESS:
-            return ("Success!", data)
-        case CSVExportStatus.FAILURE:
-            data = get_csv_status(CSVExportStatus.PENDING, data)
-            data = get_csv_status(CSVExportStatus.PROCESSING, data[1])
-            return ("Unknown error, retrying...", data[1])
+def handle_edit(document, edit_type, edit):
+    match edit_type:
+        case EditType.NEWLINE:
+            document_copy = document
+            lines = document_copy.split("\n")
+            for index in range(len(lines)):
+                if index == edit["line_number"]:
+                    lines[index] += "\n"
+            return "\n".join(lines)
+        case EditType.SUBSTITUTE:
+            lines = document.split("\n")
+            for index in range(len(lines)):
+                if index == edit["line_number"]:
+                    to_replace = lines[index][edit["start"]:edit["end"]:]
+                    lines[index] = lines[index].replace(to_replace, edit["insert_text"])
+            return "\n".join(lines)
+        case EditType.INSERT:
+            lines = document.split("\n")
+            for index in range(len(lines)):
+                if index == edit["line_number"]:
+                    lines[index] = lines[index][:edit["start"]:] + edit["insert_text"] + lines[index][edit["start"]::]
+            return "\n".join(lines)
+        case EditType.DELETE:
+            lines = document.split("\n")
+            for index in range(len(lines)):
+                if index == edit["line_number"]:
+                    lines[index] = lines[index].replace(lines[index][edit["start"]:edit["end"]:], "")
+            return "\n".join(lines)
         case _:
-            raise Exception("unknown export status")
+            raise Exception("unknown edit type")
+

@@ -1,151 +1,145 @@
 from main import *
 
 try:
-    (
-        CSVExportStatus.PENDING
-        and CSVExportStatus.PROCESSING
-        and CSVExportStatus.SUCCESS
-        and CSVExportStatus.FAILURE
-    )
+    (EditType.SUBSTITUTE and EditType.INSERT and EditType.DELETE and EditType.NEWLINE)
 except Exception as error:
     print(f"Error: Missing attribute {error} from enum")
 
-    class CSVExportStatus(Enum):
-        PENDING = None
-        PROCESSING = None
-        SUCCESS = None
-        FAILURE = None
+    class EditType(Enum):
+        SUBSTITUTE = None
+        INSERT = None
+        DELETE = None
+        NEWLINE = None
 
 
 run_cases = [
     (
-        CSVExportStatus.PENDING,
-        [
-            ["Customer ID", "Billed", "Paid"],
-            [1, 100, 100],
-            [2, 400, 99],
-            [3, 50, 25],
-        ],
-        (
-            "Pending...",
-            [
-                ["Customer ID", "Billed", "Paid"],
-                ["1", "100", "100"],
-                ["2", "400", "99"],
-                ["3", "50", "25"],
-            ],
-        ),
+        """Dear Manager,
+
+I’m outraged!
+My car warranty is
+an total disaster.
+Fix this immediately now!
+
+Sincerely,""",
+        EditType.SUBSTITUTE,
+        {
+            "insert_text": "right",
+            "line_number": 5,
+            "start": 9,
+            "end": 20,
+        },
+        """Dear Manager,
+
+I’m outraged!
+My car warranty is
+an total disaster.
+Fix this right now!
+
+Sincerely,""",
     ),
     (
-        CSVExportStatus.PROCESSING,
-        [
-            ["Customer ID", "Billed", "Paid"],
-            ["1", "100", "100"],
-            ["2", "400", "99"],
-            ["3", "50", "25"],
-        ],
-        (
-            "Processing...",
-            "Customer ID,Billed,Paid\n1,100,100\n2,400,99\n3,50,25",
-        ),
+        """Dear Manager,
+
+I’m outraged!
+My car warranty is
+an total disaster.
+Fix this right now!
+
+Sincerely,""",
+        EditType.NEWLINE,
+        {
+            "line_number": 7,
+        },
+        """Dear Manager,
+
+I’m outraged!
+My car warranty is
+an total disaster.
+Fix this right now!
+
+Sincerely,
+""",
     ),
     (
-        CSVExportStatus.SUCCESS,
-        "Customer ID,Billed,Paid\n1,100,100\n2,400,99\n3,50,25",
-        (
-            "Success!",
-            "Customer ID,Billed,Paid\n1,100,100\n2,400,99\n3,50,25",
-        ),
+        """Dear Manager,
+
+I’m outraged!
+My car warranty is
+an total disaster.
+Fix this right now!
+
+Sincerely,
+""",
+        EditType.INSERT,
+        {
+            "insert_text": "Karen",
+            "line_number": 8,
+            "start": 0,
+        },
+        """Dear Manager,
+
+I’m outraged!
+My car warranty is
+an total disaster.
+Fix this right now!
+
+Sincerely,
+Karen""",
     ),
     (
-        CSVExportStatus.FAILURE,
-        [
-            ["Customer ID", "Billed", "Paid"],
-            [1, 100, 100],
-            [2, 400, 99],
-            [3, 50, 25],
-        ],
-        (
-            "Unknown error, retrying...",
-            "Customer ID,Billed,Paid\n1,100,100\n2,400,99\n3,50,25",
-        ),
+        """Dear Manager,
+
+I’m outraged!
+My car warranty is
+an total disaster.
+Fix this right now!
+
+Sincerely,
+Karen""",
+        EditType.DELETE,
+        {
+            "line_number": 4,
+            "start": 1,
+            "end": 2,
+        },
+        """Dear Manager,
+
+I’m outraged!
+My car warranty is
+a total disaster.
+Fix this right now!
+
+Sincerely,
+Karen""",
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        CSVExportStatus.PENDING,
-        [
-            ["Card Name", "Condition", "Value"],
-            ["Sparky Mouse", "Fair", 100],
-            ["Moist Turtle", "Good", 200],
-            ["Burning Lizard", "Very Good", 1000],
-            ["Mossy Frog", "Poor", 10],
-        ],
-        (
-            "Pending...",
-            [
-                ["Card Name", "Condition", "Value"],
-                ["Sparky Mouse", "Fair", "100"],
-                ["Moist Turtle", "Good", "200"],
-                ["Burning Lizard", "Very Good", "1000"],
-                ["Mossy Frog", "Poor", "10"],
-            ],
-        ),
+        "test string",
+        "unknown edit type",
+        {},
+        "unknown edit type",
     ),
-    (
-        CSVExportStatus.PROCESSING,
-        [
-            ["Card Name", "Condition", "Value"],
-            ["Sparky Mouse", "Fair", "100"],
-            ["Moist Turtle", "Good", "200"],
-            ["Burning Lizard", "Very Good", "1000"],
-            ["Mossy Frog", "Poor", "10"],
-        ],
-        (
-            "Processing...",
-            "Card Name,Condition,Value\nSparky Mouse,Fair,100\nMoist Turtle,Good,200\nBurning Lizard,Very Good,1000\nMossy Frog,Poor,10",
-        ),
-    ),
-    (
-        CSVExportStatus.SUCCESS,
-        "Card Name,Condition,Value\nSparky Mouse,Fair,100\nMoist Turtle,Good,200\nBurning Lizard,Very Good,1000\nMossy Frog,Poor,10",
-        (
-            "Success!",
-            "Card Name,Condition,Value\nSparky Mouse,Fair,100\nMoist Turtle,Good,200\nBurning Lizard,Very Good,1000\nMossy Frog,Poor,10",
-        ),
-    ),
-    (
-        CSVExportStatus.FAILURE,
-        [
-            ["Card Name", "Condition", "Value"],
-            ["Sparky Mouse", "Fair", 100],
-            ["Moist Turtle", "Good", 200],
-            ["Burning Lizard", "Very Good", 1000],
-            ["Mossy Frog", "Poor", 10],
-        ],
-        (
-            "Unknown error, retrying...",
-            "Card Name,Condition,Value\nSparky Mouse,Fair,100\nMoist Turtle,Good,200\nBurning Lizard,Very Good,1000\nMossy Frog,Poor,10",
-        ),
-    ),
-    (1, None, ("Exception Raised:", "unknown export status")),
 ]
 
 
-def test(status, data, expected_output):
+def test(document, edit_type, edit, expected_output):
     print("---------------------------------")
-    print(f"Checking: {status}")
+    print(f"Change Type: {edit_type}")
+    print("Inputs:")
+    for key, val in edit.items():
+        print(f"* {key}: {val}")
     print("Expected:")
-    print(f"{expected_output[0]}")
-    print(f"{expected_output[1]}")
+    print(expected_output)
     try:
-        result = get_csv_status(status, data)
+        result = handle_edit(document, edit_type, edit)
+    # catch expected error or else raise unexpected error again
     except Exception as e:
-        result = expected_output[0], str(e)
+        result = str(e)
     print("Actual:")
-    print(f"{result[0]}")
-    print(f"{result[1]}")
+    print(result)
     if result == expected_output:
         print("Pass")
         return True
