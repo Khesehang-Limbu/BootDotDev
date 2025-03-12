@@ -1,47 +1,53 @@
 """
 
-Line Breaking
-Users should be able to break lengthy text into manageable lines. Lineation is simply dividing text into lines. This concept can also be applied to other data structures, such as code blocks or formatted paragraphs.
+Currying
+Function currying is a specific kind of function transformation where we translate a single function that accepts multiple arguments into multiple functions that each accept a single argument.
+
+This is a "normal" 3-argument function:
+
+box_volume(3, 4, 5)
+
+This is a "curried" series of functions that does the same thing:
+
+box_volume(3)(4)(5)
+
+Here's another example that includes the implementations:
+
+def sum(a, b):
+  return a + b
+
+print(sum(1, 2))
+# prints 3
+
+And the same thing curried:
+
+def sum(a):
+  def inner_sum(b):
+    return a + b
+  return inner_sum
+
+print(sum(1)(2))
+# prints 3
+
+The sum function only takes a single input, a. It returns a new function that takes a single input, b. This new function when called with a value for b will return the sum of a and b. We'll talk later about why this is useful.
 
 Assignment
-Complete the inner add_word_to_lines function. It takes a list of strings, lines, and a string word, as inputs and returns lines with the word added.
+In Doc2Doc, depending on the type of text file we're working with, we sometimes need to transform the font size of the text when it comes time to render it on the screen.
 
-If lines is empty, return just word in a list
-Assign the last line in lines to current_line
-If the length of current_line and word plus one (for a space) is more than line_length, start a new line by appending word to lines
-Else, add word to current_line with a space, and assign the new string to the last index in lines
-Remember to return lines
-Note: Every line will have at least one word, even if that word is longer than the line_length.
+Fix the converted_font_size function. We are using a 3rd party code library that expects our function to be a curried series of functions that each take a single argument.
 
-lineate = lineator(11)
-lines = lineate("Boots loves salmon because he is a bear.")
-# lines: ["Boots loves", "salmon", "because he", "is a bear."]
+converted_font_size should just take a single argument, font_size and return a function that takes a single argument, doc_type. That function should return the font_size multiplied by the appropriate value for the given doc_type.
 
 """
 
 
-from functools import reduce
-
-
-def lineator(line_length):
-    def lineate(document):
-        words = document.split()
-
-        def add_word_to_lines(lines, word):
-            # ?
-            if len(lines) == 0:
-                return [word]
-
-            current_line = lines[-1]
-
-            if len(current_line) + len(word) + 1 > line_length:
-                lines.append(word)
-            else:
-                current_line += f" {word}"
-                lines[-1] = current_line
-            return lines
-
-        return reduce(add_word_to_lines, words, [])
-
-    return lineate
-
+def converted_font_size(font_size):
+    def inner_func(doc_type):
+        if doc_type == "txt":
+            return font_size
+        if doc_type == "md":
+            return font_size * 2
+        if doc_type == "docx":
+            return font_size * 3
+        raise ValueError("invalid doc type")
+    return inner_func
