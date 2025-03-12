@@ -1,47 +1,54 @@
 """
 
-Markdown Image
-Markdown makes displaying images as simple as possible. To add an image to a markdown document, just use this syntax:
+Resize Image
+Doc2Doc should include a feature for image resizing, allowing users to adjust image dimensions to specified ranges. This ensures that images in documents fit and aren't freakishly large or hilariously small.
 
-![alt text](url "title")
-
-alt text a brief description for screen readers and web scrapers. Required for accessibility.
-url url or relative path to image.
-title shown on mouse hover. Optional.
 Assignment
-Doc2Doc makes using markdown a breeze. This includes adding images to markdown documents.
+Complete the new_resizer function using currying. It takes integer inputs max_width and max_height and returns an inner function.
+The inner function should take optional integer inputs min_width and min_height — with default values 0 — and return an innermost function.
+If min_width is more than max_width or min_height is more than max_height, raise an exception "minimum size cannot exceed maximum size".
+The innermost function should take two integer inputs width and height and return two integers.
+Use the built-in min and max functions to reduce or increase the width and height as needed, then return the new width and new height.
+Example
+If our new_resizer function returns a set_min_size function, and set_min_size returns a resize_image function, we would use it like this:
 
-Complete the create_markdown_image function using currying. It takes a string input, alt_text, and returns an inner function.
-It should enclose the alt_text in square brackets prefixed with an exclamation point ![alt_text].
-Create the inner function returned by create_markdown_image. It also takes a string input, url, and returns an innermost function.
-The inner function should first escape any parentheses in the URL by replacing them with encoded sequences.
-Use the .replace() string method to change any opening parenthesis ( into %28.
-Do the same to change any closing parenthesis ) into %29.
-Enclose the url with parentheses (url).
-Add the enclosed url to the end of the enclosed alt_text: ![alt_text](url)
-Create the innermost function returned by the inner function. It should take an optional string input for the title.
-If a title is passed:
-Enclose it in double quotes.
-Then add the quoted title to the image syntax by first removing the closing parenthesis ) from the end of the image syntax.
-Add a space and the quoted title with a closing parenthesis ) to the end of the image syntax: ![alt_text](url "title")
-Return the finished image syntax.
+# Step 1: Create the resizer with maximum dimensions
+set_min_size = new_resizer(800, 600)
+
+# Step 2: Set the minimum dimensions
+resize_image = set_min_size(200, 100)
+
+# Step 3: Resize the image
+new_width, new_height = resize_image(1000, 500)
+
+# Step 4: Output the result
+print(new_width, new_height)  # Output: 800, 500
+
+# With currying syntax
+print(new_resizer(800, 600)(200, 100)(1000, 500))  # Output: (800, 500)
 
 """
 
 
-def create_markdown_image(alt_text):
-    alt_text = f"![{alt_text}]"
+def new_resizer(max_width, max_height):
+    def check_minimuns(min_width=0, min_height=0):
+        if min_width > max_width or min_height > max_height:
+            raise Exception("minimum size cannot exceed maximum size")
 
-    def create_image_url(url):
-        url = url.replace("(", "%28")
-        url = url.replace(")", "%29")
-        url = f"({url})"
+        def get_width_height(width, height):
+            new_width = width
+            new_height = height
 
-        def create_image_title(title=""):
-            if title != "":
-                title = f' "{title}")'
-                nonlocal url
-                url = url.replace(")", title)
-            return alt_text + url
-        return create_image_title
-    return create_image_url
+            if width > max_width:
+                new_width = max_width
+            elif width < min_width:
+                new_width = min_width
+
+            if height > max_height:
+                new_height = max_height
+            elif height < min_height:
+                new_height = min_height
+            return new_width, new_height
+        return get_width_height
+    return check_minimuns
+
