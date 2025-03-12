@@ -2,76 +2,36 @@ from main import *
 
 
 run_cases = [
-    (
-        {"Hawkman": "The Winged Warrior"},
-        [
-            ("Boots", "The Lover of Salmon"),
-            ("Superman", "The Big Blue Boyscout"),
-            ("Batman", "The Caped Crusader"),
-            ("Woman Wonder", ""),
-        ],
-    ),
+    (("cap",), ["bussin", "salty"], ("cap", "bussin", "salty")),
+    (("fam", "bae"), ["bestie", "tea"], ("fam", "bae", "bestie", "tea")),
+    (("slay",), ["cringe"], ("slay", "cringe")),
 ]
-
 
 submit_cases = run_cases + [
+    ((), ["AF"], ("AF",)),
     (
-        {"Hawkgirl": "Fierce Thanagarian"},
-        [
-            ("Green Lantern", "The Man Without Fear"),
-            ("AquaMan", "Dweller in the Depths"),
-            ("The Flash", "The Crimson Comet"),
-            ("The Martian Manhunter", "Mars' Sole Survivor"),
-            ("Cyborg", "Tech Titan"),
-        ],
+        ("lowkey", "drip", "goat"),
+        ["gucci", "shook", "boujee"],
+        ("lowkey", "drip", "goat", "gucci", "shook", "boujee"),
     ),
 ]
 
 
-def test(input_clipboard, input_list):
+def test(initial_words, words_to_add, expected_output):
     print("---------------------------------")
-    copy_to_clipboard, paste_from_clipboard = new_clipboard(input_clipboard)
-    failed_count = 0
-    passed_count = 0
-    for item in input_list:
-        print("Copying to Clipboard:")
-        print(f"*   Key: {item[0]}")
-        print(f"* Value: {item[1]}")
-        copy_to_clipboard(*item)
-
-        print("Pasting From Clipboard:")
-        print(f"*      Key: {item[0]}")
-        result = paste_from_clipboard(item[0])
-        expected_output = item[1]
-        print(f"* Expected: '{expected_output}'")
-        print(f"*   Actual: '{result}'")
-        if item[0] in input_clipboard:
-            print("Fail: modified original input dictionary")
-            failed_count += 1
-        if result != expected_output:
-            print("Fail")
-            failed_count += 1
-        else:
-            print("Pass")
-            passed_count += 1
-        print("---------------------------------")
-
-    # check pasting missing key
-    missing_key = "Joker"
-    print("Pasting:")
-    print(f"* Key: {missing_key}")
-    result = paste_from_clipboard(missing_key)
-    expected_output = ""
-    print(f"* Expected: '{expected_output}'")
-    print(f"*   Actual: '{result}'")
+    print(f"Initial words: {initial_words}")
+    print(f"Words to add: {words_to_add}")
+    print(f"Expecting: {expected_output}")
+    add_word = user_words(initial_words)
+    result = initial_words
+    for word in words_to_add:
+        result = add_word(word)
+    print(f"   Actual: {result}")
     if result != expected_output:
-        print("Fail: missing key should return an empty string")
-        failed_count += 1
-    else:
-        print("Pass")
-        passed_count += 1
-
-    return passed_count, failed_count
+        print("Fail")
+        return False
+    print("Pass")
+    return True
 
 
 def main():
@@ -79,15 +39,15 @@ def main():
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
-        passed_count, failed_count = test(*test_case)
-        passed += passed_count
-        failed += failed_count
-
+        correct = test(*test_case)
+        if correct:
+            passed += 1
+        else:
+            failed += 1
     if failed == 0:
         print("============= PASS ==============")
     else:
         print("============= FAIL ==============")
-
     if skipped > 0:
         print(f"{passed} passed, {failed} failed, {skipped} skipped")
     else:
