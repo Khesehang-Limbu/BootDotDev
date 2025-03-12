@@ -1,53 +1,91 @@
 """
 
-lru_cache
-lru_cache from the functools module is an example of a decorator and an example of memoization.
+Sum Types
+Remember when I said, "Pure functions are my favorite part of functional programming"? Well, sum types are a close second.
 
-lru_cache memoizes the inputs and outputs of the decorated function in a size-restricted dictionary. It speeds up repeated calls to a slow function with the same inputs. For instance, if the function reads from disc, makes network requests, or requires a lot of computation AND it is used repeatedly with the same inputs.
+A "sum" type is the opposite of a "product" type. This Python object is an example of a product type:
 
-Here's an example from the Python documentation that perfectly illustrates how and why to use the lru_cache decorator:
+man.studies_finance = True
+man.has_trust_fund = False
 
-from functools import lru_cache
+The total number of combinations a man can have is 4, the product of 2 * 2:
 
-@lru_cache()
-def factorial_r(x):
-    if x == 0:
-        return 1
+studies_finance	has_trust_fund
+True	True
+True	False
+False	True
+False	False
+If we add a third attribute, perhaps a has_blue_eyes boolean, the total number of possibilities multiplies again, to 8!
+
+studies_finance	has_trust_fund	has_blue_eyes
+True	True	True
+True	True	False
+True	False	True
+True	False	False
+False	True	True
+False	True	False
+False	False	True
+False	False	False
+But let's pretend that we live in a world where there are really only three types of people that our program cares about:
+
+Dateable
+Undateable
+Maybe dateable
+We can reduce the number of cases our code needs to handle by using a (admittedly fake Pythonic) sum type with only 3 possible types:
+
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+class Dateable(Person):
+    pass
+
+class MaybeDateable(Person):
+    pass
+
+class Undateable(Person):
+    pass
+
+Then we can use the isinstance built-in function to check if a Person is an instance of one of the subclasses. It's a clunky way to represent sum types, but hey, it's Python.
+
+def respond_to_text(guy_at_bar):
+    if isinstance(guy_at_bar, Dateable):
+        return f"Hey {guy_at_bar.name}, I'd love to go out with you!"
+    elif isinstance(guy_at_bar, MaybeDateable):
+        return f"Hey {guy_at_bar.name}, I'm busy but let's hang out sometime later."
+    elif isinstance(guy_at_bar, Undateable):
+        return "Have you tried being rich?"
     else:
-        return x * factorial_r(x - 1)
+        raise ValueError("invalid person type")
 
-factorial_r(10) # no previously cached result, makes 11 recursive calls
-# 3628800
-factorial_r(5)  # just looks up cached value result
-# 120
-factorial_r(12) # makes two new recursive calls, the other 11 are cached
-# 479001600
-
-Since the factorial function is recursive and the inputs are sequential numbers, it's called repeatedly with the same inputs. Without the cache, the function would be called 30 times. With lru_cache, the function is only called 13 times. While you don't often need to compute factorials, this example ties together how to use a decorator and memoization and recursion.
+Sum Types
+As opposed to product types, which can have many (often infinite) combinations, sum types have a fixed number of possible values. To be clear: Python doesn't really support sum types. We have to use a workaround and invent our own little system and enforce it ourselves.
 
 Assignment
-The creator of Doc2Doc is a huge fan of palindromes for some nerdy reason. Add a feature to check if a word is a palindrome.
+Whenever a document is parsed by Doc2Doc, it can either succeed or fail. In functional programming, we often represent errors as data (e.g. the ParseError class) rather than by raiseing exceptions, because exceptions are side effects. (This isn't standard Python practice, but it's useful to understand from an FP perspective)
 
-Import the lru_cache function from the functools module. Use it to decorate the incomplete is_palindrome function.
+Complete the Parsed and ParseError subclasses.
 
-Complete the is_palindrome function. It takes as input a word string and returns True if the word is a palindrome (such as "racecar"), or False otherwise. Try to use recursion. Check the outer characters first, then move inwards until you reach the base case or find the word is not a palindrome.
+Parsed represents success. It should accept a doc_name string and a text string and save them as properties of the same name.
+ParseError represents failure. It should accept a doc_name string and an err string and save them as properties of the same name.
+The test suite uses the isinstance function to see if an error occurred based on the class type.
 
 """
 
-from functools import lru_cache
+class MaybeParsed:
+    pass
 
 
-@lru_cache
-def is_palindrome(word):
-    if len(word) == 1:
-        return True
+# don't touch above this line
 
-    if word == "":
-        return True
 
-    if word[0] == word[-1]:
-        return True
-    else:
-        return False
+class Parsed(MaybeParsed):
+    def __init__(self, doc_name, text):
+        self.doc_name = doc_name
+        self.text = text
 
-    return is_palindrome(word[1:len(word)-2:])
+
+class ParseError(MaybeParsed):
+    def __init__(self, doc_name, err):
+        self.doc_name = doc_name
+        self.err = err
