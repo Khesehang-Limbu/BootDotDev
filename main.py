@@ -1,30 +1,43 @@
 """
 
-Return the docuRecursion
-Recursion is a famously tricky concept to grasp, but it's honestly quite simple - don't let it intimidate you! A recursive function is just a function that calls itself!
+Zipmap
+Let's practice another simple recursive function.
 
-Recursion is the process of defining something in terms of itself.
+You may not understand recursion just yet, but by following the instructions, you will begin to grasp the fundamentals.
 
+Assignment
+Within Doc2Doc we need to map certain properties from one document to properties of another document. Complete the recursive zipmap function.
 
-Example of Recursion
-If you thought loops were the only way to iterate over a list, you were wrong! Recursion is fundamental to functional programming because it's how we iterate over lists while avoiding stateful loops. Take a look at this function that sums the numbers in a list:
+It takes two lists as input and returns a dictionary where the first list provides the keys and the second list provides the values.
 
-def sum_nums(nums):
-    if len(nums) == 0:
-        return 0
-    return nums[0] + sum_nums(nums[1:])
+Example usage:
 
-print(sum_nums([1, 2, 3, 4, 5]))
-# 15
+zipped = zipmap(
+    ["Avatar: The Last Airbender", "Avatar (in Papyrus font)", "The Last Airbender (Live Action)"],
+    [9.9, 6.1, 2.1]
+)
 
-Don't break your brain oment's keyword substrings and the document_map copy.
+print(zipped)
+# {
+#   'Avatar: The Last Airbender': 9.9,
+#   'Avatar (in Papyrus font)': 6.1,
+#   'The Last Airbender (Live Action)': 2.1,
+# }
+
+Here's the pseudocode:
+
+If either the keys or values list is empty, return an empty dictionary (base case)
+Recursively call zipmap on all but the first elements from keys and values
+Add the first element of keys to the resulting dictionary, and set its value to the first element in values
+Return the updated dictionary
 
 """
 
 
-def factorial_r(x):
-    if x == 1:
-        return x
-    if x == 0:
-        return 1
-    return x * factorial_r(x-1)
+def zipmap(keys, values):
+    if len(keys) == 0 or len(values) == 0:
+        return {}
+
+    resulting_dict = zipmap(keys[1::], values[1::])
+    resulting_dict[keys[0]] = values[0]
+    return resulting_dict
