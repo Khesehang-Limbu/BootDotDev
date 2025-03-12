@@ -1,34 +1,43 @@
 from main import *
 
 run_cases = [
-    ("Functional programming", "gnimmargorp lanoitcnuF"),
-    ("Python", "nohtyP"),
+    ("Either that wallpaper goes, or I do.", "wallpaper"),
+    (
+        "Then I die happy",
+        "happy",
+    ),
+    (
+        "Et tu, Brute?",
+        "Brute?",
+    ),
 ]
 
 submit_cases = run_cases + [
-    ("", ""),
     (
-        "Haskell code has no side effects because no one writes it",
-        "ti setirw eno on esuaceb stceffe edis on sah edoc lleksaH",
+        "",
+        "",
     ),
     (
-        "Lisp is the #1 programming language if you measure by parentheses",
-        "sesehtnerap yb erusaem uoy fi egaugnal gnimmargorp 1# eht si psiL",
+        " ",
+        "",
     ),
-    ("OCaml is for Haskell dropouts", "stuopord lleksaH rof si lmaCO"),
+    (
+        "Let us cross over the river and rest under the shade of the trees",
+        "cross",
+    ),
 ]
 
 
-def test(input, expected_output):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Input: {input}")
-    print(f"Expected Output: {expected_output}")
-    result = reverse_string(input)
-    print(f"Actual Output: {result}")
+    print(f"Input: '{input1}'")
+    print(f"Expecting: '{expected_output}'")
+    result = find_longest_word(input1)
+    print(f"Actual: '{result}'")
     if result == expected_output:
         print("Pass")
         return True
-    print("Failure")
+    print("Fail")
     return False
 
 
