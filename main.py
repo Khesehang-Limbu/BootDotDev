@@ -1,31 +1,87 @@
 """
 
-Longest Word
-In Doc2Doc, we have a search function to find the longest word in a document.
+Function Transformations
+"Function transformation" is just a more concise way to describe a specific type of higher order function. It's when a function takes a function (or functions) as input and returns a new function. Let's look at an example:
+
+higher order function
+
+def multiply(x, y):
+    return x * y
+
+def add(x, y):
+    return x + y
+
+# self_math is a higher order function
+# input: a function that takes two arguments and returns a value
+# output: a new function that takes one argument and returns a value
+def self_math(math_func):
+    def inner_func(x):
+        return math_func(x, x)
+    return inner_func
+
+square_func = self_math(multiply)
+double_func = self_math(add)
+
+print(square_func(5))
+# prints 25
+
+print(double_func(5))
+# prints 10
+
+The self_math function takes a function that operates on two different parameters (e.g. multiply or add) and returns a new function that operates on one parameter twice (e.g. square or double).
 
 Assignment
-Complete the find_longest_word function without a loop. It accepts string inputs, document, and optional longest_word, which is the current longest word and defaults to an empty string.
+Doc2Doc needs a good logging system so that users and developers alike can see what's going on under the hood. Complete the get_logger function.
 
-Check if the first word is longer than the current longest_word, then recur for the rest of the document.
-Ensure there are no potential index errors.
-Assume that a "word" means a series of any consecutive non-whitespace characters. For example, longest_word("How are you?") should return the string "you?".
+It takes a formatter function as a parameter and returns a new function. Steps:
+
+Define a new function, logger, inside get_logger (see self_math above as an example). It accepts two strings. You can just name them first and second if you like.
+The logger function should not return anything. It should simply print the result of calling the given formatter function with the first and second strings as arguments.
+Return the new logger function for the test suite to use.
 
 """
 
 
-def find_longest_word(document, longest_word=""):
-    word_documents = document.split(" ")
+def get_logger(formatter):
+    # ?
+    def logger(first, second):
+        print(formatter(first, second))
+    return logger
 
-    if document == "":
-        return longest_word
 
-    if len(word_documents) == 1 and len(word_documents[0]) > len(longest_word):
-        longest_word = word_documents[0]
+# Don't edit below this line
 
-    if len(word_documents[0]) > len(longest_word):
-        longest_word = word_documents[0]
 
-    longest_word = find_longest_word(
-        ' '.join(word_documents[1::]), longest_word)
+def test(first, errors, formatter):
+    print("Logs:")
+    logger = get_logger(formatter)
+    for err in errors:
+        logger(first, err)
+    print("====================================")
 
-    return longest_word
+
+def colon_delimit(first, second):
+    return f"{first}: {second}"
+
+
+def dash_delimit(first, second):
+    return f"{first} - {second}"
+
+
+def main():
+    db_errors = [
+        "out of memory",
+        "cpu is pegged",
+        "networking issue",
+        "invalid syntax",
+    ]
+    test("Doc2Doc FATAL", db_errors, colon_delimit)
+
+    mail_errors = [
+        "email too large",
+        "non alphanumeric symbols found",
+    ]
+    test("Doc2Doc WARNING", mail_errors, dash_delimit)
+
+
+main()
