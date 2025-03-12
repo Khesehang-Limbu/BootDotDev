@@ -1,54 +1,90 @@
 """
 
-Resize Image
-Doc2Doc should include a feature for image resizing, allowing users to adjust image dimensions to specified ranges. This ensures that images in documents fit and aren't freakishly large or hilariously small.
+Decorators
+Python decorators are just syntactic sugar for higher-order functions.
+
+Example:
+
+def vowel_counter(func_to_decorate):
+    vowel_count = 0
+    def wrapper(doc):
+        nonlocal vowel_count
+        vowels = "aeiou"
+        for char in doc:
+            if char in vowels:
+                vowel_count += 1
+        print(f"Vowel count: {vowel_count}")
+        return func_to_decorate(doc)
+    return wrapper
+
+@vowel_counter
+def process_doc(doc):
+    print(f"Document: {doc}")
+
+process_doc("What")
+# Vowel count: 1
+# Document: What
+
+process_doc("a wonderful")
+# Vowel count: 5
+# Document: a wonderful
+
+process_doc("world")
+# Vowel count: 6
+# Document: world
+
+The @vowel_counter line is "decorating" the process_doc function with the vowel_counter function. vowel_counter is called once when process_doc is defined with the @ syntax, but the wrapper function that it returns is called every time process_doc is called. That's why vowel_count is preserved and printed after each time.
+
+It's Just Syntactic Sugar
+Python decorators are just another (sometimes simpler) way of writing a higher-order function. These two pieces of code are identical:
+
+With Decorator
+@vowel_counter
+def process_doc(doc):
+    print(f"Document: {doc}")
+
+process_doc("Something wicked this way comes")
+
+Without Decorator
+def process(doc):
+    print(f"Document: {doc}")
+
+process_doc = vowel_counter(process)
+process_doc("Something wicked this way comes")
 
 Assignment
-Complete the new_resizer function using currying. It takes integer inputs max_width and max_height and returns an inner function.
-The inner function should take optional integer inputs min_width and min_height — with default values 0 — and return an innermost function.
-If min_width is more than max_width or min_height is more than max_height, raise an exception "minimum size cannot exceed maximum size".
-The innermost function should take two integer inputs width and height and return two integers.
-Use the built-in min and max functions to reduce or increase the width and height as needed, then return the new width and new height.
-Example
-If our new_resizer function returns a set_min_size function, and set_min_size returns a resize_image function, we would use it like this:
+The provided file_type_aggregator function is intended to decorate other functions. It assumes that the function it decorates has exactly 2 positional arguments.
 
-# Step 1: Create the resizer with maximum dimensions
-set_min_size = new_resizer(800, 600)
+Create a process_doc function that's decorated by file_type_aggregator. It should return the following string:
 
-# Step 2: Set the minimum dimensions
-resize_image = set_min_size(200, 100)
+f"Processing doc: '{doc}'. File Type: {file_type}"
 
-# Step 3: Resize the image
-new_width, new_height = resize_image(1000, 500)
-
-# Step 4: Output the result
-print(new_width, new_height)  # Output: 800, 500
-
-# With currying syntax
-print(new_resizer(800, 600)(200, 100)(1000, 500))  # Output: (800, 500)
+Where doc and file_type are its positional arguments. (See line 11 for where it's being called)
 
 """
 
 
-def new_resizer(max_width, max_height):
-    def check_minimuns(min_width=0, min_height=0):
-        if min_width > max_width or min_height > max_height:
-            raise Exception("minimum size cannot exceed maximum size")
+def file_type_aggregator(func_to_decorate):
+    # dict of file_type -> count
+    counts = {}
 
-        def get_width_height(width, height):
-            new_width = width
-            new_height = height
+    def wrapper(doc, file_type):
+        nonlocal counts
 
-            if width > max_width:
-                new_width = max_width
-            elif width < min_width:
-                new_width = min_width
+        if file_type not in counts:
+            counts[file_type] = 0
+        counts[file_type] += 1
+        result = func_to_decorate(doc, file_type)
 
-            if height > max_height:
-                new_height = max_height
-            elif height < min_height:
-                new_height = min_height
-            return new_width, new_height
-        return get_width_height
-    return check_minimuns
+        return result, counts
+
+    return wrapper
+
+
+# don't touch above this line
+
+# ?
+@file_type_aggregator
+def process_doc(doc, file_type):
+    return f"Processing doc: '{doc}'. File Type: {file_type}"
 
