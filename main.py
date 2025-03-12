@@ -1,99 +1,65 @@
 """
 
-Match
-Let's take another look at our example Enum from the previous lesson:
-
-Color = Enum("Color", ["RED", "GREEN", "BLUE"])
-
-Working With Enums
-Python has a match statement that tends to be a lot cleaner than a series of if/else/elif statements when we're working with a fixed set of possible values (like a sum type, or more specifically an enum):
-
-def get_hex(color):
-    match color:
-        case Color.RED:
-            return "#FF0000"
-        case Color.GREEN:
-            return "#00FF00"
-        case Color.BLUE:
-            return "#0000FF"
-
-        # default case
-        # (invalid Color)
-        case _:
-            return "#FFFFFF"
-
-If you have two values to match, you can use a tuple:
-
-def get_hex(color, shade):
-    match (color, shade):
-        case (Color.RED, Shade.LIGHT):
-            return "#FFAAAA"
-        case (Color.RED, Shade.DARK):
-            return "#AA0000"
-        case (Color.GREEN, Shade.LIGHT):
-            return "#AAFFAA"
-        case (Color.GREEN, Shade.DARK):
-            return "#00AA00"
-        case (Color.BLUE, Shade.LIGHT):
-            return "#AAAAFF"
-        case (Color.BLUE, Shade.DARK):
-            return "#0000AA"
-
-        # default case
-        # (invalid combination)
-        case _:
-            return "#FFFFFF"
-
-The value we want to compare is set after the match keyword, which is then compared against different cases/patterns. If a match is found, the code in the block is executed.
+Export CSV
+Doc2Doc should be able to prepare and export a CSV file of whatever data you input. Comma-Separated Values are a ubiquitous text format that allows for information to be structured in a table. There is usually a header row, followed by data rows. Within rows, items are separated by commas.
 
 Assignment
-Complete the convert_format function. Using the enum DocFormat, it should support 3 types of conversions:
+Complete the get_csv_status function. It should use a match case statement to select the correct response depending on the status of the export operation. Create functions to handle each operation as follows:
 
-From MD to HTML:
+PENDING:
+Return a tuple with the string "Pending..." and the data converted from a list of lists of anything, to a list of lists of strings. Try to use nested map functions to convert the data items into strings. Remember to convert from a map object back into a list.
 
-Assume the content is a single h1 tag in markdown syntax - it's a single string representing a line. Replace the leading # with an <h1> and add a </h1> to the end.
+PROCESSING:
+Return a tuple with the string "Processing..." and the data converted from a list of lists of strings into one string in CSV format.
 
-# This is a heading -> <h1>This is a heading</h1>
+For each list of strings, combine the strings with join with commas inbetween to form a row.
+For each row string, combine the strings with join with newlines "\n" inbetween to form a table.
+SUCCESS:
+Return a tuple with the string "Success!" and simply return the data as is.
 
-From TXT to PDF:
+FAILURE:
+Return a tuple with the string "Unknown error, retrying..." and the data after it has been prepared and processed into a CSV string, by combining the steps for Pending and Processing.
 
-Simply add a [PDF] tag to the beginning and end of the content. Notice the spaces between [PDF] tags and the content:
-
-This is some text -> [PDF] This is some text [PDF]
-
-From HTML to MD:
-
-Replace any <h1> tags with # and remove any </h1> tags.
-
-<h1>This is a heading</h1> -> # This is a heading
-
-Any other conversion:
-
-If the input format is invalid, raise an Exception with the string invalid type.
+Any Other Status:
+If the input status is none of the above, raise an Exception with the string "unknown export status".
 
 """
 
 from enum import Enum
 
 
-class DocFormat(Enum):
-    PDF = 1
-    TXT = 2
-    MD = 3
-    HTML = 4
+class CSVExportStatus(Enum):
+    PENDING = 1
+    PROCESSING = 2
+    SUCCESS = 3
+    FAILURE = 4
 
 
-# don't touch above this line
+def get_csv_status(status, data):
+    match status:
+        case CSVExportStatus.PENDING:
+            def convert_to_string(item):
+                if isinstance(item, list):
+                    new_list = []
+                    for value in item:
+                        new_list.append(str(value))
+                    return new_list
+                else:
+                    return str(value)
+            return ("Pending...", list(map(convert_to_string, data)))
+        case CSVExportStatus.PROCESSING:
+            new_string = ""
 
-
-def convert_format(content, from_format, to_format):
-    match (from_format, to_format):
-        case (DocFormat.MD, DocFormat.HTML):
-            return content.replace("# ", "<h1>") + "</h1>"
-        case (DocFormat.TXT, DocFormat.PDF):
-            return f"[PDF] {content} [PDF]"
-        case (DocFormat.HTML, DocFormat.MD):
-            return content.replace("<h1>", "# ").replace("</h1>", "")
+            for item in data:
+                if isinstance(item, list):
+                    new_string += ",".join(item)
+                new_string += "\n"
+            return ("Processing...", new_string[:len(new_string)-1:])
+        case CSVExportStatus.SUCCESS:
+            return ("Success!", data)
+        case CSVExportStatus.FAILURE:
+            data = get_csv_status(CSVExportStatus.PENDING, data)
+            data = get_csv_status(CSVExportStatus.PROCESSING, data[1])
+            return ("Unknown error, retrying...", data[1])
         case _:
-            raise Exception("invalid type")
-
+            raise Exception("unknown export status")
