@@ -1,73 +1,50 @@
-from plugins import *
-from decorators import *
+from main import *
+
 
 run_cases = [
     (
-        configure_backups,
-        [
-            ("path", "~/documents"),
-            ("extension", ".md"),
-        ],
-        {
-            "path": "~/documents",
-            "prefix": "copy_",
-            "extension": ".md",
-        },
+        replacer("faith", "salmon")(lambda x: x),
+        'replacer("faith", "salmon")(lambda x: x)',
+        "I find your lack of faith disturbing, young Skywalker.",
+        "I find your lack of salmon disturbing, young Skywalker.",
     ),
     (
-        configure_login,
-        [
-            ("user", "goku_fanatic"),
-            ("password", "kakarot1989"),
-        ],
-        {
-            "user": "goku_fanatic",
-            "password": "kakarot1989",
-            "token": None,
-        },
+        replacer("paragraph", "span")(replacer("p>", "span>")(lambda x: x)),
+        'replacer("paragraph", "span")(replacer("p>", "span>")(lambda x: x))',
+        "<p>Here is a paragraph</p>",
+        "<span>Here is a span</span>",
+    ),
+    (
+        tag_pre,
+        "tag_pre",
+        '<a href="https://blog.boot.dev/wiki/troubleshoot-code-editor-issues/">link</a>',
+        "<pre>&lt;a href=&quot;https://blog.boot.dev/wiki/troubleshoot-code-editor-issues/&quot;&gt;link&lt;/a&gt;</pre>",
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        configure_backups,
-        [
-            ("path", "~/workspace/backups"),
-            ("prefix", "backup_"),
-        ],
-        {
-            "path": "~/workspace/backups",
-            "prefix": "backup_",
-            "extension": ".txt",
-        },
+        tag_pre,
+        "tag_pre",
+        '<img src="https://imgur.com/a/VlMAK0B" alt="mystery">',
+        "<pre>&lt;img src=&quot;https://imgur.com/a/VlMAK0B&quot; alt=&quot;mystery&quot;&gt;</pre>",
     ),
     (
-        configure_login,
-        [
-            ("user", "john_q_sample"),
-            ("password", "p@$$w0rd"),
-            ("token", "a09adc-0914sf-012la9-fa3sa0-2342ra"),
-        ],
-        {
-            "user": "john_q_sample",
-            "password": "p@$$w0rd",
-            "token": "a09adc-0914sf-012la9-fa3sa0-2342ra",
-        },
+        tag_pre,
+        "tag_pre",
+        "<p>This paragraph has <em>italic text</em></p>",
+        "<pre>&lt;p&gt;This paragraph has &lt;em&gt;italic text&lt;/em&gt;&lt;/p&gt;</pre>",
     ),
 ]
 
 
-def test(func, args, expected_output):
+def test(func, func_name, input, expected_output):
     print("---------------------------------")
-    print(f"Function: {func.__name__}")
-    print("Positional Arguments:")
-    for arg in args:
-        print(f" * {arg}")
-    print(f"Expecting:")
-    print(expected_output)
-    result = func(*args)
-    print(f"Actual:")
-    print(result)
+    print(f"Function: {func_name}")
+    print(f"    Input: {input}")
+    print(f"Expecting: {expected_output}")
+    result = func(input)
+    print(f"   Actual: {result}")
     if result == expected_output:
         print("Pass")
         return True
