@@ -1,62 +1,47 @@
 """
 
-CSS Styles
-Doc2Doc should be able to add css styling to an html file. CSS uses selectors to identify the html element to add the style property. Essentially, styles are a chain of keys and values.
+Line Breaking
+Users should be able to break lengthy text into manageable lines. Lineation is simply dividing text into lines. This concept can also be applied to other data structures, such as code blocks or formatted paragraphs.
 
 Assignment
-Complete the css_styles function. It accepts a nested dictionary as input, initial_styles, and returns a function, add_style.
+Complete the inner add_word_to_lines function. It takes a list of strings, lines, and a string word, as inputs and returns lines with the word added.
 
-Copies initial_styles to avoid modifying the original dictionary.
-Returns an add_style function that:
-Takes three string arguments: selector, property, and value. selector is a key in the initial_styles dictionary and its value should be a dictionary.
-Checks if the selector exists in the dictionary. If not, creates a new dictionary for the selector value.
-Then adds or updates the property with the given value for the selector.
-Returns the updated dictionary.
-For example:
+If lines is empty, return just word in a list
+Assign the last line in lines to current_line
+If the length of current_line and word plus one (for a space) is more than line_length, start a new line by appending word to lines
+Else, add word to current_line with a space, and assign the new string to the last index in lines
+Remember to return lines
+Note: Every line will have at least one word, even if that word is longer than the line_length.
 
-initial_styles = {
-    "body": {
-        "background-color": "white",
-        "color": "black"
-    },
-    "h1": {
-        "font-size": "16px",
-        "padding": "10px"
-    }
-}
-
-add_style = css_styles(initial_styles)
-
-new_styles = add_style("p", "color", "grey")
-# {
-#    "body": {
-#        "background-color": "white",
-#        "color": "black"
-#    },
-#    "h1": {
-#        "font-size": "16px",
-#        "padding": "10px"
-#    },
-#    "p": {
-#        "color": "grey",
-#    }
-# }
+lineate = lineator(11)
+lines = lineate("Boots loves salmon because he is a bear.")
+# lines: ["Boots loves", "salmon", "because he", "is a bear."]
 
 """
 
 
-def css_styles(initial_styles):
-    new_styles = initial_styles.copy()
+from functools import reduce
 
-    def add_style(selector, property, value):
-        if selector not in new_styles.keys():
-            new_styles[selector] = {
-                property: value,
-            }
-        else:
-            if isinstance(new_styles[selector], dict):
-                new_styles[selector].update({
-                    property: value,
-                })
-        return new_styles
-    return add_style
+
+def lineator(line_length):
+    def lineate(document):
+        words = document.split()
+
+        def add_word_to_lines(lines, word):
+            # ?
+            if len(lines) == 0:
+                return [word]
+
+            current_line = lines[-1]
+
+            if len(current_line) + len(word) + 1 > line_length:
+                lines.append(word)
+            else:
+                current_line += f" {word}"
+                lines[-1] = current_line
+            return lines
+
+        return reduce(add_word_to_lines, words, [])
+
+    return lineate
+

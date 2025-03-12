@@ -1,89 +1,78 @@
 from main import *
 
-
 run_cases = [
     (
-        {
-            "h1": {
-                "color": "yellow",
-            },
-            "body": {
-                "background-color": "black",
-                "color": "white",
-            },
-        },
+        10,
+        "Autobots roll out! The Autobots are always ready for battle.",
         [
-            ("h1", "color", "#CC00FF"),
-            ("body", "background-color", "#696969"),
+            "Autobots",
+            "roll out!",
+            "The",
+            "Autobots",
+            "are always",
+            "ready for",
+            "battle.",
         ],
-        {
-            "h1": {
-                "color": "#CC00FF",
-            },
-            "body": {
-                "background-color": "#696969",
-                "color": "white",
-            },
-        },
+    ),
+    (
+        20,
+        "Optimus Prime is the leader of the Autobots. Megatron is the archenemy of the Autobots.",
+        [
+            "Optimus Prime is the",
+            "leader of the",
+            "Autobots. Megatron",
+            "is the archenemy of",
+            "the Autobots.",
+        ],
+    ),
+    (
+        30,
+        "Autobots often disguise themselves as vehicles on Earth. The Autobots protect humanity from the Decepticons.",
+        [
+            "Autobots often disguise",
+            "themselves as vehicles on",
+            "Earth. The Autobots protect",
+            "humanity from the Decepticons.",
+        ],
     ),
 ]
 
 
 submit_cases = run_cases + [
     (
-        {},
-        [
-            ("p", "font-size", "16px"),
-        ],
-        {
-            "p": {
-                "font-size": "16px",
-            },
-        },
+        0,
+        "",
+        [],
     ),
     (
-        {
-            ".container": {
-                "max-width": "1200px",
-                "margin": "0 auto",
-                "padding": "0 20px",
-            },
-        },
+        0,
+        "Cybertron is the home planet of the Autobots.",
+        ["Cybertron", "is", "the", "home", "planet", "of", "the", "Autobots."],
+    ),
+    (
+        90,
+        "Bumblebee transforms into a yellow Camaro. Ratchet is the medical officer for the Autobots.",
         [
-            (".container", "max-width", "1450px"),
-            (".container", "color", "#660099"),
+            "Bumblebee transforms into a yellow Camaro. Ratchet is the medical officer for the",
+            "Autobots.",
         ],
-        {
-            ".container": {
-                "max-width": "1450px",
-                "margin": "0 auto",
-                "padding": "0 20px",
-                "color": "#660099",
-            },
-        },
     ),
 ]
 
 
-def test(initial_styles, styles_to_add, expected_output):
+def test(line_length, document, expected_output):
     print("---------------------------------")
-    print(f"Initial styles: {initial_styles}")
-    initial_styles_copy = initial_styles.copy()
-    add_style = css_styles(initial_styles)
-    result = initial_styles.copy()
-    for style in styles_to_add:
-        print(f"Style to add: {style}")
-        result = add_style(*style)
+    print(f"Inputs:")
+    print(f" * line_length: {line_length}")
+    print(f" * document: {document}")
     print(f"Expecting: {expected_output}")
+    result = lineator(line_length)(document)
     print(f"   Actual: {result}")
-    if initial_styles_copy != initial_styles:
-        print("Fail: You should not modify the initial styles")
-        return False
-    if result != expected_output:
-        print("Fail: Unexpected result")
-        return False
-    print("Pass")
-    return True
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():
