@@ -2,33 +2,85 @@ from main import *
 
 
 run_cases = [
-    (("cap",), ["bussin", "salty"], ("cap", "bussin", "salty")),
-    (("fam", "bae"), ["bestie", "tea"], ("fam", "bae", "bestie", "tea")),
-    (("slay",), ["cringe"], ("slay", "cringe")),
-]
-
-submit_cases = run_cases + [
-    ((), ["AF"], ("AF",)),
     (
-        ("lowkey", "drip", "goat"),
-        ["gucci", "shook", "boujee"],
-        ("lowkey", "drip", "goat", "gucci", "shook", "boujee"),
+        {
+            "h1": {
+                "color": "yellow",
+            },
+            "body": {
+                "background-color": "black",
+                "color": "white",
+            },
+        },
+        [
+            ("h1", "color", "#CC00FF"),
+            ("body", "background-color", "#696969"),
+        ],
+        {
+            "h1": {
+                "color": "#CC00FF",
+            },
+            "body": {
+                "background-color": "#696969",
+                "color": "white",
+            },
+        },
     ),
 ]
 
 
-def test(initial_words, words_to_add, expected_output):
+submit_cases = run_cases + [
+    (
+        {},
+        [
+            ("p", "font-size", "16px"),
+        ],
+        {
+            "p": {
+                "font-size": "16px",
+            },
+        },
+    ),
+    (
+        {
+            ".container": {
+                "max-width": "1200px",
+                "margin": "0 auto",
+                "padding": "0 20px",
+            },
+        },
+        [
+            (".container", "max-width", "1450px"),
+            (".container", "color", "#660099"),
+        ],
+        {
+            ".container": {
+                "max-width": "1450px",
+                "margin": "0 auto",
+                "padding": "0 20px",
+                "color": "#660099",
+            },
+        },
+    ),
+]
+
+
+def test(initial_styles, styles_to_add, expected_output):
     print("---------------------------------")
-    print(f"Initial words: {initial_words}")
-    print(f"Words to add: {words_to_add}")
+    print(f"Initial styles: {initial_styles}")
+    initial_styles_copy = initial_styles.copy()
+    add_style = css_styles(initial_styles)
+    result = initial_styles.copy()
+    for style in styles_to_add:
+        print(f"Style to add: {style}")
+        result = add_style(*style)
     print(f"Expecting: {expected_output}")
-    add_word = user_words(initial_words)
-    result = initial_words
-    for word in words_to_add:
-        result = add_word(word)
     print(f"   Actual: {result}")
+    if initial_styles_copy != initial_styles:
+        print("Fail: You should not modify the initial styles")
+        return False
     if result != expected_output:
-        print("Fail")
+        print("Fail: Unexpected result")
         return False
     print("Pass")
     return True
