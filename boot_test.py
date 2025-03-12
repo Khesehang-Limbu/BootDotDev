@@ -1,56 +1,71 @@
-from formatters import *
+from plugins import *
 from decorators import *
 
 run_cases = [
     (
-        ("# We like to play it all", "## Welcome to Tally Hall"),
-        {},
-        concat,
-        """  First: We like to play it all
-  Second: Welcome to Tally Hall""",
+        configure_backups,
+        [
+            ("path", "~/documents"),
+            ("extension", ".md"),
+        ],
+        {
+            "path": "~/documents",
+            "prefix": "copy_",
+            "extension": ".md",
+        },
     ),
     (
-        set(),
+        configure_login,
+        [
+            ("user", "goku_fanatic"),
+            ("password", "kakarot1989"),
+        ],
         {
-            "title": "Why Python is Great",
-            "body": "Maybe it isn't",
-            "conclusion": "## That's why Python is great!",
+            "user": "goku_fanatic",
+            "password": "kakarot1989",
+            "token": None,
         },
-        format_as_essay,
-        """  Title: Why Python is Great
-  Body: Maybe it isn't
-  Conclusion: That's why Python is great!""",
     ),
 ]
 
 submit_cases = run_cases + [
     (
-        ("# Boots' grocery list", "Salmon, gems, arcanum crystals"),
+        configure_backups,
+        [
+            ("path", "~/workspace/backups"),
+            ("prefix", "backup_"),
+        ],
         {
-            "conclusion": "## Don't forget!",
+            "path": "~/workspace/backups",
+            "prefix": "backup_",
+            "extension": ".txt",
         },
-        format_as_essay,
-        """  Title: Boots' grocery list
-  Body: Salmon, gems, arcanum crystals
-  Conclusion: Don't forget!""",
+    ),
+    (
+        configure_login,
+        [
+            ("user", "john_q_sample"),
+            ("password", "p@$$w0rd"),
+            ("token", "a09adc-0914sf-012la9-fa3sa0-2342ra"),
+        ],
+        {
+            "user": "john_q_sample",
+            "password": "p@$$w0rd",
+            "token": "a09adc-0914sf-012la9-fa3sa0-2342ra",
+        },
     ),
 ]
 
 
-def test(args, kwargs, func, expected_output):
+def test(func, args, expected_output):
     print("---------------------------------")
-    print(f"Positional Arguments:")
+    print(f"Function: {func.__name__}")
+    print("Positional Arguments:")
     for arg in args:
         print(f" * {arg}")
-    print(f"Keyword Arguments:")
-    for key, value in kwargs.items():
-        print(f" * {key}: {value}")
     print(f"Expecting:")
     print(expected_output)
-    try:
-        result = func(*args, **kwargs)
-    except Exception as error:
-        result = f"Error: {error}"
+    result = func(*args)
     print(f"Actual:")
     print(result)
     if result == expected_output:
