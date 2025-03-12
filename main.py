@@ -1,55 +1,49 @@
 """
 
-More Transformations
-Here's some example code for you to reference as you work through the assignment:
-
-def multiply(x, y):
-    return x * y
-
-def add(x, y):
-    return x + y
-
-def self_math(math_func):
-    def inner_func(x):
-        return math_func(x, x)
-    return inner_func
-
-square_func = self_math(multiply)
-double_func = self_math(add)
-
-print(square_func(5))
-# prints 25
-
-print(double_func(5))
-# prints 10
+Filter Command
+In Doc2Doc, users are asking for a filtering feature. They want a command that has dynamic options so they can work as quickly as possible.
 
 Assignment
-Complete the doc_format_checker_and_converter function.
+Complete the get_filter_cmd function. It takes two functions as input, filter_one and filter_two, and returns a function, filter_cmd.
 
-It takes a conversion_function and a list of valid_formats as parameters. It should return a new function that takes two parameters of its own:
+filter_cmd should take as input:
 
-filename: The name of the file to be converted
-content: The content (body text) of the file to be converted
-If the file extension of the filename is in the valid_formats list, then it should return the result of calling the conversion_function on the content. Otherwise, it should raise a ValueError with the message invalid file format.
+a string content to be filtered
+an option with a default value of --one.
+The filter_cmd should filter and return the content according to the input option. Do not use the builtin filter function.
+
+If --one, use filter_one
+If --two, use filter_two
+If --three, use filter_one first, then use filter_two
+If another option is passed, raise an exception, "invalid option"
 
 """
 
 
-def doc_format_checker_and_converter(conversion_function, valid_formats):
-    def inner_func(filename, content):
-        if filename.split(".")[-1] in valid_formats:
-            return conversion_function(content)
+def get_filter_cmd(filter_one, filter_two):
+    def filter_cmd(content, option="--one"):
+        if option == "--one":
+            return filter_one(content)
+        elif option == "--two":
+            return filter_two(content)
+        elif option == "--three":
+            return filter_two(filter_one(content))
         else:
-            raise Exception("invalid file format")
-    return inner_func
+            raise Exception("invalid option")
+
+    return filter_cmd
 
 
-# Don't edit below this line
+# don't touch below this line
 
 
-def capitalize_content(content):
-    return content.upper()
+def replace_bad(text):
+    return text.replace("bad", "good")
 
 
-def reverse_content(content):
-    return content[::-1]
+def replace_ellipsis(text):
+    return text.replace("..", "...")
+
+
+def fix_ellipsis(text):
+    return text.replace("....", "...")
